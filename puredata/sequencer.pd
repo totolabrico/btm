@@ -1,0 +1,47 @@
+#N canvas 83 202 358 509 10;
+#X obj 55 244 metro;
+#X obj 55 68 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0 1
+;
+#X obj 87 172 /;
+#X floatatom 87 217 5 0 0 0 - - -, f 5;
+#X msg 87 83 60000;
+#X obj 101 416 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X msg 101 441 0;
+#X obj 55 415 + 1;
+#X floatatom 55 350 5 0 0 0 - - -, f 5;
+#X obj 141 157 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 55 327 0;
+#X obj 87 195 / 4;
+#X obj 101 307 - 1;
+#X floatatom 101 330 5 0 0 0 - - -, f 5;
+#X obj 55 386 moses, f 7;
+#X floatatom 141 132 5 0 0 0 - - -, f 5;
+#X obj 220 115 receive bpm;
+#X obj 55 36 receive playing;
+#X obj 101 281 receive loop_length;
+#X obj 204 364 send pas;
+#X connect 0 0 10 0;
+#X connect 1 0 0 0;
+#X connect 1 0 4 0;
+#X connect 2 0 11 0;
+#X connect 3 0 0 1;
+#X connect 4 0 2 0;
+#X connect 5 0 6 0;
+#X connect 6 0 10 1;
+#X connect 7 0 10 1;
+#X connect 8 0 14 0;
+#X connect 8 0 19 0;
+#X connect 9 0 2 0;
+#X connect 10 0 8 0;
+#X connect 11 0 3 0;
+#X connect 12 0 13 0;
+#X connect 13 0 14 1;
+#X connect 14 0 7 0;
+#X connect 14 1 5 0;
+#X connect 15 0 9 0;
+#X connect 15 0 2 1;
+#X connect 16 0 15 0;
+#X connect 17 0 1 0;
+#X connect 18 0 12 0;

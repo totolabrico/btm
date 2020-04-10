@@ -1,0 +1,11 @@
+#N canvas 1024 342 220 333 10;
+#X obj 29 130 osc;
+#X obj 29 210 player 1;
+#X obj 29 34 loadbang;
+#X msg 29 55 \; pd dsp 1 \;;
+#X obj 29 150 loader;
+#X obj 29 230 player 2;
+#X obj 29 250 player 3;
+#X obj 29 190 master;
+#X obj 29 170 sequencer;
+#X connect 2 0 3 0;
