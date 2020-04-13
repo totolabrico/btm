@@ -15,7 +15,7 @@ class Partition_track:
 		["pan",0], # 3 panning
 		["mute",False], # 4 mute
 		["solo",False], # 5 solo
-		["mesure",8], # 6 nombre de mesures
+		["mesure",self.machine.partition.mesure], # 6 nombre de mesures
 
 		]
 
@@ -23,6 +23,7 @@ class Partition_track:
 		self.sample_length=0
 		self._notes=[]
 		self.save()
+		sendMessage("path","track_"+str(Id),"/home/pi/btm/saves/"+self.machine.partition.setting[0][1]+"/notes_"+str(self.setting[0][1])+".txt")
 
 	def _get_id(self):
 		return self.setting[0][1]
@@ -88,7 +89,17 @@ class Partition_track:
 		return (0)
 		
 	def add_note(self,pas):
-		self._notes.append(Partition_note(self,pas))	
+		Id=len(self._notes)
+		self._notes.append(Partition_note(self,pas,Id))	
+		self.save()
+		
+	def remove_note(self,removeId):
+		del self._notes[removeId]
+		i=0
+		while i<len(self._notes):
+			self._notes[i].Id=i
+			i+=1
+		self.save()
 		
 	def edit_setting(self,setting,cmd,inc,Max,Min):
 		value=self.setting[setting][1]
@@ -103,13 +114,21 @@ class Partition_track:
 		self.save()
 
 	def save(self):
-		save_list=[]
+		path="/home/pi/btm/saves/"+self.machine.partition.setting[0][1]+"/track_"+str(self.setting[0][1])+".txt"
+		myfile = open(path,"w")
 		for element in self.setting:
-			save_list.append(element)
+			myfile.write("track_"+str(self.setting[0][1])+" "+element[0]+" "+to_string(True,element[1])+";\n")
+		myfile.close()			
+		sendMessage("load","notes_"+str(self.setting[0][1]))
+		self.save_notes()
+
+	def save_notes(self):
+		path="/home/pi/btm/saves/"+self.machine.partition.setting[0][1]+"/notes_"+str(self.setting[0][1])+".txt"
+		myfile = open("/home/pi/btm/saves/"+self.machine.partition.setting[0][1]+"/notes_"+str(self.setting[0][1])+".txt","w")
 		for element in self.notes:
-			save_list.append(element.save())
-		#print("savelist",save_list)
-		save_txt("/home/pi/btm/saves/"+self.machine.partition.setting[0][1]+"/track_"+str(self.setting[0][1])+".txt",save_list)
+			myfile.write("notes_"+str(self.setting[0][1])+" "+element.save()+";\n")
+		myfile.close()
+		sendMessage("load","track_"+str(self.setting[0][1]))
 
 
 	sample=property(_get_sample,_set_sample)

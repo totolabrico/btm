@@ -121,10 +121,16 @@ class Draw_menu:
     def draw_sequence(self):
 
         draw.text((X[1],Y[0]),"pas:"+str(self.menu.pas),font=font, fill=color[1])
+
         i=0
         x=X[1]
         y=Y[2]
         color_pas=color[0]
+        
+        x_pointer=x+(rect_size+2)*self.menu.pas
+        y_pointer=y-4
+        draw.rectangle((x_pointer,y_pointer,x_pointer+rect_size,y_pointer+2), outline=color[1], fill=color[1])
+
     
         while i<self.menu.nb_pas:
             color_pas=color[0]

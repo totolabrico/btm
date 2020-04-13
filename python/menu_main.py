@@ -6,7 +6,7 @@ class Menu_main(Menu):
 		copy_list=[]
 		setting=self.navigator.partition.setting
 		i=1
-		while i<len(setting):
+		while i<len(setting)-1:
 			print(setting[i])
 			if i==1:
 				to=["machine","stoped"]

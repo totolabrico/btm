@@ -57,19 +57,20 @@ def to_string(detail_list,valeur):
 
 	return to
 
-
+"""
 def check_folder(path):
 	if os.path.exists(path)==False :
 		os.makedirs(path, exist_ok=True)
 
-def save_txt(path,setting):
+def save_txt(path,setting,terminaison=""):
 	i=0
 	myfile = open(path,"w")
 	while i<len(setting):
-		myfile.write(setting[i][0]+" "+to_string(True,setting[i][1])+";\n")
+		myfile.write(Id+" "+setting[i][0]+" "+to_string(True,setting[i][1])+";\n")
 		i+=1
 	myfile.close()
 	sendMessage("load",path)
+"""
 """
 def play_to_string(playing):
 	if playing:

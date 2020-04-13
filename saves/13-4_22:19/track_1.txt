@@ -1,0 +1,7 @@
+track_1 id 1;
+track_1 sample /home/pi/audiosamples/clap.wav;
+track_1 vol 0.5;
+track_1 pan 0;
+track_1 mute 0;
+track_1 solo 0;
+track_1 mesure 2;

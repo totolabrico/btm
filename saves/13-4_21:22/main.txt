@@ -1,0 +1,7 @@
+main name 13-4_21:22;
+main playing 1;
+main bpm 120;
+main master 0.5;
+main temps 4;
+main mesure 2;
+main nb_tracks 4;

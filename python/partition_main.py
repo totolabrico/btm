@@ -16,7 +16,7 @@ class Partition_main:
 		["bpm",120],#2
 		["master",0.5],#3
 		["temps",4],#4
-		["mesure",8],#5
+		["mesure",4],#5
 		["nb_tracks",0],#5
 		]# ajouter le nombre de pas par mesure !!!!
 
@@ -76,7 +76,7 @@ class Partition_main:
 	def add_track(self):
 		id_track=len(self.tracks)+1
 		self.tracks.append(Partition_track(self.machine,id_track))
-		self.setting[5][1]+=1
+		self.setting[6][1]+=1
 		self.save()
 
 	def edit_setting(self,setting,cmd,inc,Max,Min):
@@ -90,8 +90,19 @@ class Partition_main:
 
 
 	def save(self):
-		check_folder("/home/pi/btm/saves/"+self.setting[0][1])
-		save_txt("/home/pi/btm/saves/"+self.setting[0][1]+"/main.txt",self.setting)
+	
+		path="/home/pi/btm/saves/"+self.setting[0][1]
+		if os.path.exists(path)==False :
+			os.makedirs(path, exist_ok=True)	
+		sendMessage("path",path)
+		path+="/main.txt"
+		i=0
+		myfile = open(path,"w")
+		while i<len(self.setting):
+			myfile.write("main "+self.setting[i][0]+" "+to_string(True,self.setting[i][1])+";\n")
+			i+=1
+		myfile.close()
+		sendMessage("load","main")
 
 	name = property(_get_name, _set_name)
 	bpm = property(_get_bpm, _set_bpm)

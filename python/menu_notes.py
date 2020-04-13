@@ -13,7 +13,6 @@ class Menu_notes(Menu):
 		self.set_nb_pas()
 		self._setting=[]
 		self.id_setting=1
-		self.note_exist=False
 		self.note=None
 
 		Menu.__init__(self,Navigator,Name)
@@ -23,41 +22,44 @@ class Menu_notes(Menu):
 		return self._id_pas
 	def _set_pas(self,pas):
 		self._id_pas=pas
-		self._set_setting(pas)
+		self._set_setting()
 
 	def _get_setting(self):
 		return self._setting
-	def _set_setting(self,pas):
+	def _set_setting(self):
 		self._setting=[]
-		for element in self.track.notes:
-			if element.pas == self.pas:
-				self._setting=element.setting	
-				self.note=element
-			else:
-				self.note=None
-		
+		if len(self.track.notes)>0:
+			for element in self.track.notes:
+				if element.pas == self.pas:
+					self._setting=element.setting	
+					self.note=element
+					break
+				else:
+					self.note=None
+		else:
+			self.note=None			
+
+
 	def set_nb_pas(self):
-		track=self.navigator.partition.tracks[self.navigator.track]
-		self.nb_pas=self.navigator.partition.temps*track.mesure
+		self.nb_pas=self.navigator.partition.temps*self.track.mesure
 		
 	def analyse(self,button):
 		
-		self._set_setting(self.pas)
-
+		self._set_setting()
 				
 		if button=="back":
 			self.finish_draw=True
 			self.navigator.menu="track"
 			
 		elif button=="right":
-			self._id_pas=loopValue("+",self._id_pas,1,self.nb_pas-1,0)
+			self.pas=loopValue("+",self._id_pas,1,self.nb_pas-1,0)
 		elif button=="left":
-			self._id_pas=loopValue("-",self._id_pas,1,self.nb_pas-1,0)			
-		
+			self.pas=loopValue("-",self._id_pas,1,self.nb_pas-1,0)			
 
-		elif button=="+" or button=="-":
+		#self._set_setting()	
+ 
+		if button=="+" or button=="-":
 			if self.note!=None:					
-				
 				setting=self.setting[self.id_setting][0]
 				if setting=="vol":	
 					self.note.vol=button
@@ -70,10 +72,12 @@ class Menu_notes(Menu):
 				elif setting=="cut_end":	
 					self.note.cut_end=button
 			else:
+				self.id_setting=1
 				self.track.add_note(self.pas)
 				print("add note ",self.pas)
-	
-	
+		
+
+			
 		if self.note!=None:	
 			if button=="set-":
 				self.id_setting=loopValue("+",self.id_setting,1,len(self.setting)-1,1)
