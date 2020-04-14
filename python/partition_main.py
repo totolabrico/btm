@@ -91,11 +91,9 @@ class Partition_main:
 
 	def save(self):
 	
-		path="/home/pi/btm/saves/"+self.setting[0][1]
-		if os.path.exists(path)==False :
-			os.makedirs(path, exist_ok=True)	
-		sendMessage("path",path)
-		path+="/main.txt"
+		path="/home/pi/btm/saves/puredata/main.txt"
+		#if os.path.exists(path)==False :
+			#os.makedirs(path, exist_ok=True)			
 		i=0
 		myfile = open(path,"w")
 		while i<len(self.setting):

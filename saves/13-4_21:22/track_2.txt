@@ -1,7 +1,0 @@
-track_2 id 2;
-track_2 sample /home/pi/Bureau/BTMachines_git/Samples/kit_RobTif/8_robTif.wav;
-track_2 vol 0.3;
-track_2 pan 0.7;
-track_2 mute 0;
-track_2 solo 0;
-track_2 mesure 2;

@@ -114,7 +114,7 @@ class Partition_track:
 		self.save()
 
 	def save(self):
-		path="/home/pi/btm/saves/"+self.machine.partition.setting[0][1]+"/track_"+str(self.setting[0][1])+".txt"
+		path="/home/pi/btm/saves/puredata/track_"+str(self.setting[0][1])+".txt"
 		myfile = open(path,"w")
 		for element in self.setting:
 			myfile.write("track_"+str(self.setting[0][1])+" "+element[0]+" "+to_string(True,element[1])+";\n")
@@ -124,7 +124,7 @@ class Partition_track:
 
 	def save_notes(self):
 		path="/home/pi/btm/saves/"+self.machine.partition.setting[0][1]+"/notes_"+str(self.setting[0][1])+".txt"
-		myfile = open("/home/pi/btm/saves/"+self.machine.partition.setting[0][1]+"/notes_"+str(self.setting[0][1])+".txt","w")
+		myfile = open("/home/pi/btm/saves/puredata/notes_"+str(self.setting[0][1])+".txt","w")
 		for element in self.notes:
 			myfile.write("notes_"+str(self.setting[0][1])+" "+element.save()+";\n")
 		myfile.close()

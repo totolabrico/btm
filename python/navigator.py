@@ -6,6 +6,9 @@ from menu_tracks import*
 from menu_track import*
 from menu_notes import*
 from menu_browser import*
+import pickle
+
+
 class Navigator:
 
 	def __init__(self,Machine):
@@ -39,9 +42,16 @@ class Navigator:
 			self._menu=Menu_notes(self,cmd)
 		if cmd=="browser":
 			self._menu=Menu_browser(self,cmd)
+			
+	def save_set(self):
+		path="/home/pi/btm/saves/python/"+self.partition.name
+		with open(name,'wb') as fichier:
+			mon_pickler=pickle.Pickler(fichier)
+			mon_pickler.dump(self.partition)
 
 	def analyse_cmd(self,button):
 		self._menu.analyse(button)
+		self.save_set()
 
 	menu=property(_get_menu,_set_menu)
 	track=property(_get_track,_set_track)
