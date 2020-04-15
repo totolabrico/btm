@@ -28,7 +28,6 @@ color=[0,255]
 line_height=[10,13]
 X=[0,10,55]
 Y=[7,20,35]
-rect_size=5
 
 
 class Draw_menu:
@@ -122,26 +121,29 @@ class Draw_menu:
 
         draw.text((X[1],Y[0]),"pas:"+str(self.menu.pas),font=font, fill=color[1])
 
-        i=0
+        color_pas=color[0]
+        temps=self.menu.navigator.partition.temps
+        rect_width=round((width-50)/self.menu.pas_per_line)
+        print("pas_per_line",self.menu.pas_per_line)
+        rect_height=5
         x=X[1]
         y=Y[2]
-        color_pas=color[0]
-        
-        x_pointer=x+(rect_size+2)*self.menu.pas
-        y_pointer=y-4
-        draw.rectangle((x_pointer,y_pointer,x_pointer+rect_size,y_pointer+2), outline=color[1], fill=color[1])
+        i=0
 
-    
         while i<self.menu.nb_pas:
             color_pas=color[0]
             for element in self.menu.track.notes:
                 if element.setting[0][1]==i:
                     color_pas=color[1]
+            draw.rectangle((x,y,x+rect_width,y+rect_height), outline=color[1], fill=color_pas)
+            if i==self.menu.pas:
+                draw.rectangle((x,y-1,x+rect_width,y-2), outline=color[1], fill=color[1])
+            x+=rect_width+2
+            if (i+1)%temps==0 and i!=0:
+                x+=2
             
-            draw.rectangle((x,y,x+rect_size,y+rect_size), outline=color[1], fill=color_pas)
-            x+=rect_size+2
-            if (i+1) %16==0:
-                y+=rect_size+4
+            if (i+1) %(self.menu.pas_per_line)==0:
+                y+=rect_height+5
                 x=X[1]
             i+=1
         

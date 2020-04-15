@@ -14,6 +14,8 @@ class Menu_notes(Menu):
 		self._setting=[]
 		self.id_setting=1
 		self.note=None
+		self._pas_per_line=0
+		self._set_pas_per_line()
 
 		Menu.__init__(self,Navigator,Name)
 		
@@ -52,10 +54,13 @@ class Menu_notes(Menu):
 			self.navigator.menu="track"
 			
 		elif button=="right":
-			self.pas=loopValue("+",self._id_pas,1,self.nb_pas-1,0)
+			self.pas=loopPas("+",self._id_pas,1,self.nb_pas-1,0)
 		elif button=="left":
-			self.pas=loopValue("-",self._id_pas,1,self.nb_pas-1,0)			
-
+			self.pas=loopPas("-",self._id_pas,1,self.nb_pas-1,0)			
+		elif button=="up":
+			self.pas=loopPas("-",self._id_pas,16,self.nb_pas-1,0)
+		elif button=="down":
+			self.pas=loopPas("+",self._id_pas,16,self.nb_pas-1,0)	
 		#self._set_setting()	
  
 		if button=="+" or button=="-":
@@ -65,12 +70,14 @@ class Menu_notes(Menu):
 					self.note.vol=button
 				elif setting=="pan":	
 					self.note.pan=button
-				elif setting=="speed":	
-					self.note.speed=button
-				elif setting=="cut_begin":	
-					self.note.cut_begin=button
-				elif setting=="cut_end":	
-					self.note.cut_end=button
+				elif setting=="pitch":	
+					self.note.pitch=button
+				elif setting=="tone":	
+					self.note.tone=button
+				elif setting=="begin":	
+					self.note.begin=button
+				elif setting=="length":	
+					self.note.length=button
 			else:
 				self.id_setting=1
 				self.track.add_note(self.pas)
@@ -95,9 +102,19 @@ class Menu_notes(Menu):
 			self.draw_menu.draw_sequence()
 			self.draw_menu.draw_end()
 
-		return
+		
+	def _get_pas_per_line(self):
+		return self._pas_per_line
+		
+	def _set_pas_per_line(self):
+		temps=self.navigator.partition.temps
+		self._pas_per_line=4*temps
+		if temps>=5:
+			self._pas_per_line=2*temps
+
 
 		#print("pas:",self.pas," setting:",self.setting)
 	
 	pas=property(_get_pas,_set_pas)
+	pas_per_line=property(_get_pas_per_line,_set_pas_per_line)
 	setting=property(_get_setting,_set_setting)

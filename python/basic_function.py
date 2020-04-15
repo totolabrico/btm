@@ -14,8 +14,7 @@ def limitValue(cmd,value,inc,Max,Min):
 		to=Min
 	return round(to,2)
 
-def loopValue(cmd,value,inc,Max,Min):
-		
+def loopValue(cmd,value,inc,Max,Min):	
 	to=value
 	if cmd=="-":
 		to-=inc
@@ -25,6 +24,23 @@ def loopValue(cmd,value,inc,Max,Min):
 		to=Min
 	if to<Min:
 		to=Max	
+	#print("loopvalue",cmd,value,inc,Max,Min,to)
+	return to
+
+
+def loopPas(cmd,value,inc,Max,Min):	# trouver cett algorithme! definir une variable self.begin dans track 
+	to=value
+	if cmd=="-":
+		to-=inc
+	elif cmd=="+":
+		to+=inc
+		
+	if to>=Max:
+		dif=Max-to+1
+		to=Min+dif
+	elif to<Min:
+		dif=Min+to+1
+		to=Max+dif
 	#print("loopvalue",cmd,value,inc,Max,Min,to)
 	return to
 

@@ -7,7 +7,6 @@ class Menu_main(Menu):
 		setting=self.navigator.partition.setting
 		i=1
 		while i<len(setting)-1:
-			print(setting[i])
 			if i==1:
 				to=["machine","stoped"]
 				if setting[i][1]==True:
@@ -17,7 +16,6 @@ class Menu_main(Menu):
 				copy_list.append(setting[i])
 			i+=1
 		self._list=copy_list
-		print("set_list",self._list)
 
 	def analyse(self,cmd):
 		length=len(self._list)

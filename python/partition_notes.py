@@ -9,9 +9,10 @@ class Partition_note:
 		["pas",Pas], # 0
 		["vol",0.5], # 1
 		["pan",0], # 2
-		["speed",0], # 3
-		["cut_begin",0],# 4
-		["cut_end",0], # 5
+		["pitch",0], #3
+		["tone",0], #4
+		["begin",0],# 5
+		["length",0], # 6
 		]
 		
 		self._Id=Id
@@ -51,24 +52,31 @@ class Partition_note:
 		inc,Max,Min=0.1,1,-1
 		self.edit_setting(setting,cmd,inc,Max,Min)
 		
-	def _get_speed(self):
+	def _get_pitch(self):
 		return self.setting[3][1]
-	def _set_speed(self,cmd):
+	def _set_pitch(self,cmd):
 		setting=3
+		inc,Max,Min=1,100,-100
+		self.edit_setting(setting,cmd,inc,Max,Min)
+
+	def _get_tone(self):
+		return self.setting[4][1]
+	def _set_tone(self,cmd):
+		setting=4
 		inc,Max,Min=1,1000,-1000
 		self.edit_setting(setting,cmd,inc,Max,Min)
-		
-	def _get_cut_begin(self):
-		return self.setting[4][1]
-	def _set_cut_begin(self,cmd):
-		setting=4
+	
+	def _get_begin(self):
+		return self.setting[5][1]
+	def _set_begin(self,cmd):
+		setting=5
 		inc,Max,Min=1,100,0
 		self.edit_setting(setting,cmd,inc,Max,Min)
 		
-	def _get_cut_end(self):
-		return self.setting[5][1]
-	def _set_cut_end(self,cmd):
-		setting=5
+	def _get_length(self):
+		return self.setting[6][1]
+	def _set_length(self,cmd):
+		setting=6
 		inc,Max,Min=1,100,0
 		self.edit_setting(setting,cmd,inc,Max,Min)
 
@@ -89,6 +97,7 @@ class Partition_note:
 	pas=property(_get_pas,_set_pas)
 	vol=property(_get_vol,_set_vol)
 	pan=property(_get_pan,_set_pan)
-	speed=property(_get_speed,_set_speed)
-	cut_begin=property(_get_cut_begin,_set_cut_begin)
-	cut_end=property(_get_cut_end,_set_cut_end)
+	pitch=property(_get_pitch,_set_pitch)
+	tone=property(_get_tone,_set_tone)
+	begin=property(_get_begin,_set_begin)
+	length=property(_get_length,_set_length)

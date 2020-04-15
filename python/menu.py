@@ -7,7 +7,6 @@ class Menu:
 	
 	display = "wait for it"
 
-
 	def __init__(self,Navigator,Name):
 		self.navigator=Navigator
 		self.name=Name
@@ -33,14 +32,12 @@ class Menu:
 		self._pointer=cmd
 
 	def analyse(self,button):
-		print("pointer:",self.pointer,button)
-
+		#print("pointer:",self.pointer,button)
 		if button=="up":
 			self.pointer=loopValue("-",self.pointer,1,len(self.List)-1,0)
 		elif button=="down":
-			self.pointer=loopValue("+",self.pointer,1,len(self.List)-1,0)
-		
-		print("analyse",self.pointer)
+			self.pointer=loopValue("+",self.pointer,1,len(self.List)-1,0)	
+		#print("analyse",self.pointer)
 		
 	def set_draw(self):
 		self.draw_menu.set_pointer()

@@ -1,6 +1,8 @@
 from partition_notes import*
 from basic_function import*
 from osc import*
+import pickle
+
 
 class Partition_track:
 
@@ -16,14 +18,12 @@ class Partition_track:
 		["mute",False], # 4 mute
 		["solo",False], # 5 solo
 		["mesure",self.machine.partition.mesure], # 6 nombre de mesures
-
+		["begin",0] # 6 nombre de mesures iciciciciicicicicicicicicicicicicicicicici
 		]
-
 		self.sample_name="empty"
 		self.sample_length=0
 		self._notes=[]
 		self.save()
-		sendMessage("path","track_"+str(Id),"/home/pi/btm/saves/"+self.machine.partition.setting[0][1]+"/notes_"+str(self.setting[0][1])+".txt")
 
 	def _get_id(self):
 		return self.setting[0][1]
@@ -114,22 +114,21 @@ class Partition_track:
 		self.save()
 
 	def save(self):
-		path="/home/pi/btm/saves/puredata/track_"+str(self.setting[0][1])+".txt"
+		path="/home/pi/btm/saves/"+self.machine.partition.name+"/track_"+str(self.setting[0][1])+".txt"
 		myfile = open(path,"w")
 		for element in self.setting:
 			myfile.write("track_"+str(self.setting[0][1])+" "+element[0]+" "+to_string(True,element[1])+";\n")
 		myfile.close()			
-		sendMessage("load","notes_"+str(self.setting[0][1]))
+		sendMessage("load","notes_"+str(self.setting[0][1]))		
 		self.save_notes()
 
 	def save_notes(self):
-		path="/home/pi/btm/saves/"+self.machine.partition.setting[0][1]+"/notes_"+str(self.setting[0][1])+".txt"
-		myfile = open("/home/pi/btm/saves/puredata/notes_"+str(self.setting[0][1])+".txt","w")
+		path="/home/pi/btm/saves/"+self.machine.partition.name+"/notes_"+str(self.setting[0][1])+".txt"
+		myfile = open(path,"w")
 		for element in self.notes:
 			myfile.write("notes_"+str(self.setting[0][1])+" "+element.save()+";\n")
 		myfile.close()
 		sendMessage("load","track_"+str(self.setting[0][1]))
-
 
 	sample=property(_get_sample,_set_sample)
 	sample_length=property(_get_sample_length,_set_sample_length)
