@@ -1,11 +1,11 @@
-#N canvas 2 73 543 663 10;
+#N canvas 581 207 543 663 10;
 #X obj 58 278 textfile;
 #X msg 126 260 bang;
 #X msg 126 225 rewind;
 #X msg 58 200 read /home/pi/btm/saves/default/notes_1.txt;
-#X obj 199 167 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+#X obj 287 174 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
-#X obj 199 145 r pas;
+#X obj 287 111 r pas, f 6;
 #X obj 182 327 r pas;
 #X obj 58 340 route notes_\$1;
 #X obj 58 383 route;
@@ -31,6 +31,11 @@
 #X obj 107 481 s pitch_note_\$1;
 #X obj 132 503 s tone_note_\$1;
 #X obj 181 547 s length_note_\$1;
+#X obj 340 39 r main_nb_tracks;
+#X obj 340 68 moses \$1;
+#X msg 340 101 0;
+#X msg 387 101 1, f 2;
+#X obj 287 150 spigot 0;
 #X connect 0 0 1 0;
 #X connect 0 0 7 0;
 #X connect 1 0 0 0;
@@ -39,7 +44,7 @@
 #X connect 3 0 0 0;
 #X connect 3 0 2 0;
 #X connect 4 0 3 0;
-#X connect 5 0 4 0;
+#X connect 5 0 33 0;
 #X connect 6 0 19 0;
 #X connect 7 0 8 0;
 #X connect 8 0 25 0;
@@ -63,3 +68,9 @@
 #X connect 25 3 27 0;
 #X connect 25 4 13 0;
 #X connect 25 5 28 0;
+#X connect 29 0 30 0;
+#X connect 30 0 31 0;
+#X connect 30 1 32 0;
+#X connect 31 0 33 1;
+#X connect 32 0 33 1;
+#X connect 33 0 4 0;

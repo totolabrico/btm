@@ -4,4 +4,5 @@ track_2 vol 0.5;
 track_2 pan 0;
 track_2 mute 0;
 track_2 solo 0;
-track_2 mesure 2;
+track_2 mesure 1;
+track_2 begin 0;

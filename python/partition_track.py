@@ -121,7 +121,7 @@ class Partition_track:
 		myfile.close()			
 		sendMessage("load","notes_"+str(self.setting[0][1]))		
 		self.save_notes()
-
+		
 	def save_notes(self):
 		path="/home/pi/btm/saves/"+self.machine.partition.name+"/notes_"+str(self.setting[0][1])+".txt"
 		myfile = open(path,"w")
@@ -130,6 +130,37 @@ class Partition_track:
 		myfile.close()
 		sendMessage("load","track_"+str(self.setting[0][1]))
 
+	def load_notes(self,Path):
+		self._notes=[]
+		path=Path+"/notes_"+str(self.setting[0][1])+".txt"
+		myfile = open(path,"r")
+		i=0
+		for element in myfile:
+			self._notes.append(Partition_note(self,0,i))
+			self._notes[i].load(element)
+			i+=1
+		
+	def erase(self):
+		path="/home/pi/btm/saves/"+self.machine.partition.name+"/track_"+str(self.setting[0][1])+".txt"
+		os.remove(path)
+		path="/home/pi/btm/saves/"+self.machine.partition.name+"/notes_"+str(self.setting[0][1])+".txt"
+		os.remove(path)
+
+		
+		"""
+		path=Path+"/track_"+str(self.setting[0][1])+".txt"
+		myfile = open(path,"r")
+		for element in myfile:
+			line=element.split(" ")
+			setting=line[1]
+			value=line[2][:-2]
+			for element in self.setting:
+				if element[0]==setting:
+					element[1]=from_string(value,type(element[1]))
+		self.load_notes(Path)
+		"""
+			
+		
 	sample=property(_get_sample,_set_sample)
 	sample_length=property(_get_sample_length,_set_sample_length)
 	Id=property(_get_id,_set_id)

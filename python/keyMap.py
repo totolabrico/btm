@@ -33,7 +33,7 @@ editor_keys={
 	11:"right",
 	10:"edit",
 	5:"back",
-	13:"info",
+	13:"del",
 	7:"+",
 	15:"-",
 	8:"set+",

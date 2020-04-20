@@ -93,6 +93,23 @@ class Partition_note:
 		to=to[:len(to)-1]
 		return to
 
+	def load(self,Line):
+		load_list=[]
+		line=Line.split(" ")
+		i=1
+		while i<len(line):
+			if i<len(line)-1:
+				load_list.append(line[i])
+			else:
+				load_list.append(line[i][:-2])
+			i+=1
+		print("load_list",load_list)
+		i=0
+		for element in self.setting:
+			element[1]=load_list[i]
+			i+=1
+		
+
 	Id=property(_get_Id,_set_Id)
 	pas=property(_get_pas,_set_pas)
 	vol=property(_get_vol,_set_vol)

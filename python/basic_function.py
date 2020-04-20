@@ -35,7 +35,7 @@ def loopPas(cmd,value,inc,Max,Min):	# trouver cett algorithme! definir une varia
 	elif cmd=="+":
 		to+=inc
 		
-	if to>=Max:
+	if to>Max:
 		dif=Max-to+1
 		to=Min+dif
 	elif to<Min:
@@ -72,6 +72,18 @@ def to_string(detail_list,valeur):
 			to=str(len(valeur))
 
 	return to
+	
+def from_string(Mot,Type):
+	
+	if Type==str:
+		return Mot
+	elif Type==int:
+		return int(Mot)
+	elif Type==float:
+		return float(Mot)
+	elif Type==bool:
+		return bool(Mot)
+	
 
 """
 def check_folder(path):

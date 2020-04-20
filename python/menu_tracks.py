@@ -4,12 +4,13 @@ class Menu_tracks(Menu):
 
 	def _set_list(self):
 		self._list=[]
-		i=0
-		while i<len(self.navigator.partition.tracks):
-			self._list.append([str(self.navigator.partition.tracks[i].Id),self.navigator.partition.tracks[i].sample])
-			i+=1
+		if len(self.partition.tracks)!=0:
+			i=0
+			while i<len(self.partition.tracks):
+				self._list.append([str(self.partition.tracks[i].Id),self.partition.tracks[i].sample])
+				i+=1
 		self._list.append(["add","+"])
-		self._list.append(["remove","-"])
+		#self._list.append(["remove","-"])
 
 	def analyse(self,button):
 		
@@ -19,12 +20,14 @@ class Menu_tracks(Menu):
 			self.finish_draw=True
 			self.navigator.menu="main"
 		elif button=="edit":
-			if self.pointer<length-2:
+			if self.pointer<length-1:
 				self.navigator.track=self.pointer
 				self.finish_draw=True
 				self.navigator.menu="track"
-			elif self.pointer==length-2:
-				self.navigator.partition.add_track()
-		
+			elif self.pointer==length-1:
+				self.partition.add_track()
+		elif button=="del":
+			if self.pointer<length-1:
+				self.partition.del_track(self.pointer)
+				self.pointer=0
 		self._set_list()
-		self.set_draw()

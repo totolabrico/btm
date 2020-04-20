@@ -5,9 +5,11 @@ from partition_notes import*
 class Menu_notes(Menu):
 
 	
-	def __init__(self,Navigator,Name):
-		self.navigator=Navigator
-		self.track=self.navigator.partition.tracks[self.navigator.track]
+	def __init__(self,Partition,Navigator,Name):
+		
+		Menu.__init__(self,Partition,Navigator,Name)
+		
+		self.track=self.partition.tracks[self.navigator.track]
 		self._id_pas=0
 		self.nb_pas=0
 		self.set_nb_pas()
@@ -16,9 +18,6 @@ class Menu_notes(Menu):
 		self.note=None
 		self._pas_per_line=0
 		self._set_pas_per_line()
-
-		Menu.__init__(self,Navigator,Name)
-		
 
 	def _get_pas(self):
 		return self._id_pas
@@ -43,7 +42,17 @@ class Menu_notes(Menu):
 
 
 	def set_nb_pas(self):
-		self.nb_pas=self.navigator.partition.temps*self.track.mesure
+		self.nb_pas=self.partition.temps*self.track.mesure
+		
+	def _get_pas_per_line(self):
+		return self._pas_per_line
+		
+	def _set_pas_per_line(self):
+		temps=self.partition.temps
+		self._pas_per_line=4*temps
+		if temps>=5:
+			self._pas_per_line=2*temps
+
 		
 	def analyse(self,button):
 		
@@ -56,11 +65,15 @@ class Menu_notes(Menu):
 		elif button=="right":
 			self.pas=loopPas("+",self._id_pas,1,self.nb_pas-1,0)
 		elif button=="left":
-			self.pas=loopPas("-",self._id_pas,1,self.nb_pas-1,0)			
+			self.pas=loopPas("-",self._id_pas,1,self.nb_pas-1,0)	
+		elif button=="right++":
+			self.pas=loopPas("+",self._id_pas,self.partition.temps,self.nb_pas-1,0)
+		elif button=="left++":
+			self.pas=loopPas("-",self._id_pas,self.partition.temps,self.nb_pas-1,0)			
 		elif button=="up":
-			self.pas=loopPas("-",self._id_pas,16,self.nb_pas-1,0)
+			self.pas=loopPas("-",self._id_pas,-self.pas_per_line,self.nb_pas-1,0)
 		elif button=="down":
-			self.pas=loopPas("+",self._id_pas,16,self.nb_pas-1,0)	
+			self.pas=loopPas("+",self._id_pas,self.pas_per_line,self.nb_pas-1,0)	
 		#self._set_setting()	
  
 		if button=="+" or button=="-":
@@ -82,8 +95,6 @@ class Menu_notes(Menu):
 				self.id_setting=1
 				self.track.add_note(self.pas)
 				print("add note ",self.pas)
-		
-
 			
 		if self.note!=None:	
 			if button=="set-":
@@ -91,28 +102,6 @@ class Menu_notes(Menu):
 			elif button=="set+":
 				self.id_setting=loopValue("-",self.id_setting,1,len(self.setting)-1,1)
 		
-		self.set_draw()
-
-	def draw_led(self):
-		time.sleep(0.2)
-		while self.finish_draw==False:	
-			time.sleep(0.1)				
-			self.draw_menu.draw_begin()
-			self.draw_menu.draw_setting()
-			self.draw_menu.draw_sequence()
-			self.draw_menu.draw_end()
-
-		
-	def _get_pas_per_line(self):
-		return self._pas_per_line
-		
-	def _set_pas_per_line(self):
-		temps=self.navigator.partition.temps
-		self._pas_per_line=4*temps
-		if temps>=5:
-			self._pas_per_line=2*temps
-
-
 		#print("pas:",self.pas," setting:",self.setting)
 	
 	pas=property(_get_pas,_set_pas)

@@ -4,7 +4,7 @@ class Menu_main(Menu):
 
 	def _set_list(self):
 		copy_list=[]
-		setting=self.navigator.partition.setting
+		setting=self.partition.setting
 		i=1
 		while i<len(setting)-1:
 			if i==1:
@@ -15,25 +15,31 @@ class Menu_main(Menu):
 			else:
 				copy_list.append(setting[i])
 			i+=1
+		copy_list.append("save")
+		copy_list.append("load")
 		self._list=copy_list
 
 	def analyse(self,cmd):
 		length=len(self._list)
-		partition=self.navigator.partition
 		Menu.analyse(self,cmd)
 		if cmd=="edit":
 			self.finish_draw=True
-			self.navigator.menu="tracks"
+			if self.pointer==5:
+				self.navigator.menu="save"
+			elif self.pointer==6:
+				self.navigator.menu="load"
+			else:
+				self.navigator.menu="tracks"
 		elif cmd=="+" or cmd=="-":
 			if self.pointer==0:
-				partition.playing=cmd
+				self.partition.playing=cmd
 			if self.pointer==1:
-				partition.bpm=cmd
+				self.partition.bpm=cmd
 			if self.pointer==2:
-				partition.master=cmd
+				self.partition.master=cmd
 			if self.pointer==3:
-				partition.temps=cmd
+				self.partition.temps=cmd
 			if self.pointer==4:
-				partition.mesure=cmd
+				self.partition.mesure=cmd
+
 		self._set_list()
-		self.set_draw()

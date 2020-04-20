@@ -1,7 +1,8 @@
 from basic_function import*
 from partition_track import *
 import threading
-import pickle
+
+
 
 class Partition_main:
 
@@ -25,7 +26,8 @@ class Partition_main:
 	def _get_name(self):
 		return self.setting[0][1]
 	def _set_name(self,cmd):
-		#self.setting[0][1]=cmd
+		self.setting[0][1]=cmd
+		self.check_save_folder()
 		self.save()
 
 	def _get_playing(self):
@@ -58,7 +60,12 @@ class Partition_main:
 		setting=4
 		inc,Max,Min=1,10,1
 		self.edit_setting(setting,cmd,inc,Max,Min)
-		
+
+	def _get_nb_tracks(self):
+		return self.setting[5][1]
+	def _set_nb_tracks(self,cmd):
+		self.setting[5][1]=cmd
+
 	def _get_mesure(self):
 		return self.setting[5][1]
 	def _set_mesure(self,cmd):
@@ -77,6 +84,21 @@ class Partition_main:
 		self.tracks.append(Partition_track(self.machine,id_track))
 		self.setting[6][1]+=1
 		self.save()
+	
+	def del_track(self,Id):
+		for element in self.tracks:
+			element.erase()
+				
+		del self.tracks[Id]
+		self.setting[6][1]-=1
+		i=0
+		while i<len(self.tracks):
+			self.tracks[i].Id=i+1
+			self.tracks[i].save()
+			i+=1
+		
+		self.save()
+
 
 	def edit_setting(self,setting,cmd,inc,Max,Min):
 		value=self.setting[setting][1]
@@ -88,7 +110,7 @@ class Partition_main:
 		self.save()
 
 	def save(self):		
-		path="/home/pi/btm/saves/"+self.setting[0][1]+"/main.txt"	
+		path="/home/pi/btm/saves/"+self.name+"/main.txt"	
 		myfile = open(path,"w")
 		i=0
 		while i<len(self.setting):
@@ -96,17 +118,12 @@ class Partition_main:
 			i+=1
 		myfile.close()
 		sendMessage("load","main")
-		
-	def load(self,path):
-		path="/home/pi/btm/saves/"+self.setting[0][1]+"/main.txt"	
-		myfile = open(path,"r")
+
+	def save_tracks(self):
 		i=0
-		while i<len(self.setting):
-			myfile.read()# icicicicici
+		while i<len(self.tracks):
+			self.tracks[i].save()
 			i+=1
-		myfile.close()
-		sendMessage("load","main")
-		
 	def check_save_folder(self):
 		path="/home/pi/btm/saves/"+self.setting[0][1]
 		if self.setting[0][1]=="default":	
@@ -127,3 +144,5 @@ class Partition_main:
 	playing = property(_get_playing, _set_playing)
 	temps = property(_get_temps, _set_temps)
 	mesure = property(_get_mesure, _set_mesure)
+	nb_tracks = property(_get_nb_tracks, _set_nb_tracks)
+

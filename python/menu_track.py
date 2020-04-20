@@ -5,7 +5,7 @@ class Menu_track(Menu):
 	def _get_list(self):
 		return self._list
 	def _set_list(self):
-		track=self.navigator.partition.tracks[self.navigator.track]
+		track=self.partition.tracks[self.navigator.track]
 		copy_list=[]
 		copy_list.append(["sample",track.sample])
 		for element in track.setting:
@@ -15,7 +15,7 @@ class Menu_track(Menu):
 
 	def analyse(self,cmd):
 		Menu.analyse(self,cmd)
-		track=self.navigator.partition.tracks[self.navigator.track]
+		track=self.partition.tracks[self.navigator.track]
 
 		if cmd=="back":
 			self.finish_draw=True
@@ -39,7 +39,6 @@ class Menu_track(Menu):
 				track.mesure=cmd
 		
 		self._set_list()
-		self.set_draw()
 
 		"""
 		elif self._menu=="track_info":
