@@ -1,0 +1,8 @@
+track_10 id 10;
+track_10 sample /home/pi/audiosamples/hihat.wav;
+track_10 vol 0.5;
+track_10 pan 0;
+track_10 mute 0;
+track_10 solo 0;
+track_10 mesure 1;
+track_10 begin 0;

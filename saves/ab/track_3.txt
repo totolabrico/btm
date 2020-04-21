@@ -1,0 +1,8 @@
+track_3 id 3;
+track_3 sample /home/pi/audiosamples/JJ/!!!_B0OM_B4AP/kit_18/snare.wav;
+track_3 vol 0.5;
+track_3 pan 0;
+track_3 mute 0;
+track_3 solo 0;
+track_3 mesure 8;
+track_3 begin 0;

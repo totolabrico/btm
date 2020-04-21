@@ -1,4 +1,4 @@
-#N canvas 481 150 430 441 10;
+#N canvas 480 150 607 706 10;
 #X obj 65 46 inlet;
 #X obj 65 299 line~;
 #X obj 64 382 outlet~;
@@ -26,6 +26,9 @@
 #X msg 287 293 \$1;
 #X obj 65 110 abs;
 #X obj 133 192 -;
+#X obj 374 213 r tick_length;
+#X floatatom 374 262 5 0 0 0 - - -, f 5;
+#X obj 374 239 / 4;
 #X connect 0 0 5 0;
 #X connect 1 0 2 0;
 #X connect 4 0 3 0;
@@ -54,3 +57,7 @@
 #X connect 22 0 21 0;
 #X connect 23 0 6 0;
 #X connect 24 0 10 0;
+#X connect 25 0 27 0;
+#X connect 26 0 18 1;
+#X connect 26 0 17 1;
+#X connect 27 0 26 0;

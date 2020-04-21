@@ -1,5 +1,5 @@
 main name default;
-main playing 1;
+main playing 0;
 main bpm 120;
 main master 0.5;
 main temps 4;

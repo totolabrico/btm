@@ -92,15 +92,18 @@ class Menu_notes(Menu):
 				elif setting=="length":	
 					self.note.length=button
 			else:
-				self.id_setting=1
-				self.track.add_note(self.pas)
-				print("add note ",self.pas)
+				if button=="+":
+					self.id_setting=1
+					self.track.add_note(self.pas)
+					print("add note ",self.pas)
 			
 		if self.note!=None:	
 			if button=="set-":
 				self.id_setting=loopValue("+",self.id_setting,1,len(self.setting)-1,1)
 			elif button=="set+":
 				self.id_setting=loopValue("-",self.id_setting,1,len(self.setting)-1,1)
+			elif button=="del":
+				self.track.remove_note(self.note.Id)
 		
 		#print("pas:",self.pas," setting:",self.setting)
 	

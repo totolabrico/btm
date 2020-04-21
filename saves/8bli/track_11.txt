@@ -1,0 +1,8 @@
+track_11 id 11;
+track_11 sample /home/pi/audiosamples/btm_legend/kit_RobTif/7_robTif.wav;
+track_11 vol 0.5;
+track_11 pan 0;
+track_11 mute 0;
+track_11 solo 0;
+track_11 mesure 8;
+track_11 begin 0;

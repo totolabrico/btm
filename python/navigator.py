@@ -12,6 +12,8 @@ from menu_save import*
 from menu_load import*
 
 from draw_oled import*
+from led_rgb import *
+
 
 import dill as pickle
 
@@ -30,6 +32,8 @@ class Navigator:
 		self.encoder=Encoder(self)
 		self._menu=Menu_main(self.machine.partition,self,"main")
 		self.draw_oled=Draw_oled(self.menu)
+		self.led_rgb=Led()
+		self.led_rgb.turn_on("main")
 		self.display = threading.Thread(target=self.draw_oled.run_draw(), args=())
 		self.display.start()
         
@@ -61,7 +65,8 @@ class Navigator:
 		if cmd=="load":
 			self._menu=Menu_load(self.machine.partition,self,cmd)
 			
-			
+		self.led_rgb.turn_on(cmd)
+		
 	def analyse_cmd(self,button):
 		self.menu.analyse(button)
 		self.menu.draw_menu.set_draw()

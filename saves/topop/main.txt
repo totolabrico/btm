@@ -1,0 +1,7 @@
+main name topop;
+main playing 1;
+main bpm 100;
+main master 1.0;
+main temps 4;
+main mesure 8;
+main nb_tracks 8;

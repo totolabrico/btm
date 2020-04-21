@@ -1,0 +1,8 @@
+track_8 id 8;
+track_8 sample empty;
+track_8 vol 0.5;
+track_8 pan 0;
+track_8 mute 0;
+track_8 solo 0;
+track_8 mesure 8;
+track_8 begin 0;
