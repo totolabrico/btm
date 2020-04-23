@@ -1,4 +1,4 @@
-main name default;
+main name 23-4_19:11;
 main playing 0;
 main bpm 120;
 main master 0.5;

@@ -17,8 +17,8 @@ class Partition_track:
 		["pan",0], # 3 panning
 		["mute",False], # 4 mute
 		["solo",False], # 5 solo
-		["mesure",self.machine.partition.mesure], # 6 nombre de mesures
-		["begin",0] # 6 nombre de mesures iciciciciicicicicicicicicicicicicicicicici
+		["mesure",self.machine.partition.mesure], # 5 nombre de mesures
+		["begin",0] # 6 mesure de départ
 		]
 		self.sample_name="empty"
 		self.sample_length=0

@@ -27,8 +27,8 @@ draw = ImageDraw.Draw(image)
 
 color=[0,255]
 line_height=[10,13]
-X=[0,10,55]
-Y=[7,20,35]
+X=[0,10,20,70]
+Y=[7,20,35,45]
 
 
 class Draw_oled:
@@ -43,14 +43,16 @@ class Draw_oled:
         
         while True:
             self.draw_begin()
+
+                
+            self.draw_title(self.menu.title)
+
             if self.menu.name=="notes":
                 self.draw_setting()
                 self.draw_sequence()
             elif self.menu.name=="save":
-                self.draw_title()
                 self.draw_save()
             else:
-                self.draw_title()
                 self.draw_list()
                 self.draw_pointer()
         
@@ -67,8 +69,10 @@ class Draw_oled:
         disp.image(image)
         disp.display()
         
-    def draw_title(self):
-        draw.text((X[2],Y[0]),self.menu.name,font=font, fill=255)
+    def draw_title(self,Title):
+        y=Y[0]
+        draw.rectangle((X[1],y,width,y+10), outline=0, fill=255)
+        draw.text((X[2],Y[0]),Title,font=font, fill=0)
 
     def draw_list(self):
         y=Y[1]
@@ -87,16 +91,16 @@ class Draw_oled:
 
 
     def draw_setting(self):
+        nb_pas=self.menu.track.mesure*self.menu.partition.temps
+        draw.text((X[1],Y[3]),"pas:"+str(self.menu.pas+1)+"/"+str(nb_pas),font=font, fill=color[1])
         to=""
         for element in self.menu.track.notes:
             if element.setting[0][1]==self.menu.pas:
                 to=element.setting[self.menu.id_setting]
-                draw.text((X[2],Y[0]),to[0]+":"+str(to[1]),font=font, fill=255)
+                draw.text((X[3],Y[3]),to[0]+":"+str(to[1]),font=font, fill=255)
 
 
     def draw_sequence(self):
-
-        draw.text((X[1],Y[0]),"pas:"+str(self.menu.pas),font=font, fill=color[1])
 
         color_pas=color[0]
         temps=self.menu.partition.temps
@@ -123,18 +127,7 @@ class Draw_oled:
                 y+=rect_height+5
                 x=X[1]
             i+=1
-        
-        """
-        y+=inc_line
-        to=0
-        for element in track.notes:
-            i=0
-            while i<len(element.setting):
-                if element.setting[i][0]==menu.setting:
-                    to=element.setting[i][1]
-                i+=1
-        draw.text((x1,y),menu.setting+":"+str(to),font=font, fill=self.color[1])
-        """
+
         
     def draw_save(self):
         name=self.menu.save_name+self.menu.letter()

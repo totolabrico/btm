@@ -8,8 +8,6 @@ class Menu_notes(Menu):
 	def __init__(self,Partition,Navigator,Name):
 		
 		Menu.__init__(self,Partition,Navigator,Name)
-		
-		self.track=self.partition.tracks[self.navigator.track]
 		self._id_pas=0
 		self.nb_pas=0
 		self.set_nb_pas()
@@ -65,18 +63,15 @@ class Menu_notes(Menu):
 		elif button=="right":
 			self.pas=loopPas("+",self._id_pas,1,self.nb_pas-1,0)
 		elif button=="left":
-			self.pas=loopPas("-",self._id_pas,1,self.nb_pas-1,0)	
-		elif button=="right++":
-			self.pas=loopPas("+",self._id_pas,self.partition.temps,self.nb_pas-1,0)
-		elif button=="left++":
-			self.pas=loopPas("-",self._id_pas,self.partition.temps,self.nb_pas-1,0)			
+			self.pas=loopPas("-",self._id_pas,1,self.nb_pas-1,0)
+
 		elif button=="up":
 			self.pas=loopPas("-",self._id_pas,-self.pas_per_line,self.nb_pas-1,0)
 		elif button=="down":
 			self.pas=loopPas("+",self._id_pas,self.pas_per_line,self.nb_pas-1,0)	
 		#self._set_setting()	
  
-		if button=="+" or button=="-":
+		elif button=="+" or button=="-":
 			if self.note!=None:					
 				setting=self.setting[self.id_setting][0]
 				if setting=="vol":	
@@ -96,6 +91,10 @@ class Menu_notes(Menu):
 					self.id_setting=1
 					self.track.add_note(self.pas)
 					print("add note ",self.pas)
+					
+		elif type(button)==list:
+			if button[0]=="track":
+				self.switch_track(button[1])
 			
 		if self.note!=None:	
 			if button=="set-":

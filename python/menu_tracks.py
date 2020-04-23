@@ -17,12 +17,10 @@ class Menu_tracks(Menu):
 		Menu.analyse(self,button)
 		length=len(self._list)
 		if button=="back":
-			self.finish_draw=True
 			self.navigator.menu="main"
 		elif button=="edit":
 			if self.pointer<length-1:
 				self.navigator.track=self.pointer
-				self.finish_draw=True
 				self.navigator.menu="track"
 			elif self.pointer==length-1:
 				self.partition.add_track()

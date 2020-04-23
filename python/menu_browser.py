@@ -27,12 +27,10 @@ class Menu_browser(Menu):
 		Menu.analyse(self,button)
 		
 		if button=="back":
-			self.finish_draw=True
 			self.navigator.menu="track"
 		elif button=="edit":
 			if self._list[self.pointer][-4:].lower()==".wav":
 				self.partition.tracks[self.navigator.track].sample=self.path+self._list[self.pointer]
-				self.finish_draw=True
 				self.navigator.menu="track"
 			
 		elif button=="left":

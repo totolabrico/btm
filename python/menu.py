@@ -10,6 +10,9 @@ class Menu:
 		self.partition=Partition
 		self.navigator=Navigator
 		self.name=Name
+		self.title=Name
+		self.track=""
+		self.set_track(Name)
 		self._pointer=0
 		self._list=[]
 		self._set_list()
@@ -35,3 +38,13 @@ class Menu:
 	
 	pointer=property(_get_pointer,_set_pointer)
 	List=property(_get_list,_set_list)
+
+	def switch_track(self,cmd):
+		if len(self.partition.tracks)>1:
+			self.navigator.track=cmd
+			self.navigator.menu=self.name
+
+	def set_track(self,Name):
+		if Name=="notes" or Name=="track":
+			self.track=self.partition.tracks[self.navigator.track]
+			self.title=str(self.track.Id)+":"+self.track.sample

@@ -9,17 +9,49 @@ class Clavier:
 
     def __init__(self,Navigator):
         self.navigator=Navigator
+        """
         self.timer=0
         self.second=[0,0]
         self.key=""
         self.first=True
         self.maintain=False
         self.double=False
+        """
+        self.switch_on=False
         self.listener = keyboard.Listener(on_press=self.on_press,on_release=self.on_release)
         self.listener.start()
+
+    def on_press(self,Key):
+        key=getMap(Key)
+
+        if key=="switch":
+            self.switch_on=True
+            
+        if self.switch_on==True:
+            if key=="up":
+                key="+"
+            if key=="down":
+                key="-"
+            if key=="left":
+                key="set-"
+            if key=="right":
+                key="set+"
+            if key=="edit":
+                key="back" 
+            if key=="del_unvalid":
+                key="del"
+                
+        self.navigator.analyse_cmd(key)
+
+
+    def on_release(self,Key):
+        key=getMap(Key)        
+        if key=="switch":
+            self.switch_on=False
+  
+    """
     def on_press(self,key):
 
-        
         if self.first==True:
             self.key=getMap(key)
             self.second[0]=time.time()
@@ -31,7 +63,6 @@ class Clavier:
                 if self.key=="left"or self.key=="right":
                     self.key+="++"  
             self.first=False
-            
             
         self.second[1]=time.time()
         self.timer=self.second[1]-self.second[0]
@@ -51,7 +82,7 @@ class Clavier:
         self.first=True
         self.double=False
         self.second[1]=time.time()
-        
+     
     def on_the_go(self):
         local_timer=[time.time(),time.time()]
         while local_timer[1]-local_timer[0]>click_tick*2:
@@ -59,7 +90,7 @@ class Clavier:
         if self.double==False:
             self.navigator.analyse_cmd(self.key)
 
-
+    """
 
 
 

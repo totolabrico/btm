@@ -32,12 +32,17 @@ editor_keys={
 	9:"left",
 	11:"right",
 	10:"edit",
-	5:"back",
-	13:"del",
-	7:"+",
-	15:"-",
-	8:"set+",
-	16:"set-",
+	#5:"back",
+	5:"switch",
+	13:"del_unvalid",
+	#7:"+",
+	#15:"-",
+	7:"copy",
+	15:"cancel",
+	#8:"set+",
+	#16:"set-",
+	8:["track","-"],
+	16:["track","+"]
 	}
 
 def getMap(key):

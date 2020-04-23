@@ -30,17 +30,21 @@ class Navigator:
 		self._setting=0
 		self.key=Clavier(self)
 		self.encoder=Encoder(self)
+		self.menu_browser=Menu_browser(self.machine.partition,self,"browser")
 		self._menu=Menu_main(self.machine.partition,self,"main")
 		self.draw_oled=Draw_oled(self.menu)
 		self.led_rgb=Led()
 		self.led_rgb.turn_on("main")
 		self.display = threading.Thread(target=self.draw_oled.run_draw(), args=())
 		self.display.start()
-        
+
 	def _get_track(self):
 		return self._track
 	def _set_track(self,cmd):
-		self._track=cmd
+		if cmd == "+" or cmd =="-":
+			self._track=loopValue(cmd,self._track,1,len(self.machine.partition.tracks)-1,0)
+		else:
+			self._track=cmd
 		
 	def _get_setting(self):
 		return self._setting
@@ -59,7 +63,7 @@ class Navigator:
 		if cmd=="notes":
 			self._menu=Menu_notes(self.machine.partition,self,cmd)
 		if cmd=="browser":
-			self._menu=Menu_browser(self.machine.partition,self,cmd)
+			self._menu=self.menu_browser
 		if cmd=="save":
 			self._menu=Menu_save(self.machine.partition,self,cmd)
 		if cmd=="load":
