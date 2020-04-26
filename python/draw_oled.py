@@ -43,18 +43,17 @@ class Draw_oled:
         
         while True:
             self.draw_begin()
-
-                
             self.draw_title(self.menu.title)
 
-            if self.menu.name=="notes":
-                self.draw_setting()
-                self.draw_sequence()
-            elif self.menu.name=="save":
+            if self.menu.name=="save":
                 self.draw_save()
             else:
                 self.draw_list()
-                self.draw_pointer()
+                
+                if self.menu.name=="notes":
+                    self.draw_sequence()
+                else:
+                    self.draw_pointer()
         
             self.draw_end()
             time.sleep(0.1)
@@ -76,36 +75,56 @@ class Draw_oled:
 
     def draw_list(self):
         y=Y[1]
+        x=X[1]
+        if self.menu.name=="notes":
+            y=Y[3]
+            x=X[3]
         
         for element in self.menu.draw_menu.display_list:
             if type(element)==list:
                 to= element[0]+":"+str(element[1])
             else:
                 to=str(element)
-            draw.text((X[1],y),to,font=font, fill=255)
+            draw.text((x,y),to,font=font, fill=255)
             y+=line_height[0]
    
     def draw_pointer(self):
         y=self.menu.draw_menu.pointer_line*line_height[0]+Y[1]+3
         draw.rectangle((X[0],y,X[0]+3,y+3), outline=0, fill=255)
 
-
-    def draw_setting(self):
-        nb_pas=self.menu.track.mesure*self.menu.partition.temps
-        draw.text((X[1],Y[3]),"pas:"+str(self.menu.pas+1)+"/"+str(nb_pas),font=font, fill=color[1])
-        to=""
-        for element in self.menu.track.notes:
-            if element.setting[0][1]==self.menu.pas:
-                to=element.setting[self.menu.id_setting]
-                draw.text((X[3],Y[3]),to[0]+":"+str(to[1]),font=font, fill=255)
-
-
     def draw_sequence(self):
 
+        nb_pas=self.menu.track.mesure*self.menu.partition.temps
+        draw.text((X[1],Y[3]),"pas:"+str(self.menu.pas+1)+"/"+str(nb_pas),font=font, fill=color[1])
         color_pas=color[0]
+        
+        rect_width=round((width-50)/self.menu.pas_per_line)
+        rect_height=5
+        y=Y[1]+5
+        j=0
+        while j<2:
+            i=0
+            x=X[1]
+            while i<len(self.menu.draw_menu.display_list_pas[j]):
+                color_pas=color[0]
+                if self.menu.draw_menu.display_list_pas[j][i]!=0:
+                    color_pas=color[1]
+                draw.rectangle((x,y,x+rect_width,y+rect_height), outline=color[1], fill=color_pas)
+                if i==self.menu.draw_menu.pointer_pas[0] and j==self.menu.draw_menu.pointer_pas[1]:
+                    #print("pointer_pas",self.menu.draw_menu.pointer_pas)
+                    draw.rectangle((x,y-1,x+rect_width,y-2), outline=color[1], fill=color[1])
+                x+=rect_width+2
+                if (i+1)%self.menu.partition.temps==0 and i!=0:
+                    x+=2
+                i+=1
+            j+=1
+            y+=rect_height+5
+            
+        
+        
+        """
         temps=self.menu.partition.temps
         rect_width=round((width-50)/self.menu.pas_per_line)
-        #print("pas_per_line",self.menu.pas_per_line)
         rect_height=5
         x=X[1]
         y=Y[1]+5
@@ -127,7 +146,7 @@ class Draw_oled:
                 y+=rect_height+5
                 x=X[1]
             i+=1
-
+        """
         
     def draw_save(self):
         name=self.menu.save_name+self.menu.letter()

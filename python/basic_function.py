@@ -36,12 +36,12 @@ def loopPas(cmd,value,inc,Max,Min):	# trouver cett algorithme! definir une varia
 		to+=inc
 		
 	if to>Max:
-		dif=Max-to+1
+		dif=to-Max-1
 		to=Min+dif
 	elif to<Min:
-		dif=Min+to+1
-		to=Max+dif
-	#print("loopvalue",cmd,value,inc,Max,Min,to)
+		dif=Min-to-1
+		to=Max-dif
+	print("loopPas",cmd,value,inc,Max,Min,to)
 	return to
 
 def boolValue(cmd):

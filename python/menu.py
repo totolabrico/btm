@@ -29,16 +29,11 @@ class Menu:
 		self._pointer=cmd
 
 	def analyse(self,button):
-		#print("pointer:",self.pointer,button)
 		if button=="up":
 			self.pointer=loopValue("-",self.pointer,1,len(self.List)-1,0)
 		elif button=="down":
 			self.pointer=loopValue("+",self.pointer,1,len(self.List)-1,0)	
-		#print("analyse",self.pointer)
 	
-	pointer=property(_get_pointer,_set_pointer)
-	List=property(_get_list,_set_list)
-
 	def switch_track(self,cmd):
 		if len(self.partition.tracks)>1:
 			self.navigator.track=cmd
@@ -48,3 +43,14 @@ class Menu:
 		if Name=="notes" or Name=="track":
 			self.track=self.partition.tracks[self.navigator.track]
 			self.title=str(self.track.Id)+":"+self.track.sample
+			
+		if Name=="notes":
+			self.list_pas=[]
+			self._id_pas=0# pointer de pas
+			self.nb_pas=0
+			self.set_nb_pas()
+			self._pas_per_line=0
+			self._set_pas_per_line()
+			
+	pointer=property(_get_pointer,_set_pointer)
+	List=property(_get_list,_set_list)
