@@ -1,5 +1,5 @@
 track_5 id 5;
-track_5 sample /home/pi/audiosamples/Instruments/guitar_fa2_moyen.wav;
+track_5 sample empty;
 track_5 vol 0.5;
 track_5 pan 0;
 track_5 mute 0;

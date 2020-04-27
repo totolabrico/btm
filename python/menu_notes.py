@@ -69,7 +69,7 @@ class Menu_notes(Menu):
 			i=self.selection[0]
 			while i<=self.selection[1]:
 				if self.list_pas[i]!=0:
-					copy_notes.append(self.list_pas[i])
+					copy_notes.append(copy.deepcopy(self.list_pas[i]))
 				i+=1
 			print("copy-notes",copy_notes)
 		
