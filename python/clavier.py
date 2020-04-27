@@ -40,7 +40,8 @@ class Clavier:
                 key="back" 
             if key=="del_unvalid":
                 key="del"
-                
+            if key=="copy":
+                key="paste"   
         self.navigator.analyse_cmd(key)
 
 
@@ -48,6 +49,9 @@ class Clavier:
         key=getMap(Key)        
         if key=="switch":
             self.switch_on=False
+        if key=="edit":
+            self.navigator.analyse_cmd("edit_release")
+
   
     """
     def on_press(self,key):

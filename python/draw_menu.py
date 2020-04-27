@@ -8,6 +8,7 @@ class Draw_menu:
         self.pointer_line=0
         self.origin_line=0
         self.max_line=4
+        self.origin_pas=0
         self.display_list=[]
         self.set_draw()
 
@@ -41,13 +42,13 @@ class Draw_menu:
                 
     def set_display_list_pas(self):
         self.display_list_pas=[[],[]]
-        min=int(self.menu.pas/(self.menu.pas_per_line*2))*(self.menu.pas_per_line*2)
-        max=min+self.menu.pas_per_line*2
+        self.origin_pas=int(self.menu.pas/(self.menu.pas_per_line*2))*(self.menu.pas_per_line*2)
+        max=self.origin_pas+self.menu.pas_per_line*2
         if max>self.menu.nb_pas:
             max =self.menu.nb_pas
     
-        self.set_pointer_pas(min)
-        value=min
+        self.set_pointer_pas(self.origin_pas)
+        value=self.origin_pas
         i=0
         j=0
         while value<max:

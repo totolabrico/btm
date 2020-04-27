@@ -2,11 +2,11 @@ from basic_function import*
 
 class Partition_note:
 
-	def __init__(self,Track,Pas,Id):
+	def __init__(self,Track,Id,*args):
 
 		self.track=Track
 		self.setting=[
-		["pas",Pas], # 0
+		["pas",0], # 0
 		["vol",0.5], # 1
 		["pan",0], # 2
 		["pitch",0], #3
@@ -15,6 +15,15 @@ class Partition_note:
 		["length",0], # 6
 		]
 		
+		if type(*args)==int:
+			self.pas=args[0]
+		elif type(*args)==list:
+			List=args
+			for element_in in List[0]:				
+				for element in self.setting:
+					if element_in[0]==element[0]:
+						element[1]=element_in[1]
+				
 		self._Id=Id
 		print ("note id",Id)
 
@@ -25,10 +34,9 @@ class Partition_note:
 
 	def _get_pas(self):
 		return self.setting[0][1]
-	def _set_pas(self,pas):
-		setting=0
-		inc,Max,Min=1,self.track.temps*self.track.mesure,0
-		self.edit_setting(setting,cmd,inc,Max,Min)
+	def _set_pas(self,Pas):
+		self.setting[0][1]=Pas
+		self.track.save()
 
 	def _get_vol(self):
 		return self.setting[1][1]

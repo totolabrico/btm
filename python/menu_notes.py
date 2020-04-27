@@ -1,12 +1,17 @@
 from menu import*
 from partition_notes import*
+import copy
 
+copy_notes=[]	
 
 class Menu_notes(Menu):
 	
+	
 	def __init__(self,Partition,Navigator,Name):
 		
-		Menu.__init__(self,Partition,Navigator,Name)		
+		Menu.__init__(self,Partition,Navigator,Name)
+		self.selection=[-1,-1]
+		self.is_selecting=False	
 
 	def _set_list(self):
 		self.list_pas=[]
@@ -42,20 +47,60 @@ class Menu_notes(Menu):
 		self._id_pas=pas
 	
 	def analyse(self,button):
-				
+		global copy_notes
 		if button=="back":
 			self.finish_draw=True
 			self.navigator.menu="track"
 			
+		elif button=="edit":
+			if self.is_selecting==False:
+				self.selection[0]=self.pas
+				self.is_selecting=True
+		elif button=="edit_release":
+			if self.selection[1]<self.selection[0]:
+				transit=self.selection[1]
+				self.selection[1]=self.selection[0]
+				self.selection[0]=transit
+			self.is_selecting=False	
+			print("selection",self.selection)
+			
+		elif button=="copy":
+			copy_notes=[]
+			i=self.selection[0]
+			while i<=self.selection[1]:
+				if self.list_pas[i]!=0:
+					copy_notes.append(self.list_pas[i])
+				i+=1
+			print("copy-notes",copy_notes)
+		
+		elif button=="paste":
+			paste_notes = copy.deepcopy(copy_notes)
+			if len(paste_notes)>0:					
+				for element in paste_notes:
+					element.pas+=self.pas
+					if element.pas>=self.nb_pas:
+						element.pas-=self.nb_pas
+				self.track.paste_note(paste_notes)
+				
+		elif button=="del":
+			i=self.selection[0]
+			while i<=self.selection[1]:
+				if self.list_pas[i]!=0:
+					self.track.remove_note(self.list_pas[i].Id)
+				i+=1
+					
+					
 		elif button=="right":
 			self.pas=loopPas("+",self._id_pas,1,self.nb_pas-1,0)
 		elif button=="left":
 			self.pas=loopPas("-",self._id_pas,1,self.nb_pas-1,0)
-
 		elif button=="up":
 			self.pas=loopPas("-",self._id_pas,self.pas_per_line,self.nb_pas-1,0)
 		elif button=="down":
 			self.pas=loopPas("+",self._id_pas,self.pas_per_line,self.nb_pas-1,0)	
+			
+		if self.is_selecting:
+			self.selection[1]=self.pas
  
 		elif button=="+" or button=="-":
 			if len(self.List)>0:					
@@ -87,8 +132,7 @@ class Menu_notes(Menu):
 				self.pointer=loopValue("+",self.pointer,1,len(self.List)-1,1)
 			elif button=="set+":
 				self.pointer=loopValue("-",self.pointer,1,len(self.List)-1,1)
-			elif button=="del":
-				self.track.remove_note(self.note.Id)
+
 		
 		self._set_list()
 

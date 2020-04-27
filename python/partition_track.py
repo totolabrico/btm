@@ -2,6 +2,7 @@ from partition_notes import*
 from basic_function import*
 from osc import*
 import pickle
+import copy
 
 
 class Partition_track:
@@ -88,12 +89,13 @@ class Partition_track:
 		print ("partition_track / set_notes :cette fonction n'existe pas")
 		return (0)
 		
-	def add_note(self,pas):
+	def add_note(self,*args):
 		Id=len(self._notes)
-		self._notes.append(Partition_note(self,pas,Id))	
+		self._notes.append(Partition_note(self,Id,*args))	
 		self.save()
 		
 	def remove_note(self,removeId):
+		print("remove_note",removeId)
 		del self._notes[removeId]
 		i=0
 		while i<len(self._notes):
@@ -101,6 +103,20 @@ class Partition_track:
 			i+=1
 		self.save()
 		
+	def paste_note(self,List):
+		
+		for element in self.notes:
+			for note in List:
+				if element.pas==note.pas:
+					self.remove_note(element.Id)
+					
+		for note in List:
+			#print(self.notes)
+			self.add_note(note.setting)
+
+			#self.notes[len(self.notes)-1]=copy.deepcopy(note)
+		
+			
 	def edit_setting(self,setting,cmd,inc,Max,Min):
 		value=self.setting[setting][1]
 		to=limitValue(cmd,value,inc,Max,Min)

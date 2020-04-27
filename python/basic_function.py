@@ -34,9 +34,7 @@ def loopPas(cmd,value,inc,Max,Min):	# trouver cett algorithme! definir une varia
 	vide=inc-reste
 	if vide==Max:
 		vide=0
-	print("inc _ Max",inc,Max)
-	print("reste _ vide",reste,vide)
-	
+
 	if cmd=="-":
 		to-=inc
 	elif cmd=="+":
@@ -53,7 +51,7 @@ def loopPas(cmd,value,inc,Max,Min):	# trouver cett algorithme! definir une varia
 	elif to<Min and to <=Max+vide:
 		to+=(Max+vide)		
 		
-	print("loopPas",cmd,value,inc,Max,Min,to)
+	#print("loopPas",cmd,value,inc,Max,Min,to)
 	return to
 
 def boolValue(cmd):

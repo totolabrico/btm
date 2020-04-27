@@ -102,6 +102,7 @@ class Draw_oled:
         rect_height=5
         y=Y[1]+5
         j=0
+        min=self.menu.draw_menu.origin_pas
         while j<2:
             i=0
             x=X[1]
@@ -111,8 +112,17 @@ class Draw_oled:
                     color_pas=color[1]
                 draw.rectangle((x,y,x+rect_width,y+rect_height), outline=color[1], fill=color_pas)
                 if i==self.menu.draw_menu.pointer_pas[0] and j==self.menu.draw_menu.pointer_pas[1]:
-                    #print("pointer_pas",self.menu.draw_menu.pointer_pas)
                     draw.rectangle((x,y-1,x+rect_width,y-2), outline=color[1], fill=color[1])
+                
+                value=min+i+j*self.menu.pas_per_line
+
+                if value>=self.menu.selection[0] and value<=self.menu.selection[1]:
+                    draw.rectangle((x-1,y+rect_height,x+rect_width+1,y+rect_height+1), outline=color[1], fill=color[1])
+                if value==self.menu.selection[0]:
+                    draw.rectangle((x-2,y,x,y+rect_height+1), outline=color[1], fill=color[1])
+                if value==self.menu.selection[1]:
+                    draw.rectangle((x+rect_width,y,x+rect_width+2,y+rect_height+1), outline=color[1], fill=color[1])
+   
                 x+=rect_width+2
                 if (i+1)%self.menu.partition.temps==0 and i!=0:
                     x+=2
@@ -120,33 +130,6 @@ class Draw_oled:
             j+=1
             y+=rect_height+5
             
-        
-        
-        """
-        temps=self.menu.partition.temps
-        rect_width=round((width-50)/self.menu.pas_per_line)
-        rect_height=5
-        x=X[1]
-        y=Y[1]+5
-        i=0
-
-        while i<self.menu.nb_pas:
-            color_pas=color[0]
-            for element in self.menu.track.notes:
-                if element.setting[0][1]==i:
-                    color_pas=color[1]
-            draw.rectangle((x,y,x+rect_width,y+rect_height), outline=color[1], fill=color_pas)
-            if i==self.menu.pas:
-                draw.rectangle((x,y-1,x+rect_width,y-2), outline=color[1], fill=color[1])
-            x+=rect_width+2
-            if (i+1)%temps==0 and i!=0:
-                x+=2
-            
-            if (i+1) %(self.menu.pas_per_line)==0:
-                y+=rect_height+5
-                x=X[1]
-            i+=1
-        """
         
     def draw_save(self):
         name=self.menu.save_name+self.menu.letter()
