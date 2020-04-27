@@ -40,6 +40,9 @@ class Menu:
 			self.navigator.menu=self.name
 
 	def set_track(self,Name):
+		if Name=="main":
+			self.title="main: "+self.partition.name
+		
 		if Name=="notes" or Name=="track":
 			self.track=self.partition.tracks[self.navigator.track]
 			self.title=str(self.track.Id)+":"+self.track.sample

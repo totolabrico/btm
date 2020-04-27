@@ -30,17 +30,29 @@ def loopValue(cmd,value,inc,Max,Min):
 
 def loopPas(cmd,value,inc,Max,Min):	# trouver cett algorithme! definir une variable self.begin dans track 
 	to=value
+	reste=Max%inc
+	vide=inc-reste
+	if vide==Max:
+		vide=0
+	print("inc _ Max",inc,Max)
+	print("reste _ vide",reste,vide)
+	
 	if cmd=="-":
 		to-=inc
 	elif cmd=="+":
 		to+=inc
+	
+	if to==Max+1:
+		to=Min
+	elif to == Min-1:
+		to=Max
+	
+	elif to>Max and to >=Max+vide:
+		to-=(Max+vide)
+
+	elif to<Min and to <=Max+vide:
+		to+=(Max+vide)		
 		
-	if to>Max:
-		dif=to-Max-1
-		to=Min+dif
-	elif to<Min:
-		dif=Min-to-1
-		to=Max-dif
 	print("loopPas",cmd,value,inc,Max,Min,to)
 	return to
 

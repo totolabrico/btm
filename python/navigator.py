@@ -77,6 +77,7 @@ class Navigator:
 		self.draw_oled.set_menu(self.menu)
 
 	def save_set(self):
+		self.machine.partition.name=self.name
 		path="/home/pi/btm/saves/"+self.name+"/partition"
 		with open(path,'wb') as fichier:
 			mon_pickler=pickle.Pickler(fichier)
