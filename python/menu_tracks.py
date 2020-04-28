@@ -7,7 +7,7 @@ class Menu_tracks(Menu):
 		if len(self.partition.tracks)!=0:
 			i=0
 			while i<len(self.partition.tracks):
-				self._list.append([str(self.partition.tracks[i].Id),self.partition.tracks[i].sample])
+				self._list.append([str(self.partition.tracks[i].Id),self.partition.tracks[i].name])
 				i+=1
 		self._list.append(["add","+"])
 		#self._list.append(["remove","-"])
@@ -27,5 +27,4 @@ class Menu_tracks(Menu):
 		elif button=="del":
 			if self.pointer<length-1:
 				self.partition.del_track(self.pointer)
-				self.pointer=0
 		self._set_list()

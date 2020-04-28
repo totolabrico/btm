@@ -10,7 +10,7 @@ from partition_main import*
 class machine:
 
 	def __init__(self):
-		self.partition=Partition_main(self,"default")
+		self.partition=Partition_main(self)
 		self.navigator=Navigator(self)
 btm=machine()
 print("btm")

@@ -1,7 +1,0 @@
-main name hip;
-main playing 1;
-main bpm 100;
-main master 0.5;
-main temps 4;
-main mesure 8;
-main nb_tracks 4;

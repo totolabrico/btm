@@ -1,7 +1,0 @@
-main name 21-4_va;
-main playing 1;
-main bpm 130;
-main master 1.0;
-main temps 4;
-main mesure 8;
-main nb_tracks 6;

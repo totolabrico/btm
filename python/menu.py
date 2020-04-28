@@ -45,7 +45,7 @@ class Menu:
 		
 		if Name=="notes" or Name=="track":
 			self.track=self.partition.tracks[self.navigator.track]
-			self.title=str(self.track.Id)+":"+self.track.sample
+			self.title=str(self.track.Id)+":"+self.track.name
 			
 		if Name=="notes":
 			self.list_pas=[]

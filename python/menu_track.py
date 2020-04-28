@@ -6,7 +6,7 @@ class Menu_track(Menu):
 		return self._list
 	def _set_list(self):
 		copy_list=[]
-		copy_list.append(["sample",self.track.sample])
+		copy_list.append(["add sample","_\+"])
 		for element in self.track.setting:
 			if element[0]!="id" and element[0]!="sample":
 				copy_list.append([element[0],element[1]])
@@ -32,7 +32,8 @@ class Menu_track(Menu):
 				self.track.solo=cmd
 			if self.pointer==5:
 				self.track.mesure=cmd
-		
+			if self.pointer==6:
+				self.track.name=cmd	
 		elif type(cmd)==list:
 			if cmd[0]=="track":
 				self.switch_track(cmd[1])

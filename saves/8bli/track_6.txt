@@ -1,8 +1,0 @@
-track_6 id 6;
-track_6 sample /home/pi/audiosamples/btm_legend/Tr-808/2_boom.wav;
-track_6 vol 0.5;
-track_6 pan 0;
-track_6 mute 0;
-track_6 solo 0;
-track_6 mesure 8;
-track_6 begin 0;

@@ -1,7 +1,0 @@
-main name 8bli;
-main playing 1;
-main bpm 120;
-main master 1.0;
-main temps 4;
-main mesure 4;
-main nb_tracks 5;

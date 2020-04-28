@@ -1,3 +1,4 @@
+import os
 
 class Draw_menu:
     
@@ -27,16 +28,19 @@ class Draw_menu:
             
     def set_list(self):
         self.set_max_line()
-        
+        self.display_list=[]
+                
         if self.menu.name!="notes":
-            self.display_list=[]
             i=self.origin_line 
+            
             while i<self.origin_line+self.max_line:
-                self.display_list.append(self.menu.List[i])
-                i+=1
+                to=self.menu.List[i]
+                if self.menu.name=="browser" and os.path.isdir(self.menu.path+to)==True:
+                    to=">"+to
+                self.display_list.append(to)
+                i+=1            
         else:
             self.set_display_list_pas()
-            self.display_list=[]
             if len(self.menu.List)>0:
                 self.display_list.append(self.menu.List[self.menu.pointer])
                 

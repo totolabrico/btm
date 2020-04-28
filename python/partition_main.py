@@ -6,11 +6,11 @@ import threading
 
 class Partition_main:
 
-	def __init__(self,Machine,Name):
+	def __init__(self,Machine):
 		self.machine=Machine
 
 		self.setting=[
-		["name",Name],#0
+		["name","default"],#0
 		["playing",False],#1
 		["bpm",120],#2
 		["master",0.5],#3

@@ -33,22 +33,24 @@ class Partition_track:
 		self.save()
 
 	def _get_sample(self):
-		return self.setting[1][1]	
-
-	def _set_sample(self,Path):
-		self.setting[1][1]=Path
-		to=Path.split("/")
+		to=self.setting[1][1].split("/")
 		to=to[len(to)-1]
 		to=to[:-4]
-		self.setting[7][1]=to
-		self.save()
+		return to		
+
+	def _set_sample(self,Name):
+		self.setting[1][1]=Name
+		self._set_name()
 
 	def _get_name(self):
 		return self.setting[7][1]
-	def _set_name(self,cmd):
-		if cmd=="-":
-			self.setting[7][1]=self.setting[7][1][1:]
-			self.save()
+	def _set_name(self,Name):
+		self.setting[7][1]=Name
+		self.save()
+		
+	def edit_name(self,cmd):
+		if cmd=="+":
+			self.setting[7][1]=self.setting[7][1][:-1]
 
 	"""
 	def _get_sample_length(self):

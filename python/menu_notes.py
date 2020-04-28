@@ -12,6 +12,7 @@ class Menu_notes(Menu):
 		Menu.__init__(self,Partition,Navigator,Name)
 		self.selection=[-1,-1]
 		self.is_selecting=False	
+		self.pointer=1
 
 	def _set_list(self):
 		self.list_pas=[]

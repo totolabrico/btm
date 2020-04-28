@@ -42,7 +42,7 @@ class Partition_note:
 		return self.setting[1][1]
 	def _set_vol(self,cmd):
 		setting=1
-		inc,Max,Min=0.1,1,0
+		inc,Max,Min=0.02,1,0
 		value=self.setting[setting][1]
 		to=limitValue(cmd,value,inc,Max,Min)
 		if to==0:

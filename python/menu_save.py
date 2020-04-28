@@ -1,10 +1,19 @@
 from menu import*
+import datetime
 
 class Menu_save(Menu):
 
 	def _set_list(self):
 		self._list=" abcdefghijklmnopqrstuvwxyz_0123456789"
-		self.save_name=self.navigator.name
+		self._set_name()
+		
+	def _set_name(self):
+		date=datetime.datetime.now()
+		to=self.navigator.name
+		if to=="default" or to=="new":
+			to=str(date.day)+"-"+str(date.month)+"_"+str(date.hour)+":"+str(date.minute)
+		self.save_name=to
+		
 	def letter(self):
 		return self._list[self.pointer]
 	
@@ -19,9 +28,9 @@ class Menu_save(Menu):
 		if cmd=="right":
 			self.save_name=self.save_name+self.letter()	
 		if cmd=="edit":
-			self.navigator.menu="main"
 			self.navigator.name=self.partition.name=self.save_name
 			self.navigator.save_set()
+			self.navigator.menu="main"
 
 
 """

@@ -1,4 +1,3 @@
-import datetime
 import copy
 from clavier import*
 from encoder import*
@@ -14,18 +13,17 @@ from menu_load import*
 from draw_oled import*
 from led_rgb import *
 
-
 import dill as pickle
 
 
-save="save"
+#save="save"
 
 class Navigator:
 
 	def __init__(self,Machine):
 		self.machine=Machine
 		date = datetime.datetime.now()
-		self.name=str(date.day)+"-"+str(date.month)+"_"+str(date.hour)+":"+str(date.minute)
+		self.name="default"
 		self._track=0
 		self._setting=0
 		self.key=Clavier(self)
@@ -91,6 +89,14 @@ class Navigator:
 			self.machine.partition.check_save_folder()
 			self.machine.partition.save()
 			self.machine.partition.save_tracks()
+		self.re_init()
+			
+	def re_init(self):
+		self.name=self.machine.partition.name
+		#self._track=0
+		#self._setting=0
+		self.menu_browser=Menu_browser(self.machine.partition,self,"browser")
+		self.menu="main"
 
 	menu=property(_get_menu,_set_menu)
 	track=property(_get_track,_set_track)
