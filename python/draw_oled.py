@@ -35,28 +35,42 @@ class Draw_oled:
     
     def __init__(self,Menu):
         self.menu=Menu
-        
+    
+    def draw_welcolme(self):
+        image = Image.open("/home/pi/Bureau/python/white_fly.jpg").resize((disp.width, disp.height), Image.ANTIALIAS).convert('1')
+        draw = ImageDraw.Draw(image)
+        y=50
+        draw.rectangle((width/3,height/2-1,width-width/3,height/2), outline=255, fill=255)
+        draw.text((X[2]-3,height/2-7),"btm",font=font, fill=255)
+        disp.image(image)
+        disp.display()
+        time.sleep(0.1)
+    
     def set_menu(self,Menu):
         self.menu=Menu
          
     def run_draw(self):
         
         while True:
-            self.draw_begin()
-            self.draw_title(self.menu.title)
-
-            if self.menu.name=="save":
-                self.draw_save()
+            
+            if self.menu.navigator.welcolme==True:
+                self.draw_welcolme()
             else:
-                self.draw_list()
-                
-                if self.menu.name=="notes":
-                    self.draw_sequence()
+                self.draw_begin()
+                self.draw_title(self.menu.title)
+
+                if self.menu.name=="save":
+                    self.draw_save()
                 else:
-                    self.draw_pointer()
+                    self.draw_list()
+                    
+                    if self.menu.name=="notes":
+                        self.draw_sequence()
+                    else:
+                        self.draw_pointer()
         
-            self.draw_end()
-            time.sleep(0.1)
+                self.draw_end()
+                
 
 
     def draw_begin(self):
@@ -67,6 +81,7 @@ class Draw_oled:
     def draw_end(self):
         disp.image(image)
         disp.display()
+        time.sleep(0.1)
         
     def draw_title(self,Title):
         y=Y[0]

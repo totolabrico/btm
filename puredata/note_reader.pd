@@ -1,15 +1,15 @@
-#N canvas 293 143 750 808 10;
+#N canvas 36 198 705 726 10;
 #X obj 58 278 textfile;
 #X msg 126 260 bang;
 #X msg 126 225 rewind;
-#X msg 58 200 read /home/pi/btm/saves/ab/notes_5.txt;
+#X msg 58 200 read /home/pi/btm/saves/default/notes_1.txt;
 #X obj 287 174 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
 #X obj 287 111 r pas, f 6;
 #X obj 182 327 r pas;
 #X obj 58 340 route notes_\$1;
 #X obj 58 383 route;
-#X obj 241 552 s play_note_\$1;
+#X obj 255 539 s play_note_\$1;
 #X obj 58 511 s vol_note_\$1;
 #X obj 82 533 s pan_note_\$1;
 #X obj 156 599 s begin_note_\$1;
@@ -53,12 +53,13 @@
 #X obj 484 660 s vol_note_\$1;
 #X obj 537 508 / 4;
 #X obj 473 513 pipe 1;
-#X obj 241 501 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+#X obj 111 300 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
-#X text 44 652 length est envoyé trop tard \, il faut gerer l'ordre
-d'envoi avec untriger ou quoi, f 36;
+#X obj 255 501 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
 #X connect 0 0 1 0;
 #X connect 0 0 7 0;
+#X connect 0 1 51 0;
 #X connect 1 0 0 0;
 #X connect 2 0 0 0;
 #X connect 2 0 1 0;
@@ -85,7 +86,7 @@ d'envoi avec untriger ou quoi, f 36;
 #X connect 22 0 3 0;
 #X connect 23 0 21 0;
 #X connect 24 0 10 0;
-#X connect 24 0 51 0;
+#X connect 24 0 52 0;
 #X connect 24 1 11 0;
 #X connect 24 2 25 0;
 #X connect 24 3 26 0;
@@ -117,4 +118,4 @@ d'envoi avec untriger ou quoi, f 36;
 #X connect 49 0 43 0;
 #X connect 49 0 44 1;
 #X connect 50 0 44 0;
-#X connect 51 0 9 0;
+#X connect 52 0 9 0;

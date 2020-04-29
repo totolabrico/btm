@@ -85,7 +85,7 @@ class Partition_note:
 		return self.setting[6][1]
 	def _set_length(self,cmd):
 		setting=6
-		inc,Max,Min=1,100,0
+		inc,Max,Min=1,100,-100
 		self.edit_setting(setting,cmd,inc,Max,Min)
 
 	def edit_setting(self,setting,cmd,inc,Max,Min):

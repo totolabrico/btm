@@ -142,7 +142,7 @@ class Partition_track:
 		for element in self.setting:
 			myfile.write("track_"+str(self.setting[0][1])+" "+element[0]+" "+to_string(True,element[1])+";\n")
 		myfile.close()			
-		sendMessage("load","notes_"+str(self.setting[0][1]))		
+		sendMessage("load","track_"+str(self.setting[0][1]))		
 		self.save_notes()
 		
 	def save_notes(self):
@@ -151,7 +151,7 @@ class Partition_track:
 		for element in self.notes:
 			myfile.write("notes_"+str(self.setting[0][1])+" "+element.save()+";\n")
 		myfile.close()
-		sendMessage("load","track_"+str(self.setting[0][1]))
+		sendMessage("load","notes_"+str(self.setting[0][1]))
 
 	def load_notes(self,Path):
 		self._notes=[]

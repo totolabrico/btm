@@ -33,6 +33,7 @@ class Navigator:
 		self.draw_oled=Draw_oled(self.menu)
 		self.led_rgb=Led()
 		self.led_rgb.turn_on("main")
+		self.welcolme=True
 		self.display = threading.Thread(target=self.draw_oled.run_draw(), args=())
 		self.display.start()
 
@@ -70,17 +71,21 @@ class Navigator:
 		self.led_rgb.turn_on(cmd)
 		
 	def analyse_cmd(self,button):
-		self.menu.analyse(button)
-		self.menu.draw_menu.set_draw()
-		self.draw_oled.set_menu(self.menu)
+		if self.welcolme==True:
+			self.welcolme=False
+		else:
+			self.menu.analyse(button)
+			self.menu.draw_menu.set_draw()
+			self.draw_oled.set_menu(self.menu)
 
 	def save_set(self):
-		self.machine.partition.name=self.name
+		
 		path="/home/pi/btm/saves/"+self.name+"/partition"
 		with open(path,'wb') as fichier:
 			mon_pickler=pickle.Pickler(fichier)
 			mon_pickler.dump(self.machine.partition)
-
+		self.machine.partition.name=self.name
+		
 	def load_set(self,Name):
 		path="/home/pi/btm/saves/"+Name+"/partition"
 		with open(path,'rb') as fichier:
@@ -93,8 +98,6 @@ class Navigator:
 			
 	def re_init(self):
 		self.name=self.machine.partition.name
-		#self._track=0
-		#self._setting=0
 		self.menu_browser=Menu_browser(self.machine.partition,self,"browser")
 		self.menu="main"
 

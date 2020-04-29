@@ -1,4 +1,4 @@
-#N canvas 232 314 702 353 10;
+#N canvas 230 314 702 353 10;
 #X obj 29 34 loadbang;
 #X msg 29 55 \; pd dsp 1 \;;
 #X obj 29 91 loader;

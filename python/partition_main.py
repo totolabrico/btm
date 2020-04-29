@@ -29,6 +29,7 @@ class Partition_main:
 		self.setting[0][1]=cmd
 		self.check_save_folder()
 		self.save()
+		self.save_tracks()
 
 	def _get_playing(self):
 		return self.setting[1][1]
