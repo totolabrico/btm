@@ -16,7 +16,7 @@ class Partition_main:
 		["master",0.5],#3
 		["temps",4],#4
 		["mesure",4],#5
-		["nb_tracks",0],#5
+		["nb_tracks",0],#6
 		]
 
 		self.tracks=[]
@@ -63,9 +63,9 @@ class Partition_main:
 		self.edit_setting(setting,cmd,inc,Max,Min)
 
 	def _get_nb_tracks(self):
-		return self.setting[5][1]
+		return self.setting[6][1]
 	def _set_nb_tracks(self,cmd):
-		self.setting[5][1]=cmd
+		self.setting[6][1]=cmd
 
 	def _get_mesure(self):
 		return self.setting[5][1]
@@ -99,7 +99,15 @@ class Partition_main:
 			i+=1
 		
 		self.save()
-
+		
+	def paste_track(self,Track,Id):
+		self.tracks.insert(Id,Track)
+		self.setting[6][1]+=1
+		i=0
+		while i<self.nb_tracks:
+			self.tracks[i].Id=i+1
+			i+=1
+		self.save()
 
 	def edit_setting(self,setting,cmd,inc,Max,Min):
 		value=self.setting[setting][1]

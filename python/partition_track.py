@@ -116,8 +116,9 @@ class Partition_track:
 		for element in self.notes:
 			for note in List:
 				if element.pas==note.pas:
+					print("pas_identique",element.pas)
 					self.remove_note(element.Id)
-					
+				
 		for note in List:
 			#print(self.notes)
 			self.add_note(note.setting)

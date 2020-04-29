@@ -2,7 +2,7 @@ from menu import*
 from partition_notes import*
 import copy
 
-copy_notes=[]	
+copy_notes=[]
 
 class Menu_notes(Menu):
 	
@@ -62,6 +62,7 @@ class Menu_notes(Menu):
 				transit=self.selection[1]
 				self.selection[1]=self.selection[0]
 				self.selection[0]=transit
+				
 			self.is_selecting=False	
 			print("selection",self.selection)
 			
@@ -69,20 +70,29 @@ class Menu_notes(Menu):
 			copy_notes=[]
 			i=self.selection[0]
 			while i<=self.selection[1]:
-				if self.list_pas[i]!=0:
-					copy_notes.append(copy.deepcopy(self.list_pas[i]))
+				copy_notes.append(copy.deepcopy(self.list_pas[i]))
 				i+=1
 			print("copy-notes",copy_notes)
 		
 		elif button=="paste":
 			paste_notes = copy.deepcopy(copy_notes)
-			if len(paste_notes)>0:					
+			if len(paste_notes)>0:
+				to=[]
+				i=0
+				while i<len(paste_notes):
+					if paste_notes[i]!=0:
+						paste_notes[i].pas+=self.pas-paste_notes[i].pas+i
+						to.append(paste_notes[i])
+					i+=1
+					
+				self.track.paste_note(to)	
+				"""			
 				for element in paste_notes:
-					element.pas+=self.pas
+					element.pas+=self.pas-self.selection[0]
 					if element.pas>=self.nb_pas:
 						element.pas-=self.nb_pas
 				self.track.paste_note(paste_notes)
-				
+				"""
 		elif button=="del":
 			i=self.selection[0]
 			while i<=self.selection[1]:

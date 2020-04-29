@@ -37,7 +37,8 @@ class Draw_oled:
         self.menu=Menu
     
     def draw_welcolme(self):
-        image = Image.open("/home/pi/Bureau/python/white_fly.jpg").resize((disp.width, disp.height), Image.ANTIALIAS).convert('1')
+        image = Image.open("/home/pi/btm/logo.jpg").convert('1')
+        #image = Image.open("/home/pi/btm/logo.jpg").resize((disp.width, disp.height), Image.ANTIALIAS).convert('1')
         draw = ImageDraw.Draw(image)
         y=50
         draw.rectangle((width/3,height/2-1,width-width/3,height/2), outline=255, fill=255)

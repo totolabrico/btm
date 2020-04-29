@@ -1,0 +1,8 @@
+track_2 id 2;
+track_2 sample empty;
+track_2 vol 0.5;
+track_2 pan 0;
+track_2 mute 0;
+track_2 solo 0;
+track_2 mesure 4;
+track_2 name empty;

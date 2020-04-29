@@ -1,4 +1,7 @@
 from menu import*
+import copy
+
+copy_track=''
 
 class Menu_tracks(Menu):
 
@@ -13,7 +16,7 @@ class Menu_tracks(Menu):
 		#self._list.append(["remove","-"])
 
 	def analyse(self,button):
-		
+		global copy_track
 		Menu.analyse(self,button)
 		length=len(self._list)
 		if button=="back":
@@ -27,4 +30,12 @@ class Menu_tracks(Menu):
 		elif button=="del":
 			if self.pointer<length-1:
 				self.partition.del_track(self.pointer)
+		elif button=="copy":
+			if self.pointer<length-1:
+				copy_track=copy.deepcopy(self.partition.tracks[self.pointer])
+				print (copy_track)
+		elif button=="paste":
+			if self.pointer<length-1:
+				self.partition.paste_track(copy_track,self.pointer)
+				
 		self._set_list()
