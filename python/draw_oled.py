@@ -110,11 +110,11 @@ class Draw_oled:
 
     def draw_sequence(self):
 
-        nb_pas=self.menu.track.mesure*self.menu.partition.temps
-        draw.text((X[1],Y[3]),"pas:"+str(self.menu.pas+1)+"/"+str(nb_pas),font=font, fill=color[1])
-        color_pas=color[0]
+        nb_element=self.menu.track.mesure*self.menu.partition.temps
+        draw.text((X[1],Y[3]),"element:"+str(self.menu.element+1)+"/"+str(nb_element),font=font, fill=color[1])
+        color_element=color[0]
 
-        rect_width=round((width-50)/self.menu.pas_per_line)
+        rect_width=round((width-50)/self.menu.element_per_line)
         rect_height=5
         y=Y[1]+5
         j=0
@@ -123,14 +123,14 @@ class Draw_oled:
             i=0
             x=X[1]
             while i<len(self.menu.draw_menu.list[j]):
-                color_pas=color[0]
+                color_element=color[0]
                 if self.menu.draw_menu.list[j][i]!=0:
-                    color_pas=color[1]
-                draw.rectangle((x,y,x+rect_width,y+rect_height), outline=color[1], fill=color_pas)
-                if i==self.menu.draw_menu.pointer_pas[0] and j==self.menu.draw_menu.pointer_pas[1]:
+                    color_element=color[1]
+                draw.rectangle((x,y,x+rect_width,y+rect_height), outline=color[1], fill=color_element)
+                if i==self.menu.draw_menu.pointer_element[0] and j==self.menu.draw_menu.pointer_element[1]:
                     draw.rectangle((x,y-1,x+rect_width,y-2), outline=color[1], fill=color[1])
 
-                value=min+i+j*self.menu.pas_per_line
+                value=min+i+j*self.menu.element_per_line
 
                 if value>=self.menu.selection[0] and value<=self.menu.selection[1]:
                     draw.rectangle((x-1,y+rect_height,x+rect_width+1,y+rect_height+1), outline=color[1], fill=color[1])

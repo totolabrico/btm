@@ -14,13 +14,13 @@ class Menu_tracks(Menu_editor):
 
 	def set_nb_pas(self):
 		self.nb_pas=self.partition.nb_tracks
-		self._pas_per_line=8
+		self._element_per_line=8
 
 	def set_copy_list(self)
 		global copy_track
 		self.copy_list=copy_track
-		
-				
+
+
 	def _set_list_pas(self):
 		self._list_pas=[]
 		self._list_setting=[]
