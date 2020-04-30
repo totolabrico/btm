@@ -23,7 +23,6 @@ class Menu_main(Menu):
 		length=len(self._list)
 		Menu.analyse(self,cmd)
 		if cmd=="edit":
-			self.finish_draw=True
 			if self.pointer==5:
 				self.navigator.menu="save"
 			elif self.pointer==6:

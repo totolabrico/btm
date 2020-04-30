@@ -1,16 +1,15 @@
 from menu import*
 
 class Menu_track(Menu):
-	
+
 	def _get_list(self):
 		return self._list
 	def _set_list(self):
-		copy_list=[]
-		copy_list.append(["add sample","_\+"])
+		self._list=[]
+		self._list.append(["add sample","_\+"])
 		for element in self.track.setting:
 			if element[0]!="id" and element[0]!="sample":
-				copy_list.append([element[0],element[1]])
-		self._list=copy_list
+				self._list.append([element[0],element[1]])
 
 	def analyse(self,cmd):
 		Menu.analyse(self,cmd)
@@ -33,15 +32,9 @@ class Menu_track(Menu):
 			if self.pointer==5:
 				self.track.mesure=cmd
 			if self.pointer==6:
-				self.track.name=cmd	
+				self.track.name=cmd
 		elif type(cmd)==list:
 			if cmd[0]=="track":
 				self.switch_track(cmd[1])
-		
-		self._set_list()
 
-		"""
-		elif self._menu=="track_info":
-			if button=="info":
-				self._set_menu("track")
-		"""
+		self._set_list()

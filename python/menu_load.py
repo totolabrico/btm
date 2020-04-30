@@ -13,6 +13,6 @@ class Menu_load(Menu):
 			self.navigator.menu="main"
 
 		if cmd=="edit":
-			self.navigator.load_set(self.List[self.pointer])
-		
+			self.navigator.load_set(self.list[self.pointer])
+
 		self._set_list()

@@ -1,7 +1,7 @@
 main name default;
-main playing 0;
+main playing 1;
 main bpm 120;
 main master 0.5;
 main temps 4;
 main mesure 4;
-main nb_tracks 5;
+main nb_tracks 1;

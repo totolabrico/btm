@@ -1,98 +1,69 @@
 import os
 
 class Draw_menu:
-    
+
     def __init__(self,Menu):
         self.menu=Menu
         #self.navigator=self.machine.navigator
-        self.pointer=0
-        self.pointer_display=0
-        self.origin=0
-        self.max=4
-        self.list=[]
-        self.set_draw()
+        self.pointer_setting=0
+        self.pointer_setting_display=0
+        self.origin_setting=0
+        self.max_setting=4
+        self.list_setting=[]
+        self.set_draw_setting()
 
-    def set_draw(self):
-        self.set_pointer()
-        self.set_list()
+    def set_draw_setting(self):
+        self.set_pointer_setting()
+        self.set_list_setting()
 
-    def set_max(self):
-        if self.menu.name!="notes":
-            self.max=4
+    def set_max_setting(self):
+        if self.menu.name=="tracks" or self.menu.name=="notes":
+            self.max_setting=1
         else:
-            self.max=1
-        
-        if len(self.menu.List)<self.max:
-            self.max=len(self.menu.List)
-            
-    def set_list(self):
-        self.set_max()
-        self.list=[]
-                
-        if self.menu.name!="notes":
-            i=self.origin
-            
-            while i<self.origin+self.max:
-                to=self.menu.List[i]
+            self.max_setting=4
+        if len(self.menu.list_setting)<self.max_setting:
+            self.max_setting=len(self.menu.list_setting)
+
+    def set_list_setting(self):
+        self.set_max_setting()
+        self.list_setting=[]
+
+        if self.menu.name=="tracks" or self.menu.name=="notes":
+            if len(self.menu.list_setting)>0:
+                self.list_setting.append(self.menu.list_setting[self.menu.pointer_setting])
+
+        else:
+            i=self.origin_setting
+
+            while i<self.origin_setting+self.max_setting:
+                to=self.menu.list_setting[i]
                 if self.menu.name=="browser" and os.path.isdir(self.menu.path+to)==True:
                     to=">"+to
-                self.list.append(to)
-                i+=1            
-        else:
-            self.set_list()
-            if len(self.menu.List)>0:
-                self.display_list.append(self.menu.List[self.menu.pointer])
-                
-    def set_pointer(self):# set pointer & origin
+                self.list_setting.append(to)
+                i+=1
 
-        if self.menu.pointer==0: # if 'min'
-            self.origin=0
-            self.pointer_display=0
-            
-        elif self.menu.pointer==len(self.menu.List)-1: # if 'max'
-            self.pointer_display=self.max-1
-            self.origin=len(self.menu.List)-self.max
-            
-        elif self.menu.pointer>self.pointer:# if '+'
-            if self.pointer_display<self.max-1:
-                self.pointer_display+=1
-            elif self.pointer_display==self.max-1:
-                self.origin+=1
-                
-        elif self.menu.pointer<self.pointer:# if '-'
-            if self.pointer_display>0:
-                self.pointer_display-=1
-            elif self.pointer_display==0:
-                self.origin-=1
-        
-        print("pointer",self.pointer,self.menu.pointer,self.origin,self.pointer_display)
-        self.pointer=self.menu.pointer
-                
-    def set_display_list(self):
-        self.list=[[],[]]
-        self.origin=int(self.menu.pas/(self.menu.pas_per_line*2))*(self.menu.pas_per_line*2)
-        max=self.origin+self.menu.pas_per_line*2
-        if max>self.menu.nb_pas:
-            max =self.menu.nb_pas
-    
-        self.set_pointer_pas(self.origin)
-        value=self.origin
-        i=0
-        j=0
-        while value<max:
-            self.list[j].append(self.menu.list_pas[value])
-            value+=1
-            i+=1
-            if i!=0 and i%self.menu.pas_per_line==0:
-                i=0
-                j+=1
-        print("pointer_pas",self.pointer_pas)
-        
-    def set_pointer_pas(self,Min):
-        pointer_display=self.menu.pas-Min
-        if pointer_pas<self.menu.pas_per_line:
-            j=0
-        else:
-            j=1
-            pointer_pas-=self.menu.pas_per_line
-        self.pointer_pas=[pointer_pas,j]
+    def set_pointer_setting(self):# set pointer & origin
+
+        if self.menu.pointer_setting==0: # if 'min'
+            self.origin_setting=0
+            self.pointer_setting_display=0
+
+        elif self.menu.pointer_setting==len(self.menu.list_setting)-1: # if 'max'
+            self.pointer_setting_display=self.max_setting-1
+            self.origin_setting=len(self.menu.list_setting)-self.max_setting
+
+        elif self.menu.pointer_setting>self.pointer_setting:# if '+'
+            if self.pointer_setting<self.max_setting-1:
+                self.pointer_setting_display+=1
+            elif self.pointer_setting_display==self.max_setting-1:
+                self.origin_setting+=1
+
+        elif self.menu.pointer_setting<self.pointer_setting:# if '-'
+            if self.pointer_setting_display>0:
+                self.pointer_setting_display-=1
+            elif self.pointer_setting_display==0:
+                self.origin_setting-=1
+
+        print("pointer_setting",self.pointer_setting,self.menu.pointer_setting,self.origin_setting,self.pointer_setting_display)
+        self.pointer_setting=self.menu.pointer_setting
+

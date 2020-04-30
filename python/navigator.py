@@ -1,4 +1,6 @@
 import copy
+import dill as pickle
+
 from clavier import*
 from encoder import*
 from partition_main import*
@@ -9,14 +11,8 @@ from menu_notes import*
 from menu_browser import*
 from menu_save import*
 from menu_load import*
-
 from draw_oled import*
 from led_rgb import *
-
-import dill as pickle
-
-
-#save="save"
 
 class Navigator:
 
@@ -44,12 +40,12 @@ class Navigator:
 			self._track=loopValue(cmd,self._track,1,len(self.machine.partition.tracks)-1,0)
 		else:
 			self._track=cmd
-		
+
 	def _get_setting(self):
 		return self._setting
 	def _set_setting(self,cmd):
 		self._setting=cmd
-				
+
 	def _get_menu(self):
 		return self._menu
 	def _set_menu(self,cmd):
@@ -67,25 +63,25 @@ class Navigator:
 			self._menu=Menu_save(self.machine.partition,self,cmd)
 		if cmd=="load":
 			self._menu=Menu_load(self.machine.partition,self,cmd)
-			
+
 		self.led_rgb.turn_on(cmd)
-		
-	def analyse_cmd(self,button):
+
+	def analyse_cmd(self,cmd):
 		if self.welcolme==True:
 			self.welcolme=False
 		else:
-			self.menu.analyse(button)
+			self.menu.analyse(cmd)
 			self.menu.draw_menu.set_draw()
 			self.draw_oled.set_menu(self.menu)
 
 	def save_set(self):
-		
+
 		path="/home/pi/btm/saves/"+self.name+"/partition"
 		with open(path,'wb') as fichier:
 			mon_pickler=pickle.Pickler(fichier)
 			mon_pickler.dump(self.machine.partition)
 		self.machine.partition.name=self.name
-		
+
 	def load_set(self,Name):
 		path="/home/pi/btm/saves/"+Name+"/partition"
 		with open(path,'rb') as fichier:
@@ -95,7 +91,7 @@ class Navigator:
 			self.machine.partition.save()
 			self.machine.partition.save_tracks()
 		self.re_init()
-			
+
 	def re_init(self):
 		self.name=self.machine.partition.name
 		self.menu_browser=Menu_browser(self.machine.partition,self,"browser")
@@ -104,5 +100,3 @@ class Navigator:
 	menu=property(_get_menu,_set_menu)
 	track=property(_get_track,_set_track)
 	setting=property(_get_setting,_set_setting)
-	
-

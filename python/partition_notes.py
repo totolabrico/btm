@@ -1,8 +1,8 @@
-from basic_function import* 
+from basic_function import*
 
 class Partition_note:
 
-	def __init__(self,Track,Id,*args):
+	def __init__(self,Track,id,*args):
 
 		self.track=Track
 		self.setting=[
@@ -14,23 +14,23 @@ class Partition_note:
 		["begin",0],# 5
 		["length",0], # 6
 		]
-		
+
 		if type(*args)==int:
 			self.pas=args[0]
 		elif type(*args)==list:
-			List=args
-			for element_in in List[0]:				
+			list=args
+			for element_in in list[0]:
 				for element in self.setting:
 					if element_in[0]==element[0]:
 						element[1]=element_in[1]
-				
-		self._Id=Id
-		print ("note id",Id)
 
-	def _get_Id(self):
-		return self._Id
-	def _set_Id(self,Id):
-		self._Id=Id
+		self._id=id
+		print ("note id",id)
+
+	def _get_id(self):
+		return self._id
+	def _set_id(self,id):
+		self._id=id
 
 	def _get_pas(self):
 		return self.setting[0][1]
@@ -46,20 +46,20 @@ class Partition_note:
 		value=self.setting[setting][1]
 		to=limitValue(cmd,value,inc,Max,Min)
 		if to==0:
-			self.track.remove_note(self.Id)
+			self.track.remove_note(self.id)
 		else:
 			self.setting[setting][1]=to
 		self.track.save()
 		#self.edit_setting(setting,cmd,inc,Max,Min)
-		
-		
+
+
 	def _get_pan(self):
 		return self.setting[2][1]
 	def _set_pan(self,cmd):
 		setting=2
 		inc,Max,Min=0.1,1,-1
 		self.edit_setting(setting,cmd,inc,Max,Min)
-		
+
 	def _get_pitch(self):
 		return self.setting[3][1]
 	def _set_pitch(self,cmd):
@@ -73,14 +73,14 @@ class Partition_note:
 		setting=4
 		inc,Max,Min=1,1000,-1000
 		self.edit_setting(setting,cmd,inc,Max,Min)
-	
+
 	def _get_begin(self):
 		return self.setting[5][1]
 	def _set_begin(self,cmd):
 		setting=5
 		inc,Max,Min=1,100,0
 		self.edit_setting(setting,cmd,inc,Max,Min)
-		
+
 	def _get_length(self):
 		return self.setting[6][1]
 	def _set_length(self,cmd):
@@ -116,9 +116,9 @@ class Partition_note:
 		for element in self.setting:
 			element[1]=load_list[i]
 			i+=1
-		
 
-	Id=property(_get_Id,_set_Id)
+
+	id=property(_get_id,_set_id)
 	pas=property(_get_pas,_set_pas)
 	vol=property(_get_vol,_set_vol)
 	pan=property(_get_pan,_set_pan)

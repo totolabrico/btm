@@ -77,35 +77,35 @@ class Partition_main:
 	def get_tracks_length(self):
 		return len(self.tracks)
 
-	def get_track(self,Id):
-		return str(self.tracks[Id].Id)+":"+self.tracks[Id].sample
+	def get_track(self,id):
+		return str(self.tracks[id].id)+":"+self.tracks[id].sample
 
-	def add_track(self):
+	def add_element(self):
 		id_track=len(self.tracks)+1
 		self.tracks.append(Partition_track(self.machine,id_track))
 		self.setting[6][1]+=1
 		self.save()
-	
-	def del_track(self,Id):
+
+	def del_element(self,id):
 		for element in self.tracks:
 			element.erase()
-				
-		del self.tracks[Id]
+
+		del self.tracks[id]
 		self.setting[6][1]-=1
 		i=0
 		while i<len(self.tracks):
-			self.tracks[i].Id=i+1
+			self.tracks[i].id=i+1
 			self.tracks[i].save()
 			i+=1
 		self.save()
-		
-	def paste_track(self,Track,Id):
-		self.tracks.insert(Id,Track)
+
+	def paste_track(self,Track,id):
+		self.tracks.insert(id,Track)
 		self.setting[6][1]+=1
 		print("len",len(self.tracks))
 		i=0
 		while i<len(self.tracks):
-			self.tracks[i].Id=i+1
+			self.tracks[i].id=i+1
 			self.tracks[i].save()
 			i+=1
 		self.save()
@@ -119,8 +119,8 @@ class Partition_main:
 		self.setting[setting][1]=to
 		self.save()
 
-	def save(self):		
-		path="/home/pi/btm/saves/"+self.name+"/main.txt"	
+	def save(self):
+		path="/home/pi/btm/saves/"+self.name+"/main.txt"
 		myfile = open(path,"w")
 		i=0
 		while i<len(self.setting):
@@ -134,10 +134,10 @@ class Partition_main:
 		while i<len(self.tracks):
 			self.tracks[i].save()
 			i+=1
-			
+
 	def check_save_folder(self):
 		path="/home/pi/btm/saves/"+self.setting[0][1]
-		if self.setting[0][1]=="default":	
+		if self.setting[0][1]=="default":
 			if os.path.exists(path)==True:
 				erase_list=os.listdir(path)
 				for element in erase_list:
@@ -147,7 +147,7 @@ class Partition_main:
 		elif os.path.exists(path)==False:
 			os.makedirs(path, exist_ok=True)
 		sendMessage("path",path)
-		
+
 
 	name = property(_get_name, _set_name)
 	bpm = property(_get_bpm, _set_bpm)
@@ -156,4 +156,3 @@ class Partition_main:
 	temps = property(_get_temps, _set_temps)
 	mesure = property(_get_mesure, _set_mesure)
 	nb_tracks = property(_get_nb_tracks, _set_nb_tracks)
-

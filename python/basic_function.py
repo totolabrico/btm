@@ -14,7 +14,7 @@ def limitValue(cmd,value,inc,Max,Min):
 		to=Min
 	return round(to,2)
 
-def loopValue(cmd,value,inc,Max,Min):	
+def loopValue(cmd,value,inc,Max,Min):
 	to=value
 	if cmd=="-":
 		to-=inc
@@ -23,12 +23,12 @@ def loopValue(cmd,value,inc,Max,Min):
 	if to>Max:
 		to=Min
 	if to<Min:
-		to=Max	
+		to=Max
 	#print("loopvalue",cmd,value,inc,Max,Min,to)
 	return to
 
 
-def loopPas(cmd,value,inc,Max,Min):	# trouver cett algorithme! definir une variable self.begin dans track 
+def loopPas(cmd,value,inc,Max,Min):	# trouver cett algorithme! definir une variable self.begin dans track
 	to=value
 	reste=Max%inc
 	vide=inc-reste
@@ -39,18 +39,18 @@ def loopPas(cmd,value,inc,Max,Min):	# trouver cett algorithme! definir une varia
 		to-=inc
 	elif cmd=="+":
 		to+=inc
-	
+
 	if to==Max+1:
 		to=Min
 	elif to == Min-1:
 		to=Max
-	
+
 	elif to>Max and to >=Max+vide:
 		to-=(Max+vide)
 
 	elif to<Min and to <=Max+vide:
-		to+=(Max+vide)		
-		
+		to+=(Max+vide)
+
 	#print("loopPas",cmd,value,inc,Max,Min,to)
 	return to
 
@@ -82,9 +82,9 @@ def to_string(detail_list,valeur):
 			to=str(len(valeur))
 
 	return to
-	
+
 def from_string(Mot,Type):
-	
+
 	if Type==str:
 		return Mot
 	elif Type==int:
@@ -94,25 +94,3 @@ def from_string(Mot,Type):
 	elif Type==bool:
 		return bool(Mot)
 	
-
-"""
-def check_folder(path):
-	if os.path.exists(path)==False :
-		os.makedirs(path, exist_ok=True)
-
-def save_txt(path,setting,terminaison=""):
-	i=0
-	myfile = open(path,"w")
-	while i<len(setting):
-		myfile.write(Id+" "+setting[i][0]+" "+to_string(True,setting[i][1])+";\n")
-		i+=1
-	myfile.close()
-	sendMessage("load",path)
-"""
-"""
-def play_to_string(playing):
-	if playing:
-		return "playing"
-	else:
-		return "stoped"
-"""

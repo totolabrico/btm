@@ -8,11 +8,11 @@ import copy
 class Partition_track:
 
 
-	def __init__(self,Machine,Id):
+	def __init__(self,Machine,id):
 
 		self.machine=Machine
 		self.setting=[
-		["id",Id],#0
+		["id",id],#0
 		["sample","empty"],#1
 		["vol",0.5], # 2 volume
 		["pan",0], # 3 panning
@@ -28,12 +28,12 @@ class Partition_track:
 
 	def _get_id(self):
 		return self.setting[0][1]
-	def _set_id(self,Id):
-		self.setting[0][1]=Id
+	def _set_id(self,id):
+		self.setting[0][1]=id
 		self.save()
 
 	def _get_sample(self):
-		return self.setting[1][1]	
+		return self.setting[1][1]
 
 	def _set_sample(self,Path):
 		self.setting[1][1]=Path
@@ -49,13 +49,6 @@ class Partition_track:
 		if cmd=="-":
 			self.setting[7][1]=self.setting[7][1][1:]
 			self.save()
-
-	"""
-	def _get_sample_length(self):
-		return 0 # un petit coup ici
-	def _set_sample_length(self,cmd):
-		print ("_set_sample_length:",cmd)
-	"""
 
 	def _get_mute(self):
 		return self.setting[4][1]
@@ -96,41 +89,41 @@ class Partition_track:
 	def _set_notes(self,*args):
 		print ("partition_track / set_notes :cette fonction n'existe pas")
 		return (0)
-		
-	def add_note(self,*args):
-		Id=len(self._notes)
-		self._notes.append(Partition_note(self,Id,*args))	
+
+	def add_element(self,*args):
+		id=len(self._notes)
+		self._notes.append(Partition_note(self,id,*args))
 		self.save()
-		
-	def remove_note(self,removeId):
-		print("remove_note",removeId)
-		del self._notes[removeId]
+
+	def del_element(self,remove_id):
+		print("remove_note",remove_id)
+		del self._notes[remove_id]
 		i=0
 		while i<len(self._notes):
-			self._notes[i].Id=i
+			self._notes[i].id=i
 			i+=1
 		self.save()
-		
-	def paste_note(self,List):
-		
+
+	def paste_element(self,list):
+
 		for element in self.notes:
-			for note in List:
+			for note in list:
 				if element.pas==note.pas:
 					print("pas_identique",element.pas)
-					self.remove_note(element.Id)
-				
-		for note in List:
+					self.remove_note(element.id)
+
+		for note in list:
 			#print(self.notes)
 			self.add_note(note.setting)
 			#self.notes[len(self.notes)-1]=copy.deepcopy(note)
-		
-			
+
+
 	def edit_setting(self,setting,cmd,inc,Max,Min):
 		value=self.setting[setting][1]
 		to=limitValue(cmd,value,inc,Max,Min)
 		self.setting[setting][1]=to
 		self.save()
-	
+
 	def edit_toggle(self,setting,cmd):
 		value=self.setting[setting][1]
 		to=boolValue(cmd)
@@ -142,10 +135,10 @@ class Partition_track:
 		myfile = open(path,"w")
 		for element in self.setting:
 			myfile.write("track_"+str(self.setting[0][1])+" "+element[0]+" "+to_string(True,element[1])+";\n")
-		myfile.close()			
-		sendMessage("load","track_"+str(self.setting[0][1]))		
+		myfile.close()
+		sendMessage("load","track_"+str(self.setting[0][1]))
 		self.save_notes()
-		
+
 	def save_notes(self):
 		path="/home/pi/btm/saves/"+self.machine.partition.name+"/notes_"+str(self.setting[0][1])+".txt"
 		myfile = open(path,"w")
@@ -164,7 +157,7 @@ class Partition_track:
 	sample=property(_get_sample,_set_sample)
 	name=property(_get_name,_set_name)
 	#sample_length=property(_get_sample_length,_set_sample_length)
-	Id=property(_get_id,_set_id)
+	id=property(_get_id,_set_id)
 	vol=property(_get_vol,_set_vol)
 	pan=property(_get_pan,_set_pan)
 	mute=property(_get_mute,_set_mute)
