@@ -12,6 +12,7 @@ class Menu_notes(Menu_editor):
 
 		Menu_editor.__init__(self,Partition,Navigator,Name)
 		self.pointer_setting=1
+		self.pointer_element=0
 
 	def set_nb_element(self):
 		self.nb_element=self.partition.temps*self.track.mesure
@@ -27,22 +28,6 @@ class Menu_notes(Menu_editor):
 	def _set_elements(self):
 		self.elements=self.track.notes
 		self.element=self.elements[self.pointer_element]
-
-	def _set_list_element(self):
-		self.list_element=[]
-		self._list_setting=[]
-		i=0
-		while i<self.nb_element:
-			self.list_element.append(0)
-			if len(self.elements)>0:
-				for element in self.elements:
-					if i == element.element:
-						self.list_element[i]=element
-						if i==self.element:
-							self.note=element
-							self._list_setting=element.setting
-			i+=1
-
 
 	def analyse(self,cmd):
 

@@ -9,8 +9,8 @@ class Menu_tracks(Menu_editor):
 
 	def __init__(self,Partition,Navigator,Name):
 		Menu_editor.__init__(self,Partition,Navigator,Name)
-		self.pointer_pas=0
-
+		self.pointer_setting=0
+		self.pointer_element=0
 
 	def set_nb_pas(self):
 		self.nb_pas=self.partition.nb_tracks
@@ -20,20 +20,9 @@ class Menu_tracks(Menu_editor):
 		global copy_track
 		self.copy_list=copy_track
 
-
-	def _set_list_pas(self):
-		self._list_pas=[]
-		self._list_setting=[]
-
-		if len(self.partition.tracks)!=0:
-			i=0
-			while i<len(self.partition.tracks):
-				self._list.append([str(self.partition.tracks[i].id),self.partition.tracks[i].name])
-				i+=1
-		self._list_pas.append(["add","+"])
-		#self._list.append(["remove","-"])
-
-
+	def _set_elements(self):
+		self.elements=self.partition.tracks
+		self.element=self.elements[self.pointer_element]
 
 	def analyse(self,cmd):
 		global copy_track
@@ -47,15 +36,6 @@ class Menu_tracks(Menu_editor):
 				self.navigator.menu="track"
 			elif self.pointer==length-1:
 				self.partition.add_element()
-		elif cmd=="del":
-			if self.pointer<length-1:
-				self.partition.del_element(self.pointer)
-		elif cmd=="copy":
-			if self.pointer<length-1:
-				copy_track=copy.deepcopy(self.partition.tracks[self.pointer])
-				print (copy_track)
-		elif cmd=="paste":
-			if self.pointer<length-1 and copy_track!='':
-				self.partition.paste_element(copy_track,self.pointer+1)
+
 
 		self._set_list()

@@ -91,8 +91,7 @@ class Partition_track:
 		return (0)
 
 	def add_element(self,*args):
-		id=len(self._notes)
-		self._notes.append(Partition_note(self,id,*args))
+		self._notes.append(Partition_note(self,*args))
 		self.save()
 
 	def del_element(self,remove_id):
@@ -104,18 +103,25 @@ class Partition_track:
 			i+=1
 		self.save()
 
-	def paste_element(self,list):
-
+	def paste_element(self,list,id):
+					
+		if len(list)>0:
+			to=[]
+			i=0
+			while i<len(list):
+				if list[i]!=0:
+					list[i].pas+=id-list[i].pas+i
+					to.append(list[i])
+				i+=1
+				
 		for element in self.notes:
-			for note in list:
+			for note in to:
 				if element.pas==note.pas:
 					print("pas_identique",element.pas)
 					self.remove_note(element.id)
 
-		for note in list:
-			#print(self.notes)
+		for note in to:
 			self.add_note(note.setting)
-			#self.notes[len(self.notes)-1]=copy.deepcopy(note)
 
 
 	def edit_setting(self,setting,cmd,inc,Max,Min):
@@ -147,7 +153,7 @@ class Partition_track:
 		myfile.close()
 		sendMessage("load","notes_"+str(self.setting[0][1]))
 
-	def erase(self):
+	def erase_files(self):
 		path="/home/pi/btm/saves/"+self.machine.partition.name+"/track_"+str(self.setting[0][1])+".txt"
 		os.remove(path)
 		path="/home/pi/btm/saves/"+self.machine.partition.name+"/notes_"+str(self.setting[0][1])+".txt"

@@ -38,7 +38,7 @@ class Clavier:
                 key="set+"
             if key=="edit":
                 key="back" 
-            if key=="del_unvalid":
+            if key=="add":
                 key="del"
             if key=="copy":
                 key="paste"   

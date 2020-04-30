@@ -110,15 +110,14 @@ class Draw_oled:
 
     def draw_sequence(self):
 
-        nb_element=self.menu.track.mesure*self.menu.partition.temps
-        draw.text((X[1],Y[3]),"element:"+str(self.menu.element+1)+"/"+str(nb_element),font=font, fill=color[1])
+        draw.text((X[1],Y[3]),"id:"+str(self.menu.pointer_element+1)+"/"+str(len(self.menu.list_pointer)),font=font, fill=color[1])
         color_element=color[0]
 
         rect_width=round((width-50)/self.menu.element_per_line)
         rect_height=5
         y=Y[1]+5
         j=0
-        min=self.menu.draw_menu.origin
+        min=self.menu.draw_menu_editor.origin
         while j<2:
             i=0
             x=X[1]

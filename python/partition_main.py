@@ -80,15 +80,14 @@ class Partition_main:
 	def get_track(self,id):
 		return str(self.tracks[id].id)+":"+self.tracks[id].sample
 
-	def add_element(self):
-		id_track=len(self.tracks)+1
-		self.tracks.append(Partition_track(self.machine,id_track))
+	def add_element(self,args*):
+		self.tracks.append(Partition_track(self.machine,id,args*))
 		self.setting[6][1]+=1
 		self.save()
 
 	def del_element(self,id):
 		for element in self.tracks:
-			element.erase()
+			element.erase_files()
 
 		del self.tracks[id]
 		self.setting[6][1]-=1
@@ -99,10 +98,12 @@ class Partition_main:
 			i+=1
 		self.save()
 
-	def paste_track(self,Track,id):
-		self.tracks.insert(id,Track)
-		self.setting[6][1]+=1
-		print("len",len(self.tracks))
+	def paste_element(self,list,id):
+		
+		for element in list:
+			self.tracks.insert(id,element)
+			self.setting[6][1]+=1
+			print("len",len(self.tracks))
 		i=0
 		while i<len(self.tracks):
 			self.tracks[i].id=i+1

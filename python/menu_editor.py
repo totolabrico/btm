@@ -11,12 +11,11 @@ class Menu_editor(Menu):
 		self.is_selecting=False
 		self.copy_list=[]
 		self._pointer_element=0# pointer de pas
-		self.list_element=[]
-		self.nb_element=0
-		self.set_nb_element()
+		self._list_element=[]
 		self._element_per_line=0
 		self._set_element_per_line()
-
+		self.draw_menu_editor=Draw_menu_editor(self)
+		
 	def get_copy_list(self):
 		return self.copy_list
 	def set_copy_list(self)
@@ -26,8 +25,6 @@ class Menu_editor(Menu):
 		return self._list_element
 	def _set_list_element(self):
 	    pass
-	def set_nb_element(self):
-		pass
 
 	def _get_element_per_line(self):
 		return self._element_per_line
@@ -38,6 +35,21 @@ class Menu_editor(Menu):
 		return self._pointer_element
 	def _set_pointer_element(self,pas):
 		self._pointer_element=pas
+
+	def _set_list_element(self):
+		self.list_element=[]
+		self._list_setting=[]
+		i=0
+		while i<len(self.list_element):
+			self.list_element.append(0)
+			if len(self.elements)>0:
+				for element in self.elements:
+					if i == element.element:
+						self.list_element[i]=element
+						if i==self.element:
+							self.note=element
+							self._list_setting=element.setting
+			i+=1
 
 	def analyse(self,cmd):
 
@@ -62,32 +74,26 @@ class Menu_editor(Menu):
 
 		elif cmd=="paste":
 			paste_list = copy.deepcopy(self.copy_list)
-			if len(paste_list)>0:
-				to=[]
-				i=0
-				while i<len(paste_list):
-					if paste_list[i]!=0:
-						paste_list[i].pas+=self.pointer_element-paste_list[i].pas+i
-						to.append(paste_list[i])
-					i+=1
+			self.element(paste_element,self.pointer_element)
 
-				self.track.paste_element(to)
-
+		elif cmd=="add":
+			self.element.add_element(self.pointer_element)
+				
 		elif cmd=="del":
 			i=self.selection[0]
 			while i<=self.selection[1]:
 				if self.list_element[i]!=0:
-					self.track.remove_element(self.list_element[i].Id)
+					self.element.remove_element(self.pointer_element)
 				i+=1
 
 		elif cmd=="right":
-			self.pointer_element=loopPas("+",self._pointer_element,1,self.nb_element-1,0)
+			self.pointer_element=loopPas("+",self._pointer_element,1,len(self.list_element)-1,0)
 		elif cmd=="left":
-			self.pointer_element=loopPas("-",self._pointer_element,1,self.nb_element-1,0)
+			self.pointer_element=loopPas("-",self._pointer_element,1,len(self.list_element)-1,0)
 		elif cmd=="up":
-			self.pointer_element=loopPas("-",self._pointer_element,self.element_per_line,self.nb_element-1,0)
+			self.pointer_element=loopPas("-",self._pointer_element,self.element_per_line,len(self.list_element)-1,0)
 		elif cmd=="down":
-			self.pointer_element=loopPas("+",self._pointer_element,self.element_per_line,self.nb_element-1,0)
+			self.pointer_element=loopPas("+",self._pointer_element,self.element_per_line,len(self.list_element)-1,0)
 
 		if self.is_selecting:
 			self.selection[1]=self.pointer_element

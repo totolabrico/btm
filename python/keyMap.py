@@ -34,7 +34,7 @@ editor_keys={
 	10:"edit",
 	#5:"back",
 	5:"switch",
-	13:"del_unvalid",
+	13:"add",
 	#7:"+",
 	#15:"-",
 	7:"copy",
