@@ -97,15 +97,16 @@ class Partition_main:
 			self.tracks[i].Id=i+1
 			self.tracks[i].save()
 			i+=1
-		
 		self.save()
 		
 	def paste_track(self,Track,Id):
 		self.tracks.insert(Id,Track)
 		self.setting[6][1]+=1
+		print("len",len(self.tracks))
 		i=0
-		while i<self.nb_tracks:
+		while i<len(self.tracks):
 			self.tracks[i].Id=i+1
+			self.tracks[i].save()
 			i+=1
 		self.save()
 
@@ -133,6 +134,7 @@ class Partition_main:
 		while i<len(self.tracks):
 			self.tracks[i].save()
 			i+=1
+			
 	def check_save_folder(self):
 		path="/home/pi/btm/saves/"+self.setting[0][1]
 		if self.setting[0][1]=="default":	

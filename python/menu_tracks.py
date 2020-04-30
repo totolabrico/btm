@@ -35,7 +35,7 @@ class Menu_tracks(Menu):
 				copy_track=copy.deepcopy(self.partition.tracks[self.pointer])
 				print (copy_track)
 		elif button=="paste":
-			if self.pointer<length-1:
-				self.partition.paste_track(copy_track,self.pointer)
+			if self.pointer<length-1 and copy_track!='':
+				self.partition.paste_track(copy_track,self.pointer+1)
 				
 		self._set_list()

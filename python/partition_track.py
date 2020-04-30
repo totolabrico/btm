@@ -154,16 +154,6 @@ class Partition_track:
 		myfile.close()
 		sendMessage("load","notes_"+str(self.setting[0][1]))
 
-	def load_notes(self,Path):
-		self._notes=[]
-		path=Path+"/notes_"+str(self.setting[0][1])+".txt"
-		myfile = open(path,"r")
-		i=0
-		for element in myfile:
-			self._notes.append(Partition_note(self,0,i))
-			self._notes[i].load(element)
-			i+=1
-		
 	def erase(self):
 		path="/home/pi/btm/saves/"+self.machine.partition.name+"/track_"+str(self.setting[0][1])+".txt"
 		os.remove(path)
