@@ -14,23 +14,24 @@ class Menu_notes(Menu_editor):
 		self.pointer_setting=1
 		self.pointer_element=0
 
-	def set_nb_element(self):
-		self.nb_element=self.partition.temps*self.track.mesure
-		temps=self.partition.temps
-		self._element_per_line=4*temps
-		if temps>=5:
-			self._element_per_line=2*temps
-
-	def set_copy_list(self)
+	def set_copy_list(self):
 		global copy_notes
 		self.copy_list=copy_notes
 
-	def _set_elements(self):
-		self.elements=self.track.notes
-		self.element=self.elements[self.pointer_element]
+	def set_elements(self):
+		self.set_nb_element()
+		self.mother_element=self.track
+		self.child_elements=self.track.notes
 
+	def set_nb_element(self):
+		self.nb_element=self.partition.temps*self.track.mesure
+		temps=self.partition.temps
+		self.element_per_line=4*temps
+		if temps>=5:
+			self.element_per_line=2*temps
+				
 	def analyse(self,cmd):
-
+		Menu_editor.analyse(self,cmd)
 		if cmd=="back":
 			self.navigator.menu="track"
 
@@ -49,21 +50,12 @@ class Menu_notes(Menu_editor):
 					self.note.begin=cmd
 				elif setting=="length":
 					self.note.length=cmd
-			else:
-				if cmd=="+":
-					self.pointer_setting=1
-					self.track.add_element(self.pointer_element)
-					print("add note ",self.pointer_element)
 
-		elif type(cmd)==list_setting:
+
+		elif type(cmd)==list:
 			if cmd[0]=="track":
 				self.switch_track(cmd[1])
 
-		if len(self.list_setting)>0:
-			if cmd=="set-":
-				self.pointer_setting=loopValue("+",self.pointer_setting,1,len(self.list_setting)-1,1)
-			elif cmd=="set+":
-				self.pointer_setting=loopValue("-",self.pointer_setting,1,len(self.list_setting)-1,1)
-
-
-		self._set_list()
+		self.set_elements()
+		self._set_list_setting()
+		self._set_list_element()

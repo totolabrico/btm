@@ -2,8 +2,8 @@ from menu import*
 
 class Menu_main(Menu):
 
-	def _set_list(self):
-		copy_list=[]
+	def _set_list_setting(self):
+		self._list_setting=[]
 		setting=self.partition.setting
 		i=1
 		while i<len(setting)-1:
@@ -11,34 +11,34 @@ class Menu_main(Menu):
 				to=["machine","stoped"]
 				if setting[i][1]==True:
 					to= ["machine","playing"]
-				copy_list.append(to)
+				self._list_setting.append(to)
 			else:
-				copy_list.append(setting[i])
+				self._list_setting.append(setting[i])
 			i+=1
-		copy_list.append("save")
-		copy_list.append("load")
-		self._list=copy_list
+		self._list_setting.append("save")
+		self._list_setting.append("load")
 
 	def analyse(self,cmd):
-		length=len(self._list)
+		length=len(self._list_setting)
 		Menu.analyse(self,cmd)
 		if cmd=="edit":
-			if self.pointer==5:
+			if self.pointer_setting==5:
 				self.navigator.menu="save"
-			elif self.pointer==6:
+			elif self.pointer_setting==6:
 				self.navigator.menu="load"
 			else:
 				self.navigator.menu="tracks"
+				
 		elif cmd=="+" or cmd=="-":
-			if self.pointer==0:
+			if self.pointer_setting==0:
 				self.partition.playing=cmd
-			if self.pointer==1:
+			if self.pointer_setting==1:
 				self.partition.bpm=cmd
-			if self.pointer==2:
+			if self.pointer_setting==2:
 				self.partition.master=cmd
-			if self.pointer==3:
+			if self.pointer_setting==3:
 				self.partition.temps=cmd
-			if self.pointer==4:
+			if self.pointer_setting==4:
 				self.partition.mesure=cmd
 
-		self._set_list()
+		self._set_list_setting()

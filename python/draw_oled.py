@@ -65,13 +65,12 @@ class Draw_oled:
                 else:
                     self.draw_list()
 
-                    if self.menu.name=="notes":
+                    if self.menu.name=="tracks" or self.menu.name=="notes":
                         self.draw_sequence()
                     else:
                         self.draw_pointer()
 
                 self.draw_end()
-
 
 
     def draw_begin(self):
@@ -92,7 +91,7 @@ class Draw_oled:
     def draw_list(self):
         y=Y[1]
         x=X[1]
-        if self.menu.name=="notes":
+        if self.menu.name=="notes" or self.menu.name=="tracks":
             y=Y[3]
             x=X[3]
 
@@ -103,14 +102,17 @@ class Draw_oled:
                 to=str(element)
             draw.text((x,y),to,font=font, fill=255)
             y+=line_height[0]
+        #print("draw-list",self.menu.draw_menu.list)
+
 
     def draw_pointer(self):
         y=self.menu.draw_menu.pointer_display*line_height[0]+Y[1]+3
         draw.rectangle((X[0],y,X[0]+3,y+3), outline=0, fill=255)
 
+
     def draw_sequence(self):
 
-        draw.text((X[1],Y[3]),"id:"+str(self.menu.pointer_element+1)+"/"+str(len(self.menu.list_pointer)),font=font, fill=color[1])
+        draw.text((X[1],Y[3]),str(self.menu.pointer_element+1)+"/"+str(self.menu.draw_menu.max),font=font, fill=color[1])
         color_element=color[0]
 
         rect_width=round((width-50)/self.menu.element_per_line)
@@ -121,12 +123,12 @@ class Draw_oled:
         while j<2:
             i=0
             x=X[1]
-            while i<len(self.menu.draw_menu.list[j]):
+            while i<len(self.menu.draw_menu_editor.list[j]):
                 color_element=color[0]
-                if self.menu.draw_menu.list[j][i]!=0:
+                if self.menu.draw_menu_editor.list[j][i]!=0:
                     color_element=color[1]
                 draw.rectangle((x,y,x+rect_width,y+rect_height), outline=color[1], fill=color_element)
-                if i==self.menu.draw_menu.pointer_element[0] and j==self.menu.draw_menu.pointer_element[1]:
+                if i==self.menu.draw_menu_editor.pointer_display[0] and j==self.menu.draw_menu_editor.pointer_display[1]:
                     draw.rectangle((x,y-1,x+rect_width,y-2), outline=color[1], fill=color[1])
 
                 value=min+i+j*self.menu.element_per_line
@@ -145,7 +147,7 @@ class Draw_oled:
             j+=1
             y+=rect_height+5
 
-
+        #print("draw-sequence",self.menu.draw_menu_editor.list)
     def draw_save(self):
         name=self.menu.save_name+self.menu.letter()
         draw.text((X[1],Y[2]),"name: "+name,font=font, fill=255)

@@ -8,7 +8,7 @@ import copy
 class Partition_track:
 
 
-	def __init__(self,Machine,id):
+	def __init__(self,Machine,id,*args):
 
 		self.machine=Machine
 		self.setting=[
@@ -20,8 +20,17 @@ class Partition_track:
 		["solo",False], # 5 solo
 		["mesure",self.machine.partition.mesure], # 6 nombre de mesures
 		["name","empty"] # 7 mesure de départ
-		#["length",0] # 7 durée de l'échantillon
+		#["length",0] # 7 durée de l'échantillon*
 		]
+		
+		setting=args
+		if type(setting)==list:
+			for element_in in setting:
+				for element in self.setting:
+					if element_in[0]==element[0]:
+						element[1]=element_in[1]
+		
+		
 		self.sample_length=0
 		self._notes=[]
 		self.save()
@@ -94,23 +103,21 @@ class Partition_track:
 		self._notes.append(Partition_note(self,*args))
 		self.save()
 
-	def del_element(self,remove_id):
-		print("remove_note",remove_id)
-		del self._notes[remove_id]
-		i=0
-		while i<len(self._notes):
-			self._notes[i].id=i
-			i+=1
+	def del_element(self,pas):
+		print("remove_note",pas)
+		for element in self.notes:
+			if element.pas==pas:
+				del element
 		self.save()
 
-	def paste_element(self,list,id):
+	def paste_element(self,list,Pas):
 					
 		if len(list)>0:
 			to=[]
 			i=0
 			while i<len(list):
 				if list[i]!=0:
-					list[i].pas+=id-list[i].pas+i
+					list[i].pas+=Pas-list[i].pas+i
 					to.append(list[i])
 				i+=1
 				
@@ -118,7 +125,7 @@ class Partition_track:
 			for note in to:
 				if element.pas==note.pas:
 					print("pas_identique",element.pas)
-					self.remove_note(element.id)
+					self.del_element(element.id)
 
 		for note in to:
 			self.add_note(note.setting)

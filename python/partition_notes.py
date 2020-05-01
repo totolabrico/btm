@@ -2,7 +2,7 @@ from basic_function import*
 
 class Partition_note:
 
-	def __init__(self,Track,id,*args):
+	def __init__(self,Track,*args):
 
 		self.track=Track
 		self.setting=[
@@ -24,14 +24,6 @@ class Partition_note:
 					if element_in[0]==element[0]:
 						element[1]=element_in[1]
 
-		self._id=id
-		print ("note id",id)
-
-	def _get_id(self):
-		return self._id
-	def _set_id(self,id):
-		self._id=id
-
 	def _get_pas(self):
 		return self.setting[0][1]
 	def _set_pas(self,Pas):
@@ -46,7 +38,7 @@ class Partition_note:
 		value=self.setting[setting][1]
 		to=limitValue(cmd,value,inc,Max,Min)
 		if to==0:
-			self.track.remove_note(self.id)
+			self.track.remove_note(self.pas)
 		else:
 			self.setting[setting][1]=to
 		self.track.save()

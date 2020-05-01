@@ -1,8 +1,8 @@
 track_1 id 1;
-track_1 sample /home/pi/audiosamples/Chello/Roland_Tr-606/TR606TomLo05.wav;
-track_1 vol 0.58;
+track_1 sample empty;
+track_1 vol 0.5;
 track_1 pan 0;
 track_1 mute 0;
 track_1 solo 0;
 track_1 mesure 4;
-track_1 name TR606TomLo05;
+track_1 name empty;

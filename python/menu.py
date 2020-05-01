@@ -22,7 +22,7 @@ class Menu:
 		if Name=="main":
 			self.title="main: "+self.partition.name
 		if Name=="notes" or Name=="track":
-			self.track=self.partition.tracks[self.navigator.track]
+			self.track=self.partition.tracks[self.navigator.pointer_track]
 			self.title=str(self.track.id)+":"+self.track.name
 
 
@@ -44,7 +44,7 @@ class Menu:
 
 	def switch_track(self,cmd):
 		if len(self.partition.tracks)>1:
-			self.navigator.track=cmd
+			self.navigator.pointer_track=cmd
 			self.navigator.menu=self.name
 
 

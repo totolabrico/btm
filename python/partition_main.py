@@ -80,8 +80,9 @@ class Partition_main:
 	def get_track(self,id):
 		return str(self.tracks[id].id)+":"+self.tracks[id].sample
 
-	def add_element(self,args*):
-		self.tracks.append(Partition_track(self.machine,id,args*))
+	def add_element(self,*args):
+		id=len(self.tracks)+1
+		self.tracks.append(Partition_track(self.machine,id,*args))
 		self.setting[6][1]+=1
 		self.save()
 
@@ -99,10 +100,11 @@ class Partition_main:
 		self.save()
 
 	def paste_element(self,list,id):
-		
+		i=0
 		for element in list:
-			self.tracks.insert(id,element)
+			self.tracks.insert(id+i,element)
 			self.setting[6][1]+=1
+			i+=1
 			print("len",len(self.tracks))
 		i=0
 		while i<len(self.tracks):

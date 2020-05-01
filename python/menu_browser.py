@@ -14,13 +14,13 @@ class Menu_browser(Menu):
 		return self._path
 	def _set_path(self,Path):
 		self._path=Path
-		self._set_list()
+		self._set_list_setting()
 
-	def _set_list(self):
-		self._list=[]
+	def _set_list_setting(self):
+		self._list_setting=[]
 		for element in os.listdir(self._path):
 			if element[:1]!=".":
-				self._list.append(element)
+				self._list_setting.append(element)
 
 	def analyse(self,cmd):
 		Menu.analyse(self,cmd)
@@ -28,9 +28,9 @@ class Menu_browser(Menu):
 		if cmd=="back":
 			self.navigator.menu="track"
 		elif cmd=="edit":
-			if self._list[self.pointer][-4:].lower()==".wav":
+			if self._list_setting[self.pointer_setting][-4:].lower()==".wav":
 				#print("browser_analyse",len(self.partition.tracks),self.navigator.track,self.pointer)
-				self.partition.tracks[self.navigator.track].sample=self.path+self._list[self.pointer]
+				self.partition.tracks[self.navigator.pointer_track].sample=self.path+self._list_setting[self.pointer_setting]
 				self.navigator.menu="track"
 
 		elif cmd=="left":
@@ -43,16 +43,16 @@ class Menu_browser(Menu):
 			if len(to)>=9:# pour ne pas remonter plus haut que /home/pi/
 				self.path=to
 				#self._set_list()
-				self.pointer=0
+				self.pointer_setting=0
 
 		elif cmd=="right":
-			to=self._path+self._list[self.pointer]
+			to=self._path+self._list_setting[self.pointer_setting]
 			print("right:",to)
 			if os.path.isdir(to)==True:
 				self.path=to+"/"
 				#self._set_list()
-				self.pointer=0
+				self.pointer_setting=0
 
-		self._set_list()
+		self._set_list_setting()
 
 	path=property(_get_path,_set_path)

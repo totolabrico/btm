@@ -20,8 +20,8 @@ class Navigator:
 		self.machine=Machine
 		date = datetime.datetime.now()
 		self.name="default"
-		self._track=0
-		self._setting=0
+		self._pointer_track=0
+		self._pointer_setting=0
 		self.key=Clavier(self)
 		self.encoder=Encoder(self)
 		self.menu_browser=Menu_browser(self.machine.partition,self,"browser")
@@ -33,18 +33,18 @@ class Navigator:
 		self.display = threading.Thread(target=self.draw_oled.run_draw(), args=())
 		self.display.start()
 
-	def _get_track(self):
-		return self._track
-	def _set_track(self,cmd):
+	def _get_pointer_track(self):
+		return self._pointer_track
+	def _set_pointer_track(self,cmd):
 		if cmd == "+" or cmd =="-":
-			self._track=loopValue(cmd,self._track,1,len(self.machine.partition.tracks)-1,0)
+			self._pointer_track=loopValue(cmd,self._track,1,len(self.machine.partition.tracks)-1,0)
 		else:
-			self._track=cmd
+			self._pointer_track=cmd
 
-	def _get_setting(self):
-		return self._setting
-	def _set_setting(self,cmd):
-		self._setting=cmd
+	def _get_pointer_setting(self):
+		return self._pointer_setting
+	def _set_pointer_setting(self,cmd):
+		self._pointer_setting=cmd
 
 	def _get_menu(self):
 		return self._menu
@@ -72,6 +72,8 @@ class Navigator:
 		else:
 			self.menu.analyse(cmd)
 			self.menu.draw_menu.set_draw()
+			if self.menu.name=="tracks" or self.menu.name=="notes":
+				self.menu.draw_menu_editor.set_draw()
 			self.draw_oled.set_menu(self.menu)
 
 	def save_set(self):
@@ -98,5 +100,5 @@ class Navigator:
 		self.menu="main"
 
 	menu=property(_get_menu,_set_menu)
-	track=property(_get_track,_set_track)
-	setting=property(_get_setting,_set_setting)
+	pointer_track=property(_get_pointer_track,_set_pointer_track)
+	pointer_setting=property(_get_pointer_setting,_set_pointer_setting)
