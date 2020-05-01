@@ -5,8 +5,10 @@ class Menu_main(Menu):
 	def _set_list_setting(self):
 		self._list_setting=[]
 		setting=self.partition.setting
-		i=1
+		i=0
 		while i<len(setting)-1:
+			if i==0:
+				self.title=setting[i]
 			if i==1:
 				to=["machine","stoped"]
 				if setting[i][1]==True:
@@ -28,17 +30,8 @@ class Menu_main(Menu):
 				self.navigator.menu="load"
 			else:
 				self.navigator.menu="tracks"
-				
+
 		elif cmd=="+" or cmd=="-":
-			if self.pointer_setting==0:
-				self.partition.playing=cmd
-			if self.pointer_setting==1:
-				self.partition.bpm=cmd
-			if self.pointer_setting==2:
-				self.partition.master=cmd
-			if self.pointer_setting==3:
-				self.partition.temps=cmd
-			if self.pointer_setting==4:
-				self.partition.mesure=cmd
+			self.partition.sort_cmd(self.pointer_setting,cmd)
 
 		self._set_list_setting()

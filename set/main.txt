@@ -1,0 +1,11 @@
+main playing 0;
+main bpm 120;
+main mute 0;
+main vol 0.5;
+main pan 0;
+main pitch 0;
+main tone 0;
+main temps 4;
+main mesure 8;
+main begin 0;
+main end 8;

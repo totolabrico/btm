@@ -2,18 +2,6 @@ import os, sys
 from osc import*
 
 
-def limitValue(cmd,value,inc,Max,Min):
-	to=value
-	if cmd=="-":
-		to-=inc
-	if cmd=="+":
-		to+=inc
-	if to>Max:
-		to=Max
-	if to<Min:
-		to=Min
-	return round(to,2)
-
 def loopValue(cmd,value,inc,Max,Min):
 	to=value
 	if cmd=="-":
@@ -54,12 +42,6 @@ def loopPas(cmd,value,inc,Max,Min):	# trouver cett algorithme! definir une varia
 	#print("loopPas",cmd,value,inc,Max,Min,to)
 	return to
 
-def boolValue(cmd):
-	if cmd=="-":
-		return False
-	elif cmd=="+":
-		return True
-
 
 def to_string(detail_list,valeur):
 	to=""
@@ -93,4 +75,3 @@ def from_string(Mot,Type):
 		return float(Mot)
 	elif Type==bool:
 		return bool(Mot)
-	
