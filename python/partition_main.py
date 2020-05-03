@@ -7,7 +7,6 @@ class Partition_main(Partition):
 		self.name="main"
 		self.child_name="track"
 		self.child=Partition_track
-
 		self.setting=[
 		# 0:name / 1:value / 2:min / 3:max / 4:inc
 		["playing",False],

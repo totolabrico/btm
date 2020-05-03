@@ -10,9 +10,7 @@ class Partition_track(Partition):
 		self.child=Partition_note
 
 		self.setting=[
-        	["sample","empty"],
-	        ["name","empty"],
-			["solo",False]
+        	["sample",["no_path","no_name"]]
 			]
 
 		Partition.__init__(self)

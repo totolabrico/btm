@@ -8,8 +8,6 @@ class Partition_note(Partition):
 		self.child_name="no_child"
 		self.child=None
 
-		self.setting=[
-		["solo",False]
-		]
+		self.setting=[]
 
 		Partition.__init__(self)

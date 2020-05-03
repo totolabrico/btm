@@ -1,12 +1,12 @@
-track_1 sample empty;
-track_1 name empty;
+track_1 sample no_path no_name;
+track_1 loop 1;
 track_1 solo 0;
 track_1 mute 0;
 track_1 vol 0.5;
 track_1 pan 0;
 track_1 pitch 0;
 track_1 tone 0;
-track_1 temps 4;
-track_1 mesure 8;
 track_1 begin 0;
 track_1 end 8;
+track_1 temps 4;
+track_1 mesure 8;
