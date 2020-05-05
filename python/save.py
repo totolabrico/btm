@@ -1,8 +1,9 @@
 import os
-#from osc import*
+from pythonosc import osc_message_builder
+from pythonosc import udp_client
+client = udp_client.UDPClient('localhost', 12000)
+path="/home/pi/btm/set/"
 
-#path="./set/"
-path="/home/toto/btm/set/"
 def clean(Name):
     global path
     if Name=="all":
@@ -20,8 +21,16 @@ def save(name,setting):
 		myfile.write(name+" "+setting[i][0]+" "+to_string(setting[i][1])+";\n")
 		i+=1
 	myfile.close()
-	#sendMessage("load",self.name) A DECOMMENTER !
+	sendMessage("load",name)
 
+def sendMessage(cmd,*args):
+
+	addr="/"+str(cmd)
+	msg = osc_message_builder.OscMessageBuilder(address=addr)
+	for element in args:
+		msg.add_arg(element)
+	msg = msg.build()
+	client.send(msg)
 
 def to_string(valeur):
 	to=""

@@ -10,3 +10,5 @@ track_1 begin 0;
 track_1 end 8;
 track_1 temps 4;
 track_1 mesure 8;
+track_1 lpf 4;
+track_1 hpf 8;

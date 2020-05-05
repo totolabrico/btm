@@ -1,28 +1,20 @@
 import copy
 import dill as pickle
 from clavier import*
-"""
 from encoder import*
-from draw import*
-from led import *
-"""
-from partition_main import*
-from navigator import*
+from partition_init import*
 
 class Machine:
 
 	def __init__(self):
-		self.partition=Partition_main()
-		self.navigator=Navigator(self)
+		self.partition=Partition_main(None)
 		self.clavier=Clavier(self)
-		"""
 		self.encoder=Encoder(self)
-		self.draw=Draw(self)
-		self.led=Led(self)
-		"""
+		self.oled = threading.Thread(target=self.partition.draw(), args=())
+		self.oled.start()		
 
 	def save_set(self):
-		path="./saves/"+self.partition.name
+		path="home/pi/btm/saves/"+self.partition.name
 		with open(path,'wb') as fichier:
 			mon_pickler=pickle.Pickler(fichier)
 			mon_pickler.dump(self.partition)

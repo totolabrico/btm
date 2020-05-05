@@ -4,8 +4,8 @@ import threading
 
 class Encoder:
                 
-    def __init__(self,Navigator):
-        self.navigator=Navigator
+    def __init__(self,Machine):
+        self.machine=Machine
         self.clk = 17
         self.dt = 18
         GPIO.setmode(GPIO.BCM)
@@ -22,9 +22,9 @@ class Encoder:
                 if clkState != self.clkLastState:
                     dtState = GPIO.input(self.dt)
                     if dtState != clkState:
-                        self.navigator.analyse_cmd("+")
+                        self.machine.navigator.analyse_cmd("encoder","+")
                     else:
-                        self.navigator.analyse_cmd("-")
+                        self.machine.navigator.analyse_cmd("encoder","-")
 
                 self.clkLastState = clkState
                 sleep(0.01)

@@ -1,5 +1,4 @@
 from pynput import keyboard
-from clavier_map import*
 import time
 
 class Clavier:
@@ -12,31 +11,65 @@ class Clavier:
 
     def on_press(self,Key):
         key=getMap(Key)
-
-        if key=="switch":
-            self.switch_on=True
-
-        if self.switch_on==True:
-            if key=="up":
-                key="+"
-            if key=="down":
-                key="-"
-            if key=="left":
-                key="set-"
-            if key=="right":
-                key="set+"
-            if key=="edit":
-                key="back"
-            if key=="add":
-                key="del"
-            if key=="copy":
-                key="paste"
-        self.machine.navigator.analyse_cmd(key)
-
+        self.machine.partition.sort(key[0],key[1])
 
     def on_release(self,Key):
         key=getMap(Key)
-        if key=="switch":
-            self.switch_on=False
-        if key=="edit":
-            self.machine.navigator.analyse_cmd("edit_release")
+
+
+keys={
+	0:"-",
+	1:"+",
+	2:"Key.enter",
+	3:[",","Key.delete"],
+	4:["0","Key.insert"],
+	5:"*",
+	6:["9","Key.page_up"],
+	7:["6","Key.right"],
+	8:["3","Key.page_down"],
+	9:["/"],
+	10:["8","Key.up"],
+	11:"<65437>",
+	12:["2","Key.down"],
+	13:"Key.num_lock",
+	14:["7","Key.home"],
+	15:["4","Key.left"],
+	16:["1","Key.end"]
+	}
+
+
+''' MAPPING
+	0	1		2
+	5	6	7	8	3
+	9	10	11	12	4
+	13	14	15	16
+'''
+
+editor_keys={
+	1:["switch","menu"],
+	2:["switch","mode"],
+	7:["move",["y","-"]],
+	15:["move",["y","+"]],
+	10:["move",["x","-"]],
+	12:["move",["x","+"]],
+	5:["edit","+"],
+	9:["edit","-"],
+    13:["edit","toggle"]
+	}
+
+def getMap(key):
+	global keys,editor_keys
+	keyId=-1
+	for cle, valeur in keys.items():
+		if type(valeur)==list:
+			for value in valeur:
+				if str(key)==str(value) or str(key)=="'"+str(value)+"'":
+					keyId=cle
+		else:
+			if str(key)==str(valeur) or str(key)=="'"+str(valeur)+"'":
+				keyId =cle
+	to="none"
+	for cle, valeur in editor_keys.items():
+		if keyId==cle:
+			to= valeur
+	return to
