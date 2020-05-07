@@ -16,16 +16,17 @@ class Partition_main(Partition):
 
 		clean("all")
 		Partition.__init__(self)
-		self.append_children(1)
+		self.edit_children("+")
 		
 	def set_grid_children(self): # creer la grille d'element
-		global classic_children_grid
-		self.grid_children={
+		grid_children={
 			"x":[1,10],# 1 tas de 10
 			"y":2,
 			"max":len(self.children),
 			"reste":len(self.children)%10
 			}
+		for name,value in grid_children.items():
+			self.grid_children[name]=value
 
 class Partition_track(Partition):
 
@@ -51,13 +52,14 @@ class Partition_track(Partition):
 				temps=element[1]
 		x_max_mesure=int(16/temps)
 
-		self.grid_children={
+		grid_children={
 			"x":[x_max_mesure,temps],# x tas de temps
 			"y":2,
 			"max":mesure*temps,
 			"reste":mesure%x_max_mesure
 			}
-
+		for name,value in grid_children.items():
+			self.grid_children[name]=value
 class Partition_note(Partition):
 
 	def __init__(self,mother,Id):

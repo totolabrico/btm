@@ -23,7 +23,7 @@ color=[0,255]
 Y_inc=[10,15]
 X=[0,10,20,70]
 Y=[0,20,35,45]
-
+setting_height=height/6
 
 def draw_begin():
     global draw,image,width,height
@@ -35,79 +35,34 @@ def draw_end():
     disp.display()
     
 
-def draw_title(Title,x,y):
-    draw.rectangle((x,y,width,y+Y_inc[0]), outline=255, fill=255)
-    draw.text((x+2,y),Title,font=font, fill=0)
+def draw_title(Title):
+    draw.rectangle((0,0,width,setting_height), outline=255, fill=255)
+    draw.text((2,0),Title,font=font, fill=0)
 
-
-######################## a revoir !
-
-def draw_settings(partition):
-    global width,X,Y,Y_inc
-    
-    draw_begin()
-    x=X[0]
-    y=Y[0]    
-    x_inc=(width-x)/Grid[0]
-    draw_title(partition.name,x,y)
-    y+=Y_inc[1]
-    i=partition.menu[1]*grid_setting[0]*grid_setting[1]
-    line=0
-    while i<len(partition.setting):
-        pointed=False
-        if i==partition.pointer[0]:
-            pointed=True
-        if line<Grid[1]:
-            draw_setting(partition.setting[i],x,y+line*Y_inc[0],pointed,x_inc)
-            x+=x_inc
-            if (i+1)%Grid[0]==0:
-                x=X[0]
-                line+=1
-        i+=1
-
-    draw_end()
-    
-def draw_setting(setting,x,y,pointed,width_setting):
-    name=setting[0]
-    value=str(float(setting[1]))
-    if pointed==True:
-        draw.rectangle((x,y,width_setting,y+Y_inc[0]), outline=255, fill=0)
-    draw.text((x+2,y),name+":"+value,font=font, fill=255)
-
-def draw_children(partition):
-    global width,X,Y,Y_inc
-    draw_begin()
-    x=X[0]
-    y=Y[0]    
-    x_inc=(width-x)/Grid[0]
-    draw_title(partition.child_name,x,y)
-    y+=Y_inc[1]
-    i=0
-    line=0
-
-    while i<Max:
-        pointed=False
-        if i==partition.pointer[1]:
-            pointed=True
-        exist=False
-        for element in List_children:
-            if element.id==i+1:
-                exist=True
-        if line<Grid[1]:
-            draw_child(partition.children,x,y+line*Y_inc[0],exist,pointed,x_inc)
-            x+=x_inc
-            if (i+1)%Grid[0]==0:
-                x=X[0]
-                line+=1
-        i+=1
-
-    draw_end()
-    
-def draw_child(list_children,x,y,exist,pointed,width_setting):
-    if pointed==True:
-        draw.rectangle((x,y-1,x+width_setting-2,y-3), outline=255, fill=255)
-    color=0
-    if exist==True:
-        color=255
-    draw.rectangle((x,y,x+width_setting-2,y+Y_inc[0]), outline=255, fill=color)
-
+def draw_settings(List,Grid):
+    x=0
+    y=setting_height+3
+    min=0
+    max=Grid["x"][0]*Grid["x"][1]*Grid["y"]
+    if Grid["pointer"]>=max:
+        min=max
+        max=len(List)
+    while min<max:
+        if Grid["pointer"]==min:
+            draw.rectangle((x,y+3,x+5,y+3+5), outline=0, fill=255)
+        draw.text((x+8,y),List[min][0]+":"+setting_to_string(List[min][1]),font=font, fill=255)
+        min+=1
+        x+=width/2
+        if min%Grid["x"][1]==0:
+            x=0
+            y+=setting_height
+        
+def setting_to_string(setting):
+    if type(setting)==float or type(setting)==int:
+        return str(setting)
+    elif setting==True:
+        return "on"
+    elif setting==False:
+        return "off"           
+    else:
+        return setting

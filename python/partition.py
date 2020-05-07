@@ -1,5 +1,6 @@
 from save import*
 from draw import*
+import time
 
 classic_setting=[
 	# 0:name / 1:value / 2:min / 3:max / 4:inc
@@ -29,30 +30,25 @@ class Partition():
 		self.children=[]
 		self.menu=[0,0]
 
-		self.tools_setting={
-			"pointer":0,
-			"selecteur":[0,0],
-			}
-	
-		self.tools_children={
+		self.grid_children={
 			"pointer":[0,0], # 0: children / 1: children setting
-			"selecteur":[[0,0],[0,0]],
+			"selecter":[[0,0],[0,0]],
 			}
 			
 		self.grid_setting={
-			"x":[1,2],# 1 tas de 10
+			"pointer":0,
+			"selecter":[0,0],
+			"x":[1,2],# 1 tas de 2
 			"y":4,
 			"max":len(self.setting),
 			"reste":len(self.setting)%2
 			}
 		
 		self.set_grid_children()				
-
-
 		save(self.save_name,self.setting)
 		
 
-	def sort(cmd,arg):
+	def sort(self,cmd,arg):
 	
 		if cmd=="switch":
 			if arg=="menu":
@@ -66,25 +62,24 @@ class Partition():
 			
 		
 	def move(self,cmd):
-		if menu[0]==0:
+		if self.menu[0]==0:
 			grid=self.grid_setting
-			pointer=grid["pointer"]
-		if menu[0]==1:
+		if self.menu[0]==1:
 			grid=self.grid_children
-			pointer=grid["pointer"][menu[1]]
-		
 		inc=1
 		if cmd[0]=="y":
 				inc=grid["x"][0]*grid["x"][1]
 		if cmd[1]=="-":
-			inc*=-1				
-		pointer+=inc
+			inc*=-1		
+		grid["pointer"]=self.set_pointer(grid,inc)
 		
-		if pointer<0:
-			pointer+=grid["max"]-grid["x"][0]*grid["x"][1]+grid["reste"]# algorythme a tester
-		elif pointer>grid["max"]:
-			pointer-=grid["max"]+grid["x"][0]*grid["x"][1]-grid["reste"]		
-
+	def set_pointer(self,Grid,Inc)
+		#ic : bien definir l'algorythme
+		#vide=-Grid["reste"]
+		#max=grid["max"]	
+		print("set pointer!")
+		return 0
+		
 	def set_cmd(cmd,arg):
 		
 		if menu[0]==0:
@@ -126,15 +121,16 @@ class Partition():
 
 		save(self.name,self.setting)
 		
-	def edit_children(cmd,arg):
-		print("contiendra apend_children,del children etc.")
-
-	def append_children(self,id):
-		self.children.append(self.child(self,id))
-	def del_children(self,ids):
-		for id in ids:
-			clean(self.children[id].name)
-			del self.children[id]
+	def edit_children(self,cmd):
+		
+		if cmd=="append":
+			self.children.append(self.child(self,self.grid_setting["pointer"]))
+		if cmd=="del":
+			i=self.grid_children["selecter"][0]
+			while i<self.grid_children["selecter"][1]:
+				clean(self.children[i].name)
+				del self.children[i]
+				i+=1
 
 	def edit_children_settings(self,cmd,arg,ids):
 		for id in ids:
@@ -143,10 +139,11 @@ class Partition():
 
 	def draw(self):
 		while True:
+			draw_begin()
+			draw_title(self.name)
 			if self.menu[0]==0:
-				draw_settings(self)
+				draw_settings(self.setting,self.grid_setting)
 			elif self.menu[0]==1:
 				draw_children(self)
+			draw_end()
 			time.sleep(0.07)
-
-
