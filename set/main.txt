@@ -1,6 +1,5 @@
 main play 0;
 main bpm 120;
-main loop 1;
 main solo 0;
 main mute 0;
 main vol 0.5;
@@ -11,5 +10,6 @@ main begin 0;
 main end 8;
 main temps 4;
 main mesure 8;
-main lpf 4;
-main hpf 8;
+main lpf 0;
+main hpf 20000;
+main loop 1;

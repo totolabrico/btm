@@ -33,30 +33,58 @@ def draw_begin():
 def draw_end():
     disp.image(image)
     disp.display()
-    
 
 def draw_title(Title):
     draw.rectangle((0,0,width,setting_height), outline=255, fill=255)
     draw.text((2,0),Title,font=font, fill=0)
 
-def draw_settings(List,Grid):
+def set_draw(Type,List,Pointer,Grid,Height):
+
+    max_elements=Grid["x"][0]*Grid["x"][1]*Height
+    min=int(Pointer[0]/max_elements)*max_elements
+    max=min+max_elements
+    if max>Grid["max"]:
+        max=Grid["max"]
+    if Type=="setting":
+        draw_setting(List,Pointer,Grid,Height,min,max)
+    elif Type=="children":
+        draw_children(List,Pointer,Grid,Height,min,max)
+        
+def draw_setting(List,Pointer,Grid,Height,Min,Max):
+    
     x=0
-    y=setting_height+3
-    min=0
-    max=Grid["x"][0]*Grid["x"][1]*Grid["y"]
-    if Grid["pointer"]>=max:
-        min=max
-        max=len(List)
-    while min<max:
-        if Grid["pointer"]==min:
+    y=setting_height+6
+    if Height==2:
+        y=height/2+7
+    
+    while Min<Max:
+        x_inc=0
+        if Pointer[0]==Min:
             draw.rectangle((x,y+3,x+5,y+3+5), outline=0, fill=255)
-        draw.text((x+8,y),List[min][0]+":"+setting_to_string(List[min][1]),font=font, fill=255)
-        min+=1
+            x_inc=8
+        draw.text((x+x_inc,y),List[Min][0]+":"+setting_to_string(List[Min][1]),font=font, fill=255)
+        Min+=1
         x+=width/2
-        if min%Grid["x"][1]==0:
+        if Min%(Grid["x"][0]*Grid["x"][1])==0:
             x=0
             y+=setting_height
         
+def draw_children(List,Pointer,Grid,Height,Min,Max):
+    
+    x=0
+    y=setting_height+4
+    
+    while Min<Max:
+        if Pointer[0]==Min:
+            draw.rectangle((x,y+1,x+6,y+3), outline=0, fill=255)
+        draw.rectangle((x,y+5,x+6,y+5+6), outline=0, fill=255)
+        Min+=1
+        x+=width/(Grid["x"][0]*Grid["x"][1])
+        if Min%(Grid["x"][0]*Grid["x"][1])==0:
+            x=0
+            y+=setting_height
+
+
 def setting_to_string(setting):
     if type(setting)==float or type(setting)==int:
         return str(setting)

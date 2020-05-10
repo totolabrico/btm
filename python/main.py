@@ -3,14 +3,16 @@ import dill as pickle
 from clavier import*
 from encoder import*
 from partition_init import*
+from navigator import*
 
 class Machine:
 
 	def __init__(self):
 		self.partition=Partition_main(None)
+		self.navigator=Navigator(self)
 		self.clavier=Clavier(self)
 		self.encoder=Encoder(self)
-		self.oled = threading.Thread(target=self.partition.draw(), args=())
+		self.oled = threading.Thread(target=self.navigator.draw(), args=())
 		self.oled.start()		
 
 	def save_set(self):

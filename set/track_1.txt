@@ -1,0 +1,14 @@
+track_1 sample ;
+track_1 solo 0;
+track_1 mute 0;
+track_1 vol 0.5;
+track_1 pan 0;
+track_1 pitch 0;
+track_1 tone 0;
+track_1 begin 0;
+track_1 end 8;
+track_1 temps 4;
+track_1 mesure 8;
+track_1 lpf 0;
+track_1 hpf 20000;
+track_1 loop 1;

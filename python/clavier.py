@@ -5,17 +5,19 @@ class Clavier:
 
     def __init__(self,Machine):
         self.machine=Machine
-        self.switch_on=False
         self.listener = keyboard.Listener(on_press=self.on_press,on_release=self.on_release)
         self.listener.start()
 
     def on_press(self,Key):
         key=getMap(Key)
-        self.machine.partition.sort(key[0],key[1])
+        cmd=key[0]
+        arg=key[1]
+        self.machine.navigator.sort(cmd,arg)
 
     def on_release(self,Key):
         key=getMap(Key)
-
+        cmd=key[0]
+        arg=key[1]
 
 keys={
 	0:"-",
@@ -46,15 +48,18 @@ keys={
 '''
 
 editor_keys={
-	1:["switch","menu"],
-	2:["switch","mode"],
+	0:["switch",["mode",0]],
+	#2:["switch",["mode",1]], # a remplacer par un switch actif ( a maintenir enfoncé )
+    1:["switch",["element","-"]],
+    2:["switch",["element","+"]],
 	7:["move",["y","-"]],
 	15:["move",["y","+"]],
 	10:["move",["x","-"]],
 	12:["move",["x","+"]],
 	5:["edit","+"],
 	9:["edit","-"],
-    13:["edit","toggle"]
+    13:["edit","toggle"],
+
 	}
 
 def getMap(key):
