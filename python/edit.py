@@ -7,7 +7,7 @@ def edit(cmd,setting):
 			return False
 		elif cmd=="+":
 			return True
-		elif cmd=="toggle":
+		elif cmd=="*":
 			return not value
 
 	elif type(value)==int or type(value)==float:

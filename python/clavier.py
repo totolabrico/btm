@@ -5,6 +5,8 @@ class Clavier:
 
     def __init__(self,Machine):
         self.machine=Machine
+        self.state="default"
+        self.select=False
         self.listener = keyboard.Listener(on_press=self.on_press,on_release=self.on_release)
         self.listener.start()
 
@@ -12,55 +14,28 @@ class Clavier:
         key=getMap(Key)
         cmd=key[0]
         arg=key[1]
-        self.machine.navigator.sort(cmd,arg)
+        if cmd=="button":
+            self.state=arg
+            
+        elif cmd=="select" and arg=="+":
+            if self.select==False:
+                self.machine.navigator.sort(self.state,cmd,arg) 
+                self.select=True
+                
+        else:
+            self.machine.navigator.sort(self.state,cmd,arg)
 
     def on_release(self,Key):
         key=getMap(Key)
         cmd=key[0]
         arg=key[1]
-
-keys={
-	0:"-",
-	1:"+",
-	2:"Key.enter",
-	3:[",","Key.delete"],
-	4:["0","Key.insert"],
-	5:"*",
-	6:["9","Key.page_up"],
-	7:["6","Key.right"],
-	8:["3","Key.page_down"],
-	9:["/"],
-	10:["8","Key.up"],
-	11:"<65437>",
-	12:["2","Key.down"],
-	13:"Key.num_lock",
-	14:["7","Key.home"],
-	15:["4","Key.left"],
-	16:["1","Key.end"]
-	}
-
-
-''' MAPPING
-	0	1		2
-	5	6	7	8	3
-	9	10	11	12	4
-	13	14	15	16
-'''
-
-editor_keys={
-	0:["switch",["mode",0]],
-	#2:["switch",["mode",1]], # a remplacer par un switch actif ( a maintenir enfoncé )
-    1:["switch",["element","-"]],
-    2:["switch",["element","+"]],
-	7:["move",["y","-"]],
-	15:["move",["y","+"]],
-	10:["move",["x","-"]],
-	12:["move",["x","+"]],
-	5:["edit","+"],
-	9:["edit","-"],
-    13:["edit","toggle"],
-
-	}
+        if cmd=="select":
+             if arg=="+":
+                self.machine.navigator.sort(self.state,cmd,"stop")
+                self.select=False
+        elif cmd=="button":
+            if self.state==arg:
+                self.state="default"
 
 def getMap(key):
 	global keys,editor_keys
@@ -78,3 +53,58 @@ def getMap(key):
 		if keyId==cle:
 			to= valeur
 	return to
+
+
+keys={
+	"A0":"Key.num_lock",
+	"A1":["/"],
+	"A2":"*",
+	"A3":"-",
+    
+	"B0":["7","Key.home"],
+	"B1":["8","Key.up"],
+	"B2":["9","Key.page_up"],
+	"B3":"+",
+    
+	"C0":["4","Key.left"],
+	"C1":"<65437>",
+	"C2":["6","Key.right"],
+
+	"D0":["1","Key.end"],
+	"D1":["2","Key.down"],
+	"D2":["3","Key.page_down"],
+	"D3":"Key.enter",
+    
+	"E2":[",","Key.delete"],
+	"E0":["0","Key.insert"]
+	}
+
+
+''' MAPPING
+	A0	A1	A2	A3   
+    B0  B1  B2	B3
+	C0	C1	C2   
+    D0  D1  D2	D3
+    E0      E2      
+'''
+
+editor_keys={
+	"A0":["switch","mode"],
+    "A1":["button","setting"],
+    "A2":["button","element"],
+    
+	"B0":["edit","*"],
+    "B1":["edit","copy"],
+    "B2":["edit","previous"],
+    
+	"C0":["edit","-"],
+	"C1":["move",["y","-"]],
+	"C2":["edit","+"],
+    
+	"D0":["move",["x","-"]],
+	"D1":["move",["y","+"]],
+	"D2":["move",["x","+"]],
+
+	"E0":["select","+"],
+	"E2":["select","clear"],
+	}

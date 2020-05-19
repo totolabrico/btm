@@ -12,16 +12,25 @@ def clean(Name):
     else:
         os.remove(path+Name)
 
-
 def save(name,setting):
 	global path
 	myfile = open(path+name+".txt","w")
-	i=0
-	while i<len(setting):
-		myfile.write(name+" "+setting[i][0]+" "+to_string(setting[i][1])+";\n")
-		i+=1
+	for element in setting:
+		myfile.write(name+" "+element[0]+" "+to_string(element[1])+";\n")
 	myfile.close()
 	sendMessage("load",name)
+	
+def save_track(name,setting,children):
+	global path
+	myfile = open(path+name+".txt","w")
+	for element in setting:
+		myfile.write(name+" "+element[0]+" "+to_string(element[1])+";\n")
+	for element in children:
+		for setting in element.setting:
+			myfile.write(name+" "+element.save_name+" "+setting[0]+" "+to_string(setting[1])+";\n")
+	myfile.close()
+	sendMessage("load",name)
+	
 
 def sendMessage(cmd,*args):
 

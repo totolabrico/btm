@@ -16,7 +16,7 @@ class Partition_main(Partition):
 
 		clean("all")
 		Partition.__init__(self,mother)
-		self.edit_children("+")
+		self.set_children("+")
 		
 	def set_grid_children(self): # creer la grille d'element
 		self.grid_children={
@@ -25,6 +25,9 @@ class Partition_main(Partition):
 			"max":len(self.children),
 			"reste":len(self.children)%10
 			}
+			
+	def save(self):
+		save(self.save_name,self.setting)
 
 class Partition_track(Partition):
 
@@ -56,6 +59,9 @@ class Partition_track(Partition):
 			"reste":mesure%x_max_mesure
 			}
 
+	def save(self):
+		save_track(self.save_name,self.setting,self.children)
+
 class Partition_note(Partition):
 
 	def __init__(self,mother,Id):
@@ -74,3 +80,6 @@ class Partition_note(Partition):
 
 	def set_mode(self):
 		pass
+		
+	def save(self):
+		self.mother.save()
