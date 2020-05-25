@@ -39,7 +39,7 @@ def draw_title(Title):
     draw.rectangle((0,0,width,setting_height), outline=255, fill=255)
     draw.text((2,0),Title,font=font, fill=0)
 
-def set_draw(Type,List,Pointer,Selecter,Grid,Height):
+def set_draw(Type,List,Pointer,Selecter,Fork,Grid,Height):
 
     max_elements=Grid["x"][0]*Grid["x"][1]*Height
     min=int(Pointer/max_elements)*max_elements
