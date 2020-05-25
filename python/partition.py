@@ -27,30 +27,31 @@ class Partition():
 
 		for element in classic_setting:
 			self.setting.append(element)
-		
+
 		self.mother=Mother
 		self.children=[]
 		self.pointer_children=0
 		self.selecter_children=[]
+		self.fork_children=[None,None]
 		self.pointer_setting=0
 		self.fork_setting=[None,None]
 		self.selecter_setting=[]
 		self.mode=True
-		
+
 		self.grid_setting={
 			"x":[1,2],# 1 tas de 2
 			"max":len(self.setting),
 			"reste":len(self.setting)%2
 			}
-		
+
 		self.set_grid_children()
 		self.set_child()
 		self.save()
-	
+
 	def set_id(self,id):
 		self.id=id
 		self.save_name=self.name+"_"+str(id)
-	
+
 	def set_mode(self):
 		self.mode=not self.mode
 		self.set_child()
@@ -61,10 +62,10 @@ class Partition():
 			self.selected_child=self.children[self.pointer_children[0]]
 		except:
 			self.selected_child=None
-	
+
 	def set_pointer_setting(self,cmd,arg):
 		self.pointer_setting=move(cmd,arg,self.pointer_setting,self.grid_setting)
-		
+
 	def set_fork_setting(self,cmd):
 
 		if cmd=="+":
@@ -78,7 +79,7 @@ class Partition():
 				self.fork_setting[1]=to
 			self.set_selecter_setting("+")
 			self.fork_setting=[None,None]
-		
+
 	def set_selecter_setting(self,cmd):
 
 		if cmd=="+":
@@ -90,7 +91,7 @@ class Partition():
 				i+=1
 		if cmd=="clear":
 			self.selecter_setting=[]
-			
+
 		print("selecter_setting",self.selecter_setting)
 
 
@@ -107,7 +108,7 @@ class Partition():
 					setting[1]=edit(cmd,setting)
 			i+=1
 		self.save()
-	
+
 	def set_children(self,cmd):
 		if cmd=="+":
 			self.children.insert(self.pointer_children,self.child(self,self.pointer_children+1))
@@ -135,4 +136,3 @@ class Partition():
 		if self.selected_child!=None:
 			child=self.selected_child
 			set_draw("setting",child.setting,child.pointer_setting,child.selecter_setting,child.grid_setting,2)
-

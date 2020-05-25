@@ -1,19 +1,19 @@
-#N canvas 345 83 905 939 10;
-#X obj 266 854 outlet;
+#N canvas 243 128 905 459 10;
+#X obj 287 854 outlet;
 #X floatatom 195 254 15 0 0 0 - - -, f 15;
 #X obj 195 276 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
 #X floatatom 568 550 8 0 0 0 - - -, f 8;
 #X obj 568 518 / 44.1;
 #X obj 550 684 int;
-#X obj 266 763 pack f f f, f 41;
+#X obj 287 763 pack f f f, f 41;
 #X obj 550 736 f;
 #X text 512 738 time;
 #X text 356 271 end, f 7;
 #X obj 195 223 soundfiler;
 #X obj 195 168 pack s s;
 #X msg 195 197 read -resize \$1 \$2;
-#X obj 266 740 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+#X obj 287 740 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
 #X obj 301 128 \$1;
 #X msg 195 338 \; \$1 normalize \;;
@@ -23,7 +23,7 @@
 #X obj 195 318 makefilename mysample_%d;
 #X obj 301 151 makefilename mysample_%d;
 #X obj 121 33 receive track_\$1_sample;
-#X obj 266 817 route 0;
+#X obj 287 817 route 0;
 #X obj 550 709 +;
 #X obj 614 713 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
@@ -39,19 +39,19 @@
 #X obj 614 692 r tone_note_\$1;
 #X floatatom 787 709 5 0 0 0 - - -, f 5;
 #X obj 604 619 / 10;
-#X obj 681 657 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+#X obj 681 656 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
-#X floatatom 802 642 5 0 0 0 - - -, f 5;
+#X floatatom 802 641 5 0 0 0 - - -, f 5;
 #X obj 604 642 *;
 #X obj 550 659 +;
-#X obj 681 625 r pitch_note_\$1;
+#X obj 681 624 r pitch_note_\$1;
 #X floatatom 434 705 8 0 0 0 - - -, f 8;
 #X obj 591 341 r length_note_\$1;
 #X obj 550 619 f;
 #X obj 604 578 f;
 #X obj 604 667 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
-#X obj 266 681 receive play_note_\$1;
+#X obj 287 681 receive play_note_\$1;
 #X obj 396 375 f;
 #X floatatom 583 752 8 0 0 0 - - -, f 8;
 #X msg 62 363 \; pd dsp \$1 \;;

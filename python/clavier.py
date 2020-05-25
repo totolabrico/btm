@@ -16,12 +16,11 @@ class Clavier:
         arg=key[1]
         if cmd=="button":
             self.state=arg
-            
+
         elif cmd=="select" and arg=="+":
             if self.select==False:
-                self.machine.navigator.sort(self.state,cmd,arg) 
-                self.select=True
-                
+                self.machine.navigator.sort(self.state,cmd,arg)
+                self.select=True    
         else:
             self.machine.navigator.sort(self.state,cmd,arg)
 
@@ -60,12 +59,12 @@ keys={
 	"A1":["/"],
 	"A2":"*",
 	"A3":"-",
-    
+
 	"B0":["7","Key.home"],
 	"B1":["8","Key.up"],
 	"B2":["9","Key.page_up"],
 	"B3":"+",
-    
+
 	"C0":["4","Key.left"],
 	"C1":"<65437>",
 	"C2":["6","Key.right"],
@@ -74,33 +73,33 @@ keys={
 	"D1":["2","Key.down"],
 	"D2":["3","Key.page_down"],
 	"D3":"Key.enter",
-    
+
 	"E2":[",","Key.delete"],
 	"E0":["0","Key.insert"]
 	}
 
 
 ''' MAPPING
-	A0	A1	A2	A3   
+	A0	A1	A2	A3
     B0  B1  B2	B3
-	C0	C1	C2   
+	C0	C1	C2
     D0  D1  D2	D3
-    E0      E2      
+    E0      E2
 '''
 
 editor_keys={
 	"A0":["switch","mode"],
     "A1":["button","setting"],
     "A2":["button","element"],
-    
+
 	"B0":["edit","*"],
     "B1":["edit","copy"],
     "B2":["edit","previous"],
-    
+
 	"C0":["edit","-"],
 	"C1":["move",["y","-"]],
 	"C2":["edit","+"],
-    
+
 	"D0":["move",["x","-"]],
 	"D1":["move",["y","+"]],
 	"D2":["move",["x","+"]],
