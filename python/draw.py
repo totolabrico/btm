@@ -47,9 +47,9 @@ def set_draw(Type,List,Pointer,Selecter,Fork,Grid,Height):
     if max>Grid["max"]:
         max=Grid["max"]
     if Type=="setting":
-        draw_setting(List,Pointer,Selecter,Grid,Height,min,max)
+        draw_setting(List,Pointer,Selecter,Fork,Grid,Height,min,max)
     elif Type=="children":
-        draw_children(List,Pointer,Selecter,Grid,Height,min,max)
+        draw_children(List,Pointer,Selecter,Fork,Grid,Height,min,max)
 
 def draw_setting(List,Pointer,Selecter,Fork,Grid,Height,Min,Max):
 
