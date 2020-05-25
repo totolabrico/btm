@@ -51,7 +51,7 @@ def set_draw(Type,List,Pointer,Selecter,Grid,Height):
     elif Type=="children":
         draw_children(List,Pointer,Selecter,Grid,Height,min,max)
 
-def draw_setting(List,Pointer,Selecter,Grid,Height,Min,Max):
+def draw_setting(List,Pointer,Selecter,Fork,Grid,Height,Min,Max):
 
     x=0+padding
     y=setting_height+6
@@ -78,7 +78,7 @@ def draw_setting(List,Pointer,Selecter,Grid,Height,Min,Max):
             x=0+padding
             y+=setting_height
 
-def draw_children(List,Pointer,Grid,Height,Min,Max):
+def draw_children(List,Pointer,Selecter,Fork,Grid,Height,Min,Max):
 
     x=0
     y=setting_height+4

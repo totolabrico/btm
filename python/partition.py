@@ -130,9 +130,9 @@ class Partition():
 		self.set_grid_children()
 
 	def draw_setting(self):
-		set_draw("setting",self.setting,self.pointer_setting,self.selecter_setting,self.grid_setting,4)
+		set_draw("setting",self.setting,self.pointer_setting,self.selecter_setting,self.fork_setting,self.grid_setting,4)
 	def draw_children(self):
-		set_draw("children",self.children,self.pointer_children,self.selecter_children,self.grid_children,2)
+		set_draw("children",self.children,self.pointer_children,self.selecter_children,self.fork_children,self.grid_children,2)
 		if self.selected_child!=None:
 			child=self.selected_child
-			set_draw("setting",child.setting,child.pointer_setting,child.selecter_setting,child.grid_setting,2)
+			set_draw("setting",child.setting,child.pointer_setting,child.selecter_setting,self.fork_children,child.grid_setting,2)
