@@ -25,6 +25,7 @@ X=[0,10,20,70]
 Y=[0,20,35,45]
 padding=2
 setting_height=height/6
+symbol_size=4
 
 def draw_begin():
     global draw,image,width,height
@@ -38,6 +39,7 @@ def draw_end():
 def draw_title(Title):
     draw.rectangle((0,0,width,setting_height), outline=255, fill=255)
     draw.text((2,0),Title,font=font, fill=0)
+
 
 def set_draw(Type,List,Pointer,Selecter,Fork,Grid,Height):
 
@@ -81,14 +83,18 @@ def draw_setting(List,Pointer,Selecter,Fork,Grid,Height,Min,Max):
 def draw_children(List,Pointer,Selecter,Fork,Grid,Height,Min,Max):
 
     x=0
-    y=setting_height+4
-
+    y=setting_height+5
     while Min<Max:
         if Pointer==Min:
-            draw.rectangle((x,y+1,x+6,y+3), outline=0, fill=255)
+            draw.rectangle((x,y,x+symbol_size,y), outline=255, fill=255)
+        for element in Selecter:
+            if element==Min:
+                draw.rectangle((x,y+symbol_size+6,x+symbol_size,y+symbol_size+6), outline=255, fill=255)
         color=0
-        print("draw_children",List[Min])
-        draw.rectangle((x,y+5,x+6,y+5+6), outline=0, fill=255)
+        for child in List:
+            if child.id==Min+1:
+                color=255
+        draw.rectangle((x,y+3,x+symbol_size,y+3+symbol_size), outline=255, fill=color)
         Min+=1
         x+=width/(Grid["x"][0]*Grid["x"][1])
         if Min%(Grid["x"][0]*Grid["x"][1])==0:
@@ -102,5 +108,7 @@ def setting_to_string(setting):
         return "on"
     elif setting==False:
         return "off"
+    elif type(setting)==str:
+        return"+"
     else:
         return setting

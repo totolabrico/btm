@@ -8,7 +8,7 @@ from navigator import*
 class Machine:
 
 	def __init__(self):
-		self.partition=Partition_main(None)
+		self.partition=Partition_main(self,None)
 		self.navigator=Navigator(self)
 		self.clavier=Clavier(self)
 		self.encoder=Encoder(self)

@@ -1,7 +1,6 @@
 from save import*
 from draw import*
-from move import*
-from edit import*
+from cmd import*
 
 classic_setting=[
 	# 0:name / 1:value / 2:min / 3:max / 4:inc
@@ -31,12 +30,11 @@ class Partition():
 		self.mother=Mother
 		self.children=[]
 		self.pointer_children=0
-		self.selecter_children=[]
 		self.fork_children=[None,None]
+		self.selecter_children=[]
 		self.pointer_setting=0
 		self.fork_setting=[None,None]
 		self.selecter_setting=[]
-		self.mode=True
 
 		self.grid_setting={
 			"x":[1,2],# 1 tas de 2
@@ -52,10 +50,6 @@ class Partition():
 		self.id=id
 		self.save_name=self.name+"_"+str(id)
 
-	def set_mode(self):
-		self.mode=not self.mode
-		self.set_child()
-
 	def set_child(self):
 		self.selected_child=None
 		try:
@@ -63,76 +57,73 @@ class Partition():
 		except:
 			self.selected_child=None
 
-	def set_pointer_setting(self,cmd,arg):
-		self.pointer_setting=move(cmd,arg,self.pointer_setting,self.grid_setting)
-
-	def set_fork_setting(self,cmd):
-
-		if cmd=="+":
-			if self.fork_setting[0]==None:
-				self.fork_setting[0]=int(self.pointer_setting)
+	def set_pointer(self,type,cmd,arg):
+		if type=="setting":
+			self.pointer_setting=move(cmd,arg,self.pointer_setting,self.grid_setting)	
+		if type=="children":
+			self.pointer_children=move(cmd,arg,self.pointer_children,self.grid_children)
+			self.set_child()
+		
+	def set_fork(self,type,cmd):
+		if type=="setting":
+			pointer=self.pointer_setting
+			fork=self.fork_setting
+			selecter=self.selecter_setting
+		elif type=="children":
+			pointer=self.pointer_children
+			fork=self.fork_children
+			selecter=self.selecter_children		
+			
+		if cmd=="+" or cmd=="stop":
+			fork=set_fork(pointer,fork,cmd)
 		if cmd=="stop":
-			self.fork_setting[1]=int(self.pointer_setting)
-			if self.fork_setting[0]>self.fork_setting[1]:
-				to=int(self.fork_setting[0])
-				self.fork_setting[0]=int(self.fork_setting[1])
-				self.fork_setting[1]=to
-			self.set_selecter_setting("+")
-			self.fork_setting=[None,None]
-
-	def set_selecter_setting(self,cmd):
-
-		if cmd=="+":
-			print("fork_setting",self.fork_setting)
-
-			i=self.fork_setting[0]
-			while i<=self.fork_setting[1]:
-				self.selecter_setting.append(i)
-				i+=1
+			selecter=set_selecter(fork,selecter)
+			fork=[None,None]
 		if cmd=="clear":
-			self.selecter_setting=[]
+			del selecter[:]
 
-		print("selecter_setting",self.selecter_setting)
-
-
-	def set_pointer_children(self,cmd,arg):
-		self.pointer_children=move(cmd,arg,self.pointer_children,self.grid_children)
-		self.set_child()
-
-	def set_setting(self,cmd):
-		i=0
-		while i<len(self.setting):
-			for element in self.selecter_setting:
-				if i==element:
-					setting=self.setting[i]
-					setting[1]=edit(cmd,setting)
-			i+=1
+	def set_setting(self,cmd):		
+		if self.selecter_setting==[]:
+			setting=self.setting[self.pointer_setting]
+			self.edit_setting(cmd,setting)
+		else:
+			i=0
+			while i<len(self.setting):
+				for element in self.selecter_setting:
+					if i==element:
+						setting=self.setting[i]
+						self.edit_setting(cmd,setting)
+				i+=1
 		self.save()
+		
+	def edit_setting(self,cmd,setting):
+		if setting[0]=="sample":
+			self.mother.machine.navigator.launch_browser(self)
+		else:
+			setting[1]=edit(cmd,setting)
 
 	def set_children(self,cmd):
 		if cmd=="+":
 			self.children.insert(self.pointer_children,self.child(self,self.pointer_children+1))
-		if cmd=="-":
-			del self.children[self.pointer_children]
-			"""
-			i=self.selecter_children[0]
-			while i<self.selecter_children[1]:
-				clean(self.children[i].name)
-				del self.children[i]
-				i+=1
-			"""
-		i=0
-		for element in self.children:
-			i+=1
-			element.set_id(i)
-			element.save()
-
+		if cmd=="-" and self.selecter_children!=[]:
+			for id in self.selecter_children:
+				i=0
+				while i<len(self.children):
+					if self.children[i].id==id+1:
+						if self.save_name=="main":
+							clean(self.children[i].save_name)
+						del self.children[i]
+					i+=1
+				
+		self.sort_children()
 		self.set_grid_children()
 
+		
 	def draw_setting(self):
 		set_draw("setting",self.setting,self.pointer_setting,self.selecter_setting,self.fork_setting,self.grid_setting,4)
 	def draw_children(self):
+		# j'affiche uniquement les parametre de l'enfant pointer ! mais je modifi les parametre de touts les elements selectionnés
 		set_draw("children",self.children,self.pointer_children,self.selecter_children,self.fork_children,self.grid_children,2)
-		if self.selected_child!=None:
-			child=self.selected_child
-			set_draw("setting",child.setting,child.pointer_setting,child.selecter_setting,self.fork_children,child.grid_setting,2)
+		for element in self.children:
+			if element.id==self.pointer_children+1:
+				set_draw("setting",element.setting,element.pointer_setting,element.selecter_setting,element.fork_setting,element.grid_setting,2)

@@ -1,61 +1,110 @@
 from draw import*
 import time
+from browser import*
 
 class Navigator():
 
 	def __init__(self,Machine):
 		self.machine=Machine
 		self.element=self.machine.partition
+		self.mode=True
+		self.menu="partition"
+		self.browser=Browser(self)
+		
+	def receive(self,state,cmd,arg):
+		if self.menu=="partition":
+			self.sort(state,cmd,arg)
+		elif self.menu=="browser":
+			self.browser.sort(cmd,arg)
+			
+	def launch_browser(self,sample_element):
+		self.sample_element=sample_element
+		self.menu="browser"
+		
+	def close_browser(self,path):
+		for setting in self.sample_element.setting:
+			if setting[0]=="sample":
+				setting[1]=path
+		self.sample_element.save()
+		self.menu="partition"
+		
 
 	def sort(self,state,cmd,arg):
-		#print("navigator_sort", state,cmd,arg)				
-		if cmd=="switch":
-			self.element.set_mode()
-					
-		if self.element.mode==True:
+		print("navigator_sort", state,cmd,arg)				
+		if cmd=="switch" and self.element.child!=None:
+			self.mode=not self.mode
+						
+		if self.mode==True:# Edition de l'element
 			if cmd=="move":
-				self.element.set_pointer_setting(arg[0],arg[1])		
+				self.element.set_pointer("setting",arg[0],arg[1])		
 			if cmd=="select":
-				if arg=="+" or arg=="stop":
-					self.element.set_fork_setting(arg)
-				if arg=="clear":
-					self.element.set_selecter_setting(arg)
+				self.element.set_fork("setting",arg)
 			if cmd=="edit":
 				self.element.set_setting(arg)
 
-		
-		elif self.element.mode==False:
+		elif self.mode==False: # Edition des enfants
 			if state=="default":
 				if cmd=="move":
-					self.element.set_pointer_children(arg[0],arg[1])
+					self.element.set_pointer("children",arg[0],arg[1])
+				if cmd=="select":
+					self.element.set_fork("children",arg)
 				elif cmd=="edit":
 					self.element.set_children(arg)		 
 			
 			elif state =="setting":
-				if cmd=="move":
-					self.element.selected_child.set_pointer_setting(arg[0],arg[1])
-				elif cmd=="edit":
-					self.element.selected_child.set_setting(arg)		
+				ids=self.element.selecter_children
+				children=[]
+				if ids==[]:
+					ids=[self.element.pointer_children]
+				for id in ids:
+					for child in self.element.children:
+						if child.id==id+1:
+							children.append(child)
 					
-			elif state=="element":
-				if cmd=="move":
-					if arg[0]=="y":	
-						if arg[1]=="-" and self.element.mother!=None:
-							self.element=self.element.mother
-						elif arg[1]=="+" and self.element.selected_child!=None:
-							self.element=self.element.selected_child
-			
-			"""	 ci dessous:obselete / a replacer
-				self.element.selected_child.edit_pointer_settings(arg[0],arg[1])
-			"""
+				for child in children:
+					if cmd=="move":
+						child.set_pointer("setting",arg[0],arg[1])
+					if cmd=="select":
+						child.set_fork("children",arg)
+					elif cmd=="edit":
+						child.set_setting(arg)		
+					
+		if state=="element":
+			if cmd=="move":
+				if arg[0]=="y":	# deplacement parent/enfant
+					if arg[1]=="-" and self.element.mother!=None:
+						self.element=self.element.mother
+					elif arg[1]=="+" and self.element.child!=None:
+						for child in self.element.children:
+							if self.element.pointer_children+1==child.id:
+								if child.child==None:
+									self.mode=True
+								self.element=child
+				if arg[0]=="x" and self.element.mother!=None:#deplacement enfant/enfant
+					id=int(self.element.id)
+					if arg[1]=="+":
+						id+=1
+					if arg[1]=="-":
+						id-=1
+					if id<1:
+						id=len(self.element.mother.children)
+					if id>len(self.element.mother.children):
+						id=1
+					for child in self.element.mother.children:
+						if child.id==id:
+							self.element=child
+
 	def draw(self):
 		while True:
 			draw_begin()
-			if self.element.mode==True:
-				draw_title(self.element.name)
-				self.element.draw_setting()
-			else:
-				draw_title(self.element.name+":"+self.element.children_name)
-				self.element.draw_children()
+			if self.menu=="partition":
+				if self.mode==True:
+					draw_title(self.element.name)
+					self.element.draw_setting()
+				else:
+					draw_title(self.element.name+" / "+str(self.element.pointer_children+1))
+					self.element.draw_children()
+			elif self.menu=="browser":
+				self.browser.draw()	
 			draw_end()
 			time.sleep(0.07)
