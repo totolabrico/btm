@@ -2,13 +2,14 @@ import copy
 import dill as pickle
 from clavier import*
 from encoder import*
-from partition_init import*
-from navigator import*
+from partition import*
+from nav import*
+
 
 class Machine:
 
 	def __init__(self):
-		self.partition=Partition_main(self,None)
+		self.partition=Partition()
 		self.navigator=Navigator(self)
 		self.clavier=Clavier(self)
 		self.encoder=Encoder(self)

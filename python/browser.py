@@ -18,6 +18,7 @@ class Browser():
     
     
     def sort(self,cmd,arg):
+        print("browser sort: ",cmd,arg)
         if cmd=="move":
             if arg[0]=="y":
                 self.set_pointer(arg[1])
@@ -28,10 +29,11 @@ class Browser():
             if cmd=="select" and arg=="+":
                 print("play the sound now")
             if cmd=="edit" and arg=="+":
-                self.navigator.close_browser(self.path+"/"+self.list[self.pointer])
+                self.navigator.editor.get_sample(self.path+"/"+self.list[self.pointer])
+                self.navigator.pointer="editor"
                 
-        if cmd=="switch":
-            self.navigator.menu="partition"
+        if cmd=="menu" and arg=="-":
+            self.navigator.pointer="editor"
                     
     def set_pointer(self,cmd):
         if cmd=="+":
@@ -73,7 +75,7 @@ class Browser():
         size=len(self.list)
         if max>size:
             max=size
-        y=Y_inc[1]
+        y=Y[2]
         i=min
         while i<min+max:
             id=i
@@ -85,6 +87,6 @@ class Browser():
             if i==min:
                 file="> "+file
             draw.text((2,y),file,font=font, fill=255)
-            y+=Y_inc[0]
+            y+=Y_inc[1]
             i+=1
   

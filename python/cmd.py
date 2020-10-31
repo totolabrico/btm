@@ -1,47 +1,60 @@
-def edit(cmd,setting):
 
-	value=setting[1]
+def move(Cmd,Arg,tools):
+	pointer=tools["pointer"]
+	origin=tools["origin"]
+	grid=tools["grid"]
+	max=len(tools["element"])-1
+	display_max=grid[0]*grid[1]
+	reste=max%grid[0]
+	vide=grid[0]-reste	
 	
-	if type(value)==bool:
-		if cmd=="-":
-			return False
-		elif cmd=="+":
-			return True
-		elif cmd=="*":
-			return not value
-
-	elif type(value)==int or type(value)==float:
-		min=setting[2]
-		max=setting[3]
-		inc=setting[4]
-		if cmd=="-":
-			value-=inc
-		elif cmd=="+":
-			value+=inc
-		if value>max:
-			value=max
-		elif value<min:
-			value=min
-		return round(value,2)
-
-def move(cmd,arg,pointer,grid):
-	inc=1			
-	if cmd=="y":
-		inc*=grid["x"][0]*grid["x"][1]
-	if arg=="-":
-		inc*=-1	
+	if Cmd=="x":
+		inc=1
+	elif Cmd=="y":
+		inc=grid[0]
 		
-	pointer+=inc
-	# attention il faut calculre le vide a partir du reste"
-	if pointer>=grid["max"]:
-		if pointer>=grid["max"]+grid["reste"]:
-			pointer-=grid["max"]+grid["reste"]
-		else:
-			pointer-=grid["max"]
-	elif pointer<0:
-		pointer+=grid["max"]
-	return pointer
+	if Arg=="+":
+		pointer+=inc
+	elif Arg=="-":
+		pointer-=inc
+		
+	if pointer>=origin+display_max:
+		origin+=grid[0]
+	elif pointer<origin and max>display_max:
+		origin-=grid[0]
+
+	if pointer>max:
+		if Cmd=="x":
+			pointer=0
+		elif Cmd=="y":
+			exces=pointer-max
+			if exces<vide:
+				print("cas 1",exces,vide)
+				pointer=exces+reste
+			else:
+				pointer=exces-vide
+		origin=0
 	
+	elif pointer<0:
+		if Cmd=="x":
+			pointer=max
+		elif Cmd=="y":
+			exces=0-pointer
+			if exces<vide:
+				pointer=max-exces-reste
+			else:
+				pointer=max-exces+vide
+		
+		if max>display_max:# si la liste depasse la taille de l'ecran je calcule l'origin
+			origin=max-display_max+vide
+	
+	print("move_in_settings",pointer,origin)
+	tools["pointer"]=pointer
+	tools["origin"]=origin
+	return tools
+
+
+'''
 def set_fork(pointer,fork,cmd):
 	if cmd=="+":
 		fork[0]=int(pointer)
@@ -64,4 +77,17 @@ def set_selecter(fork,selecter):
 			selecter.append(i)
 		i+=1
 	return selecter
-		
+'''		
+
+
+def setting_to_string(setting):
+    if type(setting)==float or type(setting)==int:
+        return str(setting)
+    elif setting==True:
+        return "on"
+    elif setting==False:
+        return "off"
+    elif type(setting)==str:
+        return"+"
+    else:
+        return setting

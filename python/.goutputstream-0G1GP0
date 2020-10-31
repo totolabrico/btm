@@ -11,40 +11,32 @@ class Clavier:
         self.listener.start()
 
     def on_press(self,Key):
-        key=get_map(Key)
-        cmd,arg=get_cmd_arg(key)
-        if cmd=="switch":
-            if self.switch_state!=arg:
-                self.switch_state=arg
-                self.machine.navigator.receive(cmd,arg)
-        elif cmd== "select":
-            if self.select_state==False:
-                self.select_state=True
-                self.machine.navigator.receive(cmd,1)
+        key=getMap(Key)
+        cmd=key[0]
+        if len(key>1):
+            arg=key[1]
+        else:
+            arg=None
+            
+        if cmd=="switch" and self.select_switch!=arg:
+            
+        
+        if cmd== "select" and self.select_state==False::
+
         else:
             self.machine.navigator.receive(cmd,arg)
 
     def on_release(self,Key):
-        key=get_map(Key)
-        cmd,arg=get_cmd_arg(key)
+        key=getMap(Key)
+        cmd=key[0]
+        arg=key[1]
         if cmd=="switch":
-            self.machine.navigator.receive(cmd,0)
             self.switch_state=0
         elif cmd=="select":
-            self.select_state=False
-            self.machine.navigator.receive(cmd,0)
+            self.select=False
 
 
-def get_cmd_arg(Key):
-    cmd=Key[0]
-    if len(Key)>1:
-        arg=Key[1]
-    else:
-        arg=None
-    return cmd,arg
-            
-
-def get_map(key):
+def getMap(key):
     global keys,editor_keys
     keyId=-1
     for cle, valeur in keys.items():
@@ -111,8 +103,8 @@ editor_keys={
 
     "A1":["move",["x","-"]],
     "C1":["move",["x","+"]],
-    "B0":["move",["y","+"]],
-    "B2":["move",["y","-"]],
+    "B0":["move",["y","-"]],
+    "B2":["move",["y","+"]],
     
     "B1":["select"],
     

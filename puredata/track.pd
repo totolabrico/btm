@@ -1,13 +1,11 @@
-#N canvas 2 154 383 196 10;
-#X obj 41 119 outlet~;
-#X obj 102 119 outlet~;
+#N canvas 440 199 383 696 10;
+#X obj 45 279 outlet~;
+#X obj 106 279 outlet~;
 #X obj 545 1057 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 -262144
 -1 -1 0 1;
-#X obj 41 83 player \$1;
-#X obj 41 51 parameter \$1;
-#X obj 41 14 track_reader \$1;
-#X obj 183 83 note_reader \$1;
+#X obj 45 243 player \$1;
+#X obj 45 211 parameter \$1;
+#X obj 189 211 notes_tables \$1;
 #X connect 3 0 0 0;
 #X connect 3 1 1 0;
 #X connect 4 0 3 0;
-#X connect 5 0 4 0;
