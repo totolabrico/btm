@@ -7,9 +7,9 @@
 #X obj 166 138 pack f 50;
 #X obj 59 175 *~;
 #X obj 60 393 outlet~;
-#X obj 391 75 r tick_length;
-#X floatatom 391 124 5 0 0 0 - - -, f 5;
-#X obj 391 101 / 4;
+#X obj 391 74 r tick_length;
+#X floatatom 391 123 5 0 0 0 - - -;
+#X obj 391 100 / 4;
 #X obj 166 114 r track_\$1_note_vol;
 #X obj 166 245 r track_\$1_vol;
 #X connect 0 0 2 1;

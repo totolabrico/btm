@@ -16,12 +16,14 @@
 #X msg 43 255 master_\$1;
 #X obj 349 218 list split 2;
 #X obj 43 179 route master track notes, f 66;
-#X obj 349 335 tabwrite;
-#X obj 434 292 list split 1;
-#X floatatom 474 321 5 0 0 0 - - -, f 5;
-#X floatatom 434 321 5 0 0 0 - - -, f 5;
+#X obj 349 350 tabwrite;
+#X obj 384 284 list split 1;
+#X floatatom 418 313 5 0 0 0 - - -;
+#X floatatom 384 313 5 0 0 0 - - -;
 #X msg 349 253 set notes_\$1_\$2;
+#X obj 183 127 print osc;
 #X connect 0 0 5 0;
+#X connect 0 0 21 0;
 #X connect 1 0 0 0;
 #X connect 2 0 1 0;
 #X connect 3 0 2 0;

@@ -8,21 +8,21 @@
 #X msg 65 185 1;
 #X obj 65 156 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
 -1;
-#X floatatom 133 218 5 0 0 0 - - -, f 5;
+#X floatatom 133 218 5 0 0 0 - - -;
 #X msg 205 185 1;
 #X obj 205 160 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
-#X floatatom 271 218 5 0 0 0 - - -, f 5;
+#X floatatom 271 218 5 0 0 0 - - -;
 #X obj 65 275 pack f 50;
 #X obj 205 276 pack f 50;
-#X floatatom 152 331 5 0 0 0 - - -, f 5;
+#X floatatom 152 331 5 0 0 0 - - -;
 #X msg 152 292 \$1;
-#X floatatom 287 332 5 0 0 0 - - -, f 5;
+#X floatatom 287 332 5 0 0 0 - - -;
 #X msg 287 293 \$1;
 #X obj 101 127 abs;
-#X obj 374 213 r tick_length;
-#X floatatom 374 262 5 0 0 0 - - -, f 5;
-#X obj 374 239 / 4;
+#X obj 374 212 r tick_length;
+#X floatatom 374 261 5 0 0 0 - - -;
+#X obj 374 238 / 4;
 #X msg 142 53 0;
 #X obj 271 100 f;
 #X obj 271 119 - 1;
