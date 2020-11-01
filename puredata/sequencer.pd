@@ -1,6 +1,6 @@
 #N canvas 111 98 1061 945 10;
 #X obj 79 264 metro;
-#X obj 79 88 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0 1
+#X obj 79 88 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1 1
 ;
 #X obj 111 192 /;
 #X floatatom 111 237 5 0 0 0 - - -;
@@ -28,14 +28,14 @@
 #X obj 493 286 r master_begin;
 #X obj 623 286 r master_end;
 #X obj 277 518 spigot;
-#X obj 323 576 f;
+#X obj 316 600 f;
 #X obj 323 766 f;
 #X obj 757 620 r master_max;
 #X obj 79 294 s master_metro;
 #X obj 277 491 r master_metro;
 #X obj 697 518 spigot;
 #X obj 697 495 r master_metro;
-#X obj 323 555 r master_end;
+#X obj 316 579 r master_end;
 #X obj 361 749 r master_begin;
 #X obj 697 637 moses;
 #X obj 697 556 0;
@@ -70,6 +70,7 @@
 #X obj 366 185 s master_max;
 #X obj 760 815 + 1;
 #X obj 716 913 send master_pas;
+#X obj 316 636 - 1;
 #X connect 0 0 30 0;
 #X connect 1 0 0 0;
 #X connect 1 0 4 0;
@@ -101,7 +102,7 @@
 #X connect 24 0 52 0;
 #X connect 25 0 53 0;
 #X connect 26 0 7 0;
-#X connect 27 0 10 1;
+#X connect 27 0 64 0;
 #X connect 28 0 46 0;
 #X connect 29 0 36 1;
 #X connect 31 0 26 0;
@@ -145,3 +146,4 @@
 #X connect 58 0 57 0;
 #X connect 59 0 62 0;
 #X connect 62 0 45 0;
+#X connect 64 0 10 1;

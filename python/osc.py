@@ -1,9 +1,8 @@
 from pythonosc import osc_message_builder
 from pythonosc import udp_client
-client = udp_client.UDPClient('localhost', 12000)
+client = udp_client.UDPClient('127.0.0.1', 12000)
 
 def osc_send(addr,setting_name,setting_value,idtrack=0,idnote=0):
-	
 	Addr="/"+str(addr)
 	msg = osc_message_builder.OscMessageBuilder(address=Addr)
 	if addr!="master":

@@ -31,7 +31,7 @@ audio_setting=[
 	["pitch",0,-3,3,0.02],
 	["tone",0,-3,3,0.02],
 	["s_begin",0,0,1,0.02],
-	["s_end",0,0,1,0.02],
+	["s_end",1,0,1,0.02],
 	["lpf",0,0,20000,10],#low pass filter
 	["hpf",20000,0,20000,10],#high pass filter
 	]
@@ -85,7 +85,7 @@ class Partition():
 		
 	def edit(self,cmd,setting,menu_id,track_id,note_id):
 	
-		print ("edit: ",setting[1])
+		print ("edit: ",cmd,setting[1])
 		value=setting[1]
 	
 		if type(value)==bool:
@@ -111,11 +111,11 @@ class Partition():
 			value=round(value,2)
 			
 		elif type(value)==str:
-			value=cmd
+			value=cmd			
 		
 		setting[1]=value
-		
 		osc_send(menu_names[menu_id],setting[0],setting[1],track_id,note_id)
+		#print(menu_names[menu_id],setting[0],setting[1],track_id,note_id)
 
 
 	

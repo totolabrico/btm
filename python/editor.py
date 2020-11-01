@@ -59,7 +59,7 @@ class Editor():
 	def get_sample(self,cmd):
 		setting=self.setting_tools["element"][0]
 		#self.machine.partition.edit(cmd,setting)
-		self.machine.partition.edit(cmd,setting,menu_names[self.menu],self.edited_track,self.edited_note)
+		self.machine.partition.edit(cmd,setting,self.menu,self.edited_track,self.edited_note)
 		#osc_send(menu_names[self.menu],setting[0],setting[1],self.edited_track,self.edited_note)
 
 

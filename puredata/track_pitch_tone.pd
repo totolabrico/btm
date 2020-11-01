@@ -1,4 +1,4 @@
-#N canvas 333 62 422 669 10;
+#N canvas 685 147 422 669 10;
 #X floatatom 103 155 8 0 0 0 - - -;
 #X obj 103 123 / 44.1;
 #X obj 88 478 int;
@@ -19,10 +19,10 @@
 #X obj 88 324 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
 -1;
 #X floatatom 88 560 8 0 0 0 - - -;
-#X obj 103 74 -;
-#X obj 103 99 abs;
-#X obj 103 36 inlet;
-#X obj 57 37 inlet;
+#X obj 103 49 -;
+#X obj 103 74 abs;
+#X obj 103 11 inlet;
+#X obj 57 12 inlet;
 #X obj 88 597 outlet;
 #X floatatom 224 130 5 0 0 0 - - -;
 #X obj 224 106 r track_\$1_note_pitch;
@@ -34,6 +34,7 @@
 #X floatatom 255 411 5 0 0 0 - - -;
 #X obj 221 333 r track_\$1_note_tone;
 #X obj 255 386 r track_\$1_tone;
+#X floatatom 103 99 15 0 0 0 - - -;
 #X connect 0 0 13 1;
 #X connect 0 0 14 1;
 #X connect 1 0 0 0;
@@ -56,7 +57,7 @@
 #X connect 15 0 13 0;
 #X connect 16 0 21 0;
 #X connect 17 0 18 0;
-#X connect 18 0 1 0;
+#X connect 18 0 32 0;
 #X connect 19 0 17 0;
 #X connect 20 0 17 1;
 #X connect 22 0 25 0;
@@ -69,3 +70,4 @@
 #X connect 29 0 28 1;
 #X connect 30 0 27 0;
 #X connect 31 0 29 0;
+#X connect 32 0 1 0;

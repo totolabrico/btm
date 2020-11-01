@@ -1,11 +1,11 @@
-#N canvas 217 226 299 299 10;
+#N canvas 217 256 299 299 10;
 #X obj 41 233 outlet~;
 #X obj 118 233 outlet~;
 #X obj 175 178 solo_box \$1;
 #X obj 117 194 *~;
 #X obj 40 194 *~;
 #X obj 41 76 track_volume \$1;
-#X obj 40 116 track_paning \$1;
+#X obj 42 111 track_paning \$1;
 #X obj 41 152 track_mute \$1;
 #X obj 41 38 inlet~;
 #X connect 2 0 4 1;
