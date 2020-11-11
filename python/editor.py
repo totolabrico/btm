@@ -2,7 +2,6 @@ from draw import*
 from editor_interface import*
 from osc import*
 
-
 editor_tools={
 "element":None,
 "pos":[],
@@ -13,172 +12,114 @@ editor_tools={
 "selecter":[],
 }
 
-class Editor():
+class Editor(): # separer les chose en deux !!!!
 
-	def __init__(self,Machine):
+	def __init__(self,Machine,Navigator,Name,Settings):
 		self.machine=Machine
-		self.menu=0	
-		self.edited_track=0
-		self.edited_note=0
-		
-		self.toggle_state=0 # 0:settings / 1:element
+		self.navigator=Navigator
+		self.name=Name	
+		self.settings=Settings
 		self.switch_state=0 
-		
 		self.init_tools()
-		self.set_tools()
-		self.editor_interface=Editor_Interface(self,self.machine.partition)
+		self.interface=Editor_Interface(self.machine,self.navigator,self,self.machine.partition)
 
 
-	def sort(self,cmd,arg): # tri des commandes
+	def init_tools(self):	# initialisation des outils de l'editeur : deux liste : setting et children / contenu : copie de editor tools
+		self.setting_tools=editor_tools.copy()
+		if self.name!="master":
+			self.children_tools=editor_tools.copy()
+		self.set_tools();
+			
+	def set_tools(self):
+		self.set_setting_tools()
+		if self.name!="master":
+			self.set_children_tools()
+
+	def sort(self,cmd,arg): # tri des commandes : edit, move
 		print("editor sort: ",cmd,arg)
-		if cmd=="menu":
-			self.set_menu(arg)
-		if cmd=="toggle":
-			self.set_toggle()
-		elif cmd=="edit":
-			self.edit(arg)
+		if cmd=="edit":
+			self.edit_setting(arg)
 		elif cmd=="move":
-			self.move(arg)
+			if self.navigator.toggle_state==0:
+				self.setting_tools=move(arg[0],arg[1],self.setting_tools) # edite la position du pointer et l'origine
+			else:
+				self.children_tools=move(arg[0],arg[1],self.children_tools)
+				self.set_children_tools()
 
+			self.set_setting_tools() # met a jour la liste de settings, sa grille d'affichage, ses positions d'affichages
 
-	def set_toggle(self):
-		if self.menu!=0:
-			self.toggle_state=not self.toggle_state
-			self.set_tools()
 	
-	
-	def edit(self,cmd):
+	def edit_setting(self,cmd):
 		setting=self.setting_tools["element"][self.setting_tools["pointer"]]
-		if self.menu==1 and setting[0]=="sample" and cmd=="+":
+		if self.name=="track" and setting[0]=="sample" and cmd=="+":
 			self.machine.navigator.pointer="browser"
 		else:	
-			self.machine.partition.edit(cmd,setting,self.menu,self.edited_track,self.edited_note)
+			self.machine.partition.edit(cmd,setting)
 			#osc_send(menu_names[self.menu],setting[0],setting[1],self.edited_track,self.edited_note)
 
 	
 	def get_sample(self,cmd):
 		setting=self.setting_tools["element"][0]
-		#self.machine.partition.edit(cmd,setting)
-		self.machine.partition.edit(cmd,setting,self.menu,self.edited_track,self.edited_note)
-		#osc_send(menu_names[self.menu],setting[0],setting[1],self.edited_track,self.edited_note)
+		self.machine.partition.edit(cmd,setting)
 
 
-	def move(self,cmd):
-		if self.toggle_state==0:
-			self.setting_tools=move(cmd[0],cmd[1],self.setting_tools)
-		if self.toggle_state==1:
-			self.children_tools=move(cmd[0],cmd[1],self.children_tools)
-			self.set_edited()
-			self.set_tools()
-			
-			
-	def set_menu(self,cmd):
-		last_menu=int(self.menu)
-		if cmd=="+" and self.menu<2:
-			self.menu+=1
-		elif cmd=="-" and self.menu>0:
-			self.menu-=1
-			
-		if last_menu!=self.menu:
-			self.set_toggle_default()
-			self.init_tools()
-			self.set_tools()	
-	
-	
-	def set_toggle_default(self): # redefini l'etat du toggle en fonction du menu
-		if self.menu==0:
-			self.toggle_state=0
-		else:
-			self.toggle_state=1
-	
-	
-	def reset_edited(self): # reset de l'element selectionné
-		if self.menu==0:
-			self.edited_track=0
-		elif self.menu==1:
-			self.edited_note=0
-			
-			
-	def set_edited(self): # defini l'id de l'element selectionné
-		if self.menu==1:
-			self.edited_track=self.children_tools["pointer"]
-			print("set edited track",self.edited_track)
-		if self.menu==2:
-			self.edited_note=self.children_tools["pointer"]
-	
-	
-	def init_tools(self):	# initialisation des outils de l'editeur : deux liste : setting et children / contenu : copie de editor tools
-		self.setting_tools=editor_tools.copy()
-		if self.menu>0:
-			self.children_tools=editor_tools.copy()
-	
-	
-	def set_tools(self):
-		self.setting_tools["element"]=self.set_element("setting")
-		self.setting_tools["grid"]=self.set_grid("setting")
-		self.setting_tools["pos"]=self.set_pos(self.setting_tools)			
-	
-		if self.menu>0:
-			self.children_tools["element"]=self.set_element("children")
-			self.children_tools["grid"]=self.set_grid("children")
+	def set_setting_tools(self): # appel set_setting, set_grid_setting, et set pos
+		self.setting_tools["element"]=self.set_setting()
+		self.setting_tools["grid"]=self.set_grid_setting()
+		self.setting_tools["pos"]=self.set_pos(self.setting_tools)	
+		
+	def set_children_tools(self): # appel set_chidlren, set_grid_children et set pos
+		if self.name!="master":
+			self.children_tools["element"]=self.set_children()
+			self.children_tools["grid"]=self.set_grid_children()
 			self.children_tools["pos"]=self.set_pos(self.children_tools)
 			
-		print(self.setting_tools["element"])
-		if self.menu>1:
-			print(self.children_tools["pointer"])
+
+	def set_setting(self):# defini la liste de setting 					
+		if self.name=="master":
+			return self.settings
+		elif self.name=="track":
+			return self.settings[self.children_tools["pointer"]]
+		elif self.name=="note":
+			return self.settings[self.navigator.track_editor.children_tools["pointer"]][self.children_tools["pointer"]]
+
+	def set_children(self):# defini la liste de children				
+		if self.name=="master":
+			return None
+		elif self.name=="track":
+			return self.settings
+		elif self.name=="note":
+			return self.settings[self.navigator.track_editor.children_tools["pointer"]]
 
 
-	def set_element(self,Type):# defini les elements selectionné par l'utilisateur					
-		if Type=="setting": # setting selectionné
-			if self.menu==0:
-				return self.machine.partition.master_setting
-			elif self.menu==1:
-				return self.machine.partition.track_setting[self.edited_track]
-			elif self.menu==2:
-				return self.machine.partition.note_setting[self.edited_track][self.edited_note]
-
-		elif Type=="children": # element enfant selectionné : tracks, notes : pour affichage
-			if self.menu==0:
-				return None
-			elif self.menu==1:
-				return self.machine.partition.track_setting
-			elif self.menu==2:
-				return self.machine.partition.note_setting[self.edited_track]
-
-
-	def set_grid(self,Type): # defini la grille d'affichage
-		############################### width
-		if Type=="setting":
-			width= 2
-		elif Type=="children":
-			if self.menu==1:
-				width= 10
-			if self.menu==2:
-				setting=self.machine.partition.master_setting
-				for el in setting:
-					if el[0]=="temps":
-						width= el[1]*4 # nombre de temps de la track*4
-
-		############################### height
-		if self.toggle_state==0:
-			a=1
-			b=3
-		else:
-			a=3
-			b=1
-				
-		if self.menu==0:
+	def set_grid_setting(self): # defini la grille d'affichage des setting
+		width= 2
+		if self.name=="master":
 			height= 4
 		else:
-			if Type=="children":
-				height= a
+			if self.navigator.toggle_state==0:
+				height=3
 			else:
-				height= b
-				
+				height=1
 		return [width,height]
 
 
-	def set_pos(self,tools): # defini les positions d'affichage des elements
+	def set_grid_children(self): # defini la grille d'affichage des children
+		if self.name=="track":
+			width= 10
+		if self.name=="note":
+			setting=self.machine.partition.master_setting
+			for el in setting:
+				if el[0]=="temps":
+					width= el[1]*4 # nombre de temps de la track*4
+		if self.navigator.toggle_state==0:
+			height= 1
+		else:
+			height= 3
+		return [width,height]
+
+
+	def set_pos(self,tools): # defini les positions d'affichage des elements (setting et children)
 		pos=[]
 		x=0
 		y=0
@@ -190,3 +131,6 @@ class Editor():
 				y+=1
 		return pos
 
+	def reset_pointer(self):
+		self.setting_tools["pointer"]=0
+		self.children_tools["pointer"]=0

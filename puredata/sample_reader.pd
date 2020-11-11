@@ -1,15 +1,27 @@
-#N canvas 28 118 509 358 10;
-#X obj 82 207 pack f f f, f 41;
-#X text 340 179 time;
-#X obj 82 168 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
--1;
-#X obj 82 232 route 0;
-#X obj 203 59 sample_to_table \$1;
-#X obj 325 152 track_pitch_tone \$1;
-#X obj 82 267 line~;
-#X obj 82 295 tabread4~ mysample_\$1;
-#X obj 81 320 outlet~;
-#X obj 203 95 track_s_begin_end \$1;
+#N canvas 2 328 1168 574 10;
+#X obj 702 227 pack f f f, f 41;
+#X text 960 199 time;
+#X obj 702 188 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 702 252 route 0;
+#X obj 823 79 sample_to_table \$1;
+#X obj 945 172 track_pitch_tone \$1;
+#X obj 702 287 line~;
+#X obj 702 315 tabread4~ mysample_\$1;
+#X obj 701 340 outlet~;
+#X obj 823 115 track_s_begin_end \$1;
+#X obj 255 104 r master_pas;
+#X floatatom 255 126 5 0 0 0 - - -;
+#X obj 223 160 tabread notes_\$1_vol;
+#X obj 264 190 route 0;
+#X obj 240 349 s pas_\$1;
+#X obj 240 321 f;
+#X obj 303 235 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 477 239 r tick_length;
+#X obj 303 287 delay;
+#X obj 329 249 s track_\$1_clean_vol;
+#X obj 477 271 / 8;
 #X connect 0 0 3 0;
 #X connect 2 0 0 0;
 #X connect 3 0 6 0;
@@ -22,3 +34,14 @@
 #X connect 9 0 5 0;
 #X connect 9 1 6 0;
 #X connect 9 1 5 1;
+#X connect 10 0 11 0;
+#X connect 11 0 12 0;
+#X connect 11 0 15 1;
+#X connect 12 0 13 0;
+#X connect 13 1 16 0;
+#X connect 15 0 14 0;
+#X connect 16 0 18 0;
+#X connect 16 0 19 0;
+#X connect 17 0 20 0;
+#X connect 18 0 15 0;
+#X connect 20 0 18 1;

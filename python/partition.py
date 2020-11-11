@@ -1,19 +1,13 @@
 from osc import*
 
-menu_names=["master","track","notes"] # pour osc
 
 sequencer_setting=[
 	# 0:name / 1:value / 2:min / 3:max / 4:inc
-	["play",False],
+	["play",True],
 	["bpm",120,0,300,0.5],
 	["temps",4,1,8,1]
-
 	]
-
-track_setting=[
-    ["sample","empty"]
-    ]
-
+	
 time_setting=[
 	# 0:name / 1:value / 2:min / 3:max / 4:inc
 	["mesure",8,1,64,1],
@@ -22,9 +16,13 @@ time_setting=[
 	["loop",True]
 	]
 
+track_setting=[
+    ["sample","empty"]
+    ]
+
 audio_setting=[
 	# 0:name / 1:value / 2:min / 3:max / 4:inc
-	["vol",0,0,2,0.02],
+	["vol",0.5,0,2,0.02],
 	["mute",False],
 	["solo",False],
 	["pan",0,-1,1,0.02],
@@ -48,7 +46,7 @@ class Partition():
 		self.init_master()
 		self.init_track()
 		self.init_note()
-		self.osc_init()
+		#self.osc_init()
 
 		
 	def init_master(self): # initialisation de la partition master : liste 2d
@@ -80,10 +78,11 @@ class Partition():
 				self.note_setting[i].append([])
 				for element in audio_setting:			
 					self.note_setting[i][j].append(element.copy())
+					self.note_setting[i][j][0][1]=0
 				j+=1
 			i+=1
 		
-	def edit(self,cmd,setting,menu_id,track_id,note_id):
+	def edit(self,cmd,setting):
 	
 		print ("edit: ",cmd,setting[1])
 		value=setting[1]
@@ -114,11 +113,11 @@ class Partition():
 			value=cmd			
 		
 		setting[1]=value
-		osc_send(menu_names[menu_id],setting[0],setting[1],track_id,note_id)
+		# l'osc part d'ici ou de editor?
 		#print(menu_names[menu_id],setting[0],setting[1],track_id,note_id)
 
 
-	
+	'''
 	def osc_init(self):
 		for element in self.master_setting:
 			osc_send(menu_names[0],element[0],element[1])
@@ -138,3 +137,4 @@ class Partition():
 				note_id+=1
 			track_id+=1
 	
+	'''

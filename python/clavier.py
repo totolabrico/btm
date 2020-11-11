@@ -16,23 +16,23 @@ class Clavier:
         if cmd=="switch":
             if self.switch_state!=arg:
                 self.switch_state=arg
-                self.machine.navigator.receive(cmd,arg)
+                self.machine.navigator.sort(cmd,arg)
         elif cmd== "select":
             if self.select_state==False:
                 self.select_state=True
-                self.machine.navigator.receive(cmd,1)
+                self.machine.navigator.sort(cmd,1)
         else:
-            self.machine.navigator.receive(cmd,arg)
+            self.machine.navigator.sort(cmd,arg)
 
     def on_release(self,Key):
         key=get_map(Key)
         cmd,arg=get_cmd_arg(key)
         if cmd=="switch":
-            self.machine.navigator.receive(cmd,0)
+            self.machine.navigator.sort(cmd,0)
             self.switch_state=0
         elif cmd=="select":
             self.select_state=False
-            self.machine.navigator.receive(cmd,0)
+            self.machine.navigator.sort(cmd,0)
 
 
 def get_cmd_arg(Key):
@@ -104,7 +104,7 @@ editor_keys={
     "E0":["menu","+"],
     "E2":["menu","-"],
 
-    "A0":["toggle"],
+    "A0":["switch",0],
     "A2":["switch",1],
     "C2":["switch",2],
     "C0":["switch",3],

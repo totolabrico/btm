@@ -4,6 +4,7 @@ def move(Cmd,Arg,tools):
 	origin=tools["origin"]
 	grid=tools["grid"]
 	max=len(tools["element"])-1
+	
 	display_max=grid[0]*grid[1]
 	reste=max%grid[0]
 	vide=grid[0]-reste	
@@ -48,7 +49,7 @@ def move(Cmd,Arg,tools):
 		if max>display_max:# si la liste depasse la taille de l'ecran je calcule l'origin
 			origin=max-display_max+vide
 	
-	print("move_in_settings",pointer,origin)
+	print("move_in_settings",pointer,origin,max,grid)
 	tools["pointer"]=pointer
 	tools["origin"]=origin
 	return tools

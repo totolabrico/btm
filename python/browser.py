@@ -29,7 +29,7 @@ class Browser():
             if cmd=="select" and arg=="+":
                 print("play the sound now")
             if cmd=="edit" and arg=="+":
-                self.navigator.editor.get_sample(self.path+"/"+self.list[self.pointer])
+                self.navigator.pointer_editor.get_sample(self.path+"/"+self.list[self.pointer])
                 self.navigator.pointer="editor"
                 
         if cmd=="menu" and arg=="-":
