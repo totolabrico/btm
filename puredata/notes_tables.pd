@@ -1,4 +1,4 @@
-#N canvas 491 196 604 434 10;
+#N canvas 553 252 604 558 10;
 #X obj 47 62 tabread notes_\$1_vol;
 #X obj 47 85 s track_\$1_note_vol;
 #X obj 393 65 table notes_\$1_vol;

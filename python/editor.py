@@ -36,31 +36,36 @@ class Editor(): # separer les chose en deux !!!!
 			self.set_children_tools()
 
 	def sort(self,cmd,arg): # tri des commandes : edit, move
-		print("editor sort: ",cmd,arg)
+		#print("editor sort: ",cmd,arg)
 		if cmd=="edit":
-			self.edit_setting(arg)
-		elif cmd=="move":
-			if self.navigator.toggle_state==0:
-				self.setting_tools=move(arg[0],arg[1],self.setting_tools) # edite la position du pointer et l'origine
+			setting=self.setting_tools["element"][self.setting_tools["pointer"]]
+			if self.name=="track" and setting[0]=="sample" and arg=="+":
+				self.machine.navigator.pointer="browser"
 			else:
-				self.children_tools=move(arg[0],arg[1],self.children_tools)
-				self.set_children_tools()
-
-			self.set_setting_tools() # met a jour la liste de settings, sa grille d'affichage, ses positions d'affichages
+				self.edit_setting(arg,setting)
+		elif cmd=="move":
+			self.move(arg)
+			
+			
+	def move(self,cmd):
+		if self.navigator.toggle_state==0:
+			self.setting_tools=move(cmd[0],cmd[1],self.setting_tools) # edite la position du pointer et l'origine
+		else:
+			self.children_tools=move(cmd[0],cmd[1],self.children_tools)
+			self.set_children_tools()
+		self.set_setting_tools() # met a jour la liste de settings, sa grille d'affichage, ses positions d'affichages
 
 	
-	def edit_setting(self,cmd):
-		setting=self.setting_tools["element"][self.setting_tools["pointer"]]
-		if self.name=="track" and setting[0]=="sample" and cmd=="+":
-			self.machine.navigator.pointer="browser"
-		else:	
-			self.machine.partition.edit(cmd,setting)
-			#osc_send(menu_names[self.menu],setting[0],setting[1],self.edited_track,self.edited_note)
+	def edit_setting(self,cmd,setting):
+		track=self.navigator.track_editor.children_tools["pointer"]
+		note=self.navigator.note_editor.children_tools["pointer"]
+		setting=self.machine.partition.edit(cmd,setting)
+		osc_send(self.name,setting[0],setting[1],track,note)
 
 	
 	def get_sample(self,cmd):
 		setting=self.setting_tools["element"][0]
-		self.machine.partition.edit(cmd,setting)
+		self.edit_setting(cmd,setting)
 
 
 	def set_setting_tools(self): # appel set_setting, set_grid_setting, et set pos

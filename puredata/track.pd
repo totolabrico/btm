@@ -1,11 +1,12 @@
-#N canvas 44 343 232 188 10;
-#X obj 34 124 outlet~;
-#X obj 134 124 outlet~;
+#N canvas 44 373 222 220 10;
+#X obj 34 161 outlet~;
+#X obj 134 161 outlet~;
 #X obj 545 1057 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 -262144
 -1 -1 0 1;
-#X obj 35 22 notes_tables \$1;
-#X obj 34 56 sample_reader \$1;
-#X obj 34 88 audio_settings \$1;
+#X obj 35 59 notes_tables \$1;
+#X obj 34 93 sample_reader \$1;
+#X obj 34 125 audio_settings \$1;
+#X obj 34 25 table mysample_\$1;
 #X connect 4 0 5 0;
 #X connect 5 0 0 0;
 #X connect 5 1 1 0;

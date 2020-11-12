@@ -13,15 +13,15 @@
 #X obj 255 104 r master_pas;
 #X floatatom 255 126 5 0 0 0 - - -;
 #X obj 223 160 tabread notes_\$1_vol;
-#X obj 264 190 route 0;
+#X obj 223 202 route 0;
 #X obj 240 349 s pas_\$1;
 #X obj 240 321 f;
-#X obj 303 235 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+#X obj 262 233 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
-#X obj 477 239 r tick_length;
-#X obj 303 287 delay;
-#X obj 329 249 s track_\$1_clean_vol;
-#X obj 477 271 / 8;
+#X obj 436 237 r tick_length;
+#X obj 262 285 delay;
+#X obj 293 246 s track_\$1_clean_vol;
+#X obj 436 269 / 16;
 #X connect 0 0 3 0;
 #X connect 2 0 0 0;
 #X connect 3 0 6 0;

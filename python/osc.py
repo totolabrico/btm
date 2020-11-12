@@ -10,7 +10,7 @@ def osc_send(addr,setting_name,setting_value,idtrack=0,idnote=0):
 	
 	msg.add_arg(setting_name)
 
-	if addr=="notes":
+	if addr=="note":
 		msg.add_arg(idnote)
 	msg.add_arg(clean_value(setting_value))
 	msg = msg.build()

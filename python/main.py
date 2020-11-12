@@ -9,7 +9,7 @@ from nav import*
 class Machine:
 
 	def __init__(self):
-		self.partition=Partition()
+		self.partition=Partition(self)
 		self.navigator=Navigator(self)
 		self.clavier=Clavier(self)
 		self.encoder=Encoder(self)

@@ -36,17 +36,17 @@ audio_setting=[
 
 class Partition():
 
-	def __init__(self):
-		global master_setting
+	def __init__(self,Machine):
+		self.machine=Machine
 		self.nb_track=30
-		self.nb_note=32
+		self.nb_note=16
 		self.master_setting=[]
 		self.track_setting=[]
 		self.note_setting=[]
 		self.init_master()
 		self.init_track()
 		self.init_note()
-		#self.osc_init()
+		self.osc_init()
 
 		
 	def init_master(self): # initialisation de la partition master : liste 2d
@@ -113,19 +113,20 @@ class Partition():
 			value=cmd			
 		
 		setting[1]=value
+		return setting
 		# l'osc part d'ici ou de editor?
 		#print(menu_names[menu_id],setting[0],setting[1],track_id,note_id)
 
 
-	'''
+	
 	def osc_init(self):
 		for element in self.master_setting:
-			osc_send(menu_names[0],element[0],element[1])
+			osc_send("master",element[0],element[1])
 		
 		track_id=0
 		for element in self.track_setting:
 			for track in element:
-				osc_send(menu_names[1],track[0],track[1],track_id)
+				osc_send("track",track[0],track[1],track_id)
 			track_id+=1
 			
 		track_id=0
@@ -133,8 +134,8 @@ class Partition():
 			note_id=0
 			for track in element:
 				for note in track:
-					osc_send(menu_names[2],note[0],note[1],track_id,note_id)
+					osc_send("note",note[0],note[1],track_id,note_id)
 				note_id+=1
 			track_id+=1
 	
-	'''
+	
