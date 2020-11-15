@@ -1,3 +1,8 @@
+def get_key(Dico,Index):
+	for key,value in Dico.items():
+		#print(key,value)
+		if (value[0]==Index):
+			return key
 
 def move(Cmd,Arg,tools):
 	pointer=tools["pointer"]

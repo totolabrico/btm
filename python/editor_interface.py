@@ -30,7 +30,7 @@ class Editor_Interface():
 	
 	def set_sample_name(self): # prepare le nom du sample
 		track=self.partition.track_setting[self.navigator.track_editor.children_tools["pointer"]]
-		name=track[0][1].split("/")
+		name=track["sample"][1].split("/")
 		name=name[len(name)-1]
 		name=name.split(".")
 		name=name[0][-10:]
@@ -80,35 +80,38 @@ class Editor_Interface():
 		
 		
 	def draw_grid(self,Type,tools,margin): # affichage d'une grille (appel draw_setting et draw_child)
-		id=0
 		min=tools["origin"]
 		num_el_per_width=tools["grid"][0]
 		num_el_per_height=tools["grid"][1]
 		if num_el_per_height==1:
 			min=int(tools["pointer"]-tools["pointer"]%num_el_per_width)
 		max=min+num_el_per_width*num_el_per_height
+		if max>len(tools["pos"]):
+			max=len(tools["pos"])
 		
-		for element in tools["element"]:
-			if id>=min and id<max:
-				element_size=self.set_element_width(Type,tools)
-				x,y=self.set_pos(Type,tools,id,min,margin,element_size)
-				if Type=="settings":
-					self.draw_setting(tools,id,element,x,y)
-				elif Type=="children":
-					self.draw_child(tools,id,x,y,element_size)
+		id=min
+		while id<max: 
+			element_size=self.set_element_width(Type,tools)
+			x,y=self.set_pos(Type,tools,id,min,margin,element_size)
+			if Type=="settings":
+				key=get_key(tools["element"],id)
+				el= tools["element"][key]
+				self.draw_setting(tools,id,key,el[1],x,y)
+			elif Type=="children":
+				self.draw_child(tools,id,x,y,element_size)
 			id+=1
 	
 	
-	def draw_setting(self,tools,id,element,x,y): #affiche un setting
+	def draw_setting(self,tools,id,Key,Element,x,y): #affiche un setting
 		line_content=""
 		if tools["pointer"]==id:
 			line_content=">"
-		line_content+=element[0][:3]+":"+setting_to_string(element[1])[:4]
+		line_content+=Key[:3]+":"+setting_to_string(Element)[:4]
 		draw.text((x,y),line_content,font=font, fill=255)
 	
 	def draw_child(self,tools,id,x,y,rect_size): #affiche un enfants
 		color=0
-		if self.navigator.id_current_editor==2 and tools["element"][id][0][1]>0:
+		if self.navigator.id_current_editor==2 and tools["element"][id]["vol"][1]>0:
 			color=255
 		draw.rectangle((x,y,x+rect_size,y+rect_size), outline=255, fill=color)
 		if tools["pointer"]==id:

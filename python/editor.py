@@ -38,15 +38,16 @@ class Editor(): # separer les chose en deux !!!!
 	def sort(self,cmd,arg): # tri des commandes : edit, move
 		#print("editor sort: ",cmd,arg)
 		if cmd=="edit":
-			setting=self.setting_tools["element"][self.setting_tools["pointer"]]
-			if self.name=="track" and setting[0]=="sample" and arg=="+":
+			setting=self.setting_tools["element"]
+			key=get_key(setting,self.setting_tools["pointer"])
+			element=setting[key]
+			if self.name=="track" and key=="sample" and arg=="+":
 				self.machine.navigator.pointer="browser"
 			else:
-				self.edit_setting(arg,setting)
+				self.edit_setting(arg,key,element)
 		elif cmd=="move":
 			self.move(arg)
-			
-			
+				
 	def move(self,cmd):
 		if self.navigator.toggle_state==0:
 			self.setting_tools=move(cmd[0],cmd[1],self.setting_tools) # edite la position du pointer et l'origine
@@ -56,16 +57,16 @@ class Editor(): # separer les chose en deux !!!!
 		self.set_setting_tools() # met a jour la liste de settings, sa grille d'affichage, ses positions d'affichages
 
 	
-	def edit_setting(self,cmd,setting):
+	def edit_setting(self,cmd,key,el):
 		track=self.navigator.track_editor.children_tools["pointer"]
 		note=self.navigator.note_editor.children_tools["pointer"]
-		setting=self.machine.partition.edit(cmd,setting)
-		osc_send(self.name,setting[0],setting[1],track,note)
+		self.machine.partition.edit(cmd,key,el,self.name,track,note)
+		#osc_send(self.name,key,el[1],track,note)
 
 	
 	def get_sample(self,cmd):
-		setting=self.setting_tools["element"][0]
-		self.edit_setting(cmd,setting)
+		setting=self.setting_tools["element"]["sample"]
+		self.edit_setting(cmd,"sample",setting)
 
 
 	def set_setting_tools(self): # appel set_setting, set_grid_setting, et set pos
@@ -114,8 +115,8 @@ class Editor(): # separer les chose en deux !!!!
 			width= 10
 		if self.name=="note":
 			setting=self.machine.partition.master_setting
-			for el in setting:
-				if el[0]=="temps":
+			for key,el in setting.items():
+				if key=="temps":
 					width= el[1]*4 # nombre de temps de la track*4
 		if self.navigator.toggle_state==0:
 			height= 1
