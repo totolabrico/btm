@@ -20,14 +20,13 @@ class Navigator():
 		self.browser=Browser(self)
 
 	def sort(self,cmd,arg): # tri les commandes provenants du clavier vers set_current_editor ou un editeur ou le browser
-		if cmd=="menu":
-			self.set_current_editor(arg)
-		elif self.pointer=="editor":
+		if self.pointer=="editor":
 			self.pointer_editor.sort(cmd,arg)
 		elif self.pointer=="browser":
 			self.browser.sort(cmd,arg)
-				
-	def set_current_editor(self,cmd): # defini l'editeur actif
+						
+		
+	def edit_current_editor(self,cmd): # defini l'editeur actif
 		last_id=int(self.id_current_editor)
 		if cmd=="+":
 			self.toggle_state=not self.toggle_state
@@ -45,8 +44,10 @@ class Navigator():
 			if self.id_current_editor!=2:
 				self.note_editor.reset_pointer();
 		self.pointer_editor.set_tools() 
-			
 				
+	def close_browser():
+		self.pointer="editor"
+		
 	def draw(self): # appel le draw de l'editeur ou du browser
 		while True:
 			draw_begin()

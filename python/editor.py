@@ -36,7 +36,9 @@ class Editor(): # separer les chose en deux !!!!
 			self.set_children_tools()
 
 	def sort(self,cmd,arg): # tri des commandes : edit, move
-		#print("editor sort: ",cmd,arg)
+		print("editor sort: ",cmd,arg)
+		if cmd=="menu":
+			self.navigator.edit_current_editor(arg)
 		if cmd=="edit":
 			setting=self.setting_tools["element"]
 			key=get_key(setting,self.setting_tools["pointer"])
@@ -65,6 +67,7 @@ class Editor(): # separer les chose en deux !!!!
 
 	
 	def get_sample(self,cmd):
+		print(self.setting_tools["element"]["sample"])
 		setting=self.setting_tools["element"]["sample"]
 		self.edit_setting(cmd,"sample",setting)
 
@@ -114,10 +117,16 @@ class Editor(): # separer les chose en deux !!!!
 		if self.name=="track":
 			width= 10
 		if self.name=="note":
-			setting=self.machine.partition.master_setting
+			width=16
+			'''
+			id_track=self.navigator.master_editor.editor_tools["pointer"]
+			setting=self.machine.partition.track_setting[id_track]
 			for key,el in setting.items():
 				if key=="temps":
-					width= el[1]*4 # nombre de temps de la track*4
+					width= setting["mesure"][1]*setting["temps"][1] # le fait que ça soit si galere ici est bien la preuve que l'architecture du code n'est pas toptoptoptop
+			if width>20:
+				width=width/2
+			'''
 		if self.navigator.toggle_state==0:
 			height= 1
 		else:

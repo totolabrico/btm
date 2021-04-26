@@ -19,6 +19,11 @@ class Browser():
     
     def sort(self,cmd,arg):
         print("browser sort: ",cmd,arg)
+        if cmd=="menu":
+            if arg[0]=="+":
+                self.play_sound()
+            elif arg[0]=="-":
+                self.navigator.pointer="editor"
         if cmd=="move":
             if arg[0]=="y":
                 self.set_pointer(arg[1])
@@ -27,14 +32,14 @@ class Browser():
         
         if self.list[self.pointer][-4:].lower()==".wav":
             if cmd=="select" and arg=="+":
-                print("play the sound now")
+                self.play_sound()
             if cmd=="edit" and arg=="+":
                 self.navigator.pointer_editor.get_sample(self.path+"/"+self.list[self.pointer])
-                self.navigator.pointer="editor"
-                
-        if cmd=="menu" and arg=="-":
-            self.navigator.pointer="editor"
-                    
+
+    def play_sound(self):
+        print("play the sound now")
+        
+
     def set_pointer(self,cmd):
         if cmd=="+":
             self.pointer+=1

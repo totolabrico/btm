@@ -4,12 +4,12 @@ from osc import*
 sequencer_setting=[
 	# 0:name / 1:value / 2:min / 3:max / 4:inc
 	["play",True],
-	["bpm",120,0,300,0.5],
-	["temps",4,1,8,1]
+	["bpm",120,0,300,0.5]
 	]
 	
 time_setting=[
 	# 0:name / 1:value / 2:min / 3:max / 4:inc
+	["temps",4,1,8,1],
 	["mesure",8,1,64,1],
 	["begin",0,0,64,1],
 	["end",8*4,1,64,1],
@@ -51,7 +51,7 @@ class Partition():
 
 		
 	def init_master(self): # initialisation de la partition master : liste 2d
-		list_array=[sequencer_setting,time_setting,audio_setting]
+		list_array=[sequencer_setting,audio_setting]
 		self.init_dict(self.master_setting,list_array)
 		
 	def init_track(self): # initialisation de la partition tracks : liste 3d
@@ -113,14 +113,12 @@ class Partition():
 				value=min
 			value=round(value,2)
 			if key=="temps" or key=="mesure":
-				 self.compute_length()
+				 self.compute_length(key,setting)
 			
 		elif type(value)==str:
 			value=cmd			
 		
 		setting[1]=value
-		#return setting
-		# l'OSC DOIT PARTIR DE LA PARTITION ! 
 		osc_send(editor_name,key,setting[1],track_id,note_id)
 
 	def compute_length(self,Key,Setting):
