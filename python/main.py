@@ -1,10 +1,8 @@
 import copy
-import dill as pickle
+import threading
 from clavier import*
-from encoder import*
 from partition import*
 from nav import*
-
 
 class Machine:
 
@@ -12,12 +10,11 @@ class Machine:
 		self.partition=Partition(self)
 		self.navigator=Navigator(self)
 		self.clavier=Clavier(self)
-		self.encoder=Encoder(self)
 		self.oled = threading.Thread(target=self.navigator.draw(), args=())
-		self.oled.start()		
-
+		self.oled.start()
+				
 	def save_set(self):
-		path="home/pi/btm/saves/"+self.partition.name
+		path="/home/pi/btm/saves/set"
 		with open(path,'wb') as fichier:
 			mon_pickler=pickle.Pickler(fichier)
 			mon_pickler.dump(self.partition)
@@ -26,8 +23,6 @@ class Machine:
 		with open(Path,'rb') as fichier:
 			mon_depickler=pickle.Unpickler(fichier)
 			self.partition=mon_depickler.load()
-
-
 btm=Machine()
 print("btm")
 

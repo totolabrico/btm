@@ -5,7 +5,7 @@ class Clavier:
 
     def __init__(self,Machine):
         self.machine=Machine
-        self.switch_state=0
+        self.switch_state=False
         self.select_state=False
         self.listener = keyboard.Listener(on_press=self.on_press,on_release=self.on_release)
         self.listener.start()
@@ -14,25 +14,21 @@ class Clavier:
         key=get_map(Key)
         cmd,arg=get_cmd_arg(key)
         if cmd=="switch":
-            if self.switch_state!=arg:
-                self.switch_state=arg
-                self.machine.navigator.sort(cmd,arg)
+            self.switch_state=True
         elif cmd== "select":
-            if self.select_state==False:
-                self.select_state=True
-                self.machine.navigator.sort(cmd,1)
+            self.select_state=True
         else:
+            if self.switch_state==True:
+                cmd=arg
             self.machine.navigator.sort(cmd,arg)
 
     def on_release(self,Key):
         key=get_map(Key)
         cmd,arg=get_cmd_arg(key)
         if cmd=="switch":
-            self.machine.navigator.sort(cmd,0)
-            self.switch_state=0
-        elif cmd=="select":
+            self.switch_state=False
+        elif cmd== "select":
             self.select_state=False
-            self.machine.navigator.sort(cmd,0)
 
 
 def get_cmd_arg(Key):
@@ -97,28 +93,19 @@ keys={
 
 editor_keys={
 
-    "A3":["edit","*"],
-    "B3":["edit","+"],
-    "D3":["edit","-"],
-    
-    "E0":["menu","+"],
-    "E2":["menu","-"],
-
-    "A0":["switch",0],
-    "A2":["switch",1],
-    "C2":["switch",2],
-    "C0":["switch",3],
+    "A2":["switch",""],
+    "D2":["select",""],
 
     "A1":["move",["x","-"]],
     "C1":["move",["x","+"]],
     "B0":["move",["y","+"]],
     "B2":["move",["y","-"]],
     
-    "B1":["select"],
-    
-    "D2":["cmd",1],
-    "D1":["cmd",2],
-    "D0":["cmd",3],
+    "B1":["enter","back"],
+    "A0":["remove",""],
 
+    "C2":["edit","+"],
+    "C0":["edit","-"],
+    
 
     }
