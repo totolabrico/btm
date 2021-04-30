@@ -1,16 +1,7 @@
 from cmd import*
 from draw import*
 from osc import*
-
-menu_tools={
-"pos":[],
-"grid":[0,0],
-"origin":0,
-"pointer":[0,0],
-"fork":[],
-"selecter":[],
-}
-
+from settings import*
 
 class Menu():
 	
@@ -20,8 +11,7 @@ class Menu():
 		self.pointer=0
 		
 	def set_pointer(self):
-		self.pointer=self.tools["pointer"][0]+self.tools["pointer"][1]*self.tools["grid"][0]
-		print("element",self.list[self.pointer])
+		self.pointer=int(self.tools["pointer"][0]+self.tools["pointer"][1]*self.tools["grid"][0])
 
 	def sort(self,cmd,arg):
 		if cmd=="move":
@@ -41,13 +31,17 @@ class Editor():
 		self.machine=Machine
 		self.partition=Partition
 		self.parameters=List
-
+		
 	def sort(self,cmd,arg):
 		if cmd=="edit":
 			self.parameters[self.pointer]=edit(arg,self.parameters[self.pointer])
 			self.send_osc()
 			#self.machine.save_set()
-	
+				
+	def set_parameters(self,Mom,Parameters):
+		self.mom=Mom
+		self.parameters=Parameters
+		
 	def set_list(self):
 		self.list=[]		
 		for parameter in self.parameters:
@@ -57,8 +51,4 @@ class Editor():
 	def draw(self):
 		draw_list(self.set_list(),self.tools)
 		#print(self.list)
-
-class Rack():
-	def __init__(self,List):
-		self.parameters=List
 	

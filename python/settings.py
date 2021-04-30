@@ -1,4 +1,13 @@
 
+menu_tools={
+"pos":[],
+"grid":[0,0],
+"origin":0,
+"pointer":[0,0],
+"fork":[],
+"selecter":[],
+}
+
 sequencer_setting=[
 	# 0:name / 1:value / 2:min / 3:max / 4:inc
 	["play",True],
@@ -14,12 +23,8 @@ time_setting=[
 	["loop",True]
 	]
 
-track_setting=[
-    ["sample","empty"],
-    ]
-
-	
 sample_setting=[
+    ["file","empty"],
 	["pitch",0,-10,10,0.02],
 	["tone",0,-10,10,0.02],
 	["s_begin",0,0,1,0.02],

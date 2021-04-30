@@ -59,14 +59,44 @@ def draw_list(List,Tools):
             xdraw=X[1]+x*(width/w)
             ydraw=Y[2]+y*(height*2/3)/h
             draw.text((xdraw,ydraw),List[i],font=font, fill=255)
-            draw_pointer(Tools,x,y,xdraw-X[1],ydraw)
+            draw_text_pointer(Tools,x,y,xdraw-X[1],ydraw)
             x+=1
             if x==w:
                 x=0
                 y+=1
         i+=1
 
-def draw_pointer(Tools,X,Y,Xdraw,Ydraw):
+
+def draw_text_pointer(Tools,X,Y,Xdraw,Ydraw):
     if Tools["pointer"][0]==X and Tools["pointer"][1]-Tools["origin"]==Y:
         draw.text((Xdraw,Ydraw),">",font=font, fill=255)
+
+        
+def draw_tracks(List,Tools):
+
+    w=Tools["grid"][0]
+    h=Tools["grid"][1]
+    o=Tools["origin"]
+    x=0
+    y=0
+    
+    i=o*w
+    while i<len(List):
+        if y<h:
+            xdraw=X[0]+x*(width/w)
+            ydraw=Y[2]+y*(height*2/3)/h
+            #draw.text((xdraw,ydraw),"o",font=font, fill=255)
+            draw.rectangle((xdraw,ydraw,xdraw+rect_track_size,ydraw+rect_track_size), outline=255, fill=0)
+            draw_track_pointer(Tools,x,y,xdraw,ydraw)
+
+            x+=1
+            if x==w:
+                x=0
+                y+=1
+        i+=1
+
+def draw_track_pointer(Tools,X,Y,Xdraw,Ydraw):
+    if Tools["pointer"][0]==X and Tools["pointer"][1]-Tools["origin"]==Y:
+        y=Ydraw+rect_track_size+2
+        draw.rectangle((Xdraw,y,Xdraw+rect_track_size,y+2), outline=255, fill=0)
 

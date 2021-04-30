@@ -1,5 +1,6 @@
 from osc import*
 from settings import*
+from cmd import*
 
 class Partition():
 
@@ -18,8 +19,8 @@ class Partition():
 		return setting
 		
 	def init_tracks(self):
-		titles=["track","time","audio","sample"]
-		list=[track_setting.copy(),time_setting.copy(),audio_setting.copy(),sample_setting.copy()]
+		titles=["part","sample","loop","audio"]
+		list=[[],sample_setting.copy(),time_setting.copy(),audio_setting.copy()]
 		setting=[]
 		i=0
 		while i<self.nb_track:
@@ -31,8 +32,8 @@ class Partition():
 				setting[i][j].append(list[j])
 				j+=1
 			i+=1
-		print(setting[0])
 		return setting
+
 	
 	'''
 		self.track_setting=[]

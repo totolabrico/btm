@@ -15,6 +15,9 @@ class Navigator():
 			"play":PlayMenu(self),
 			"sequencer":SequencerMenu(self.machine,self.machine.partition,self),
 			"master":MasterMenu(self.machine,self.machine.partition,self),
+			"tracks":TracksMenu(self.machine,self.machine.partition,self),
+			"track":TrackMenu(self.machine,self.machine.partition,self),
+			"audio":AudioMenu(self.machine,self.machine.partition,self),
 			}
 			
 		self.menu=self.menus["main"]
@@ -23,6 +26,10 @@ class Navigator():
 		try:
 			self.menu=self.menus[Name]
 			print("menu",Name)
+			try:
+				self.menu.set_parameters()
+			except:
+				print("no parameters to set")
 		except:
 			print("no menu with that name")
 		
