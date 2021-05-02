@@ -31,17 +31,18 @@ class Editor():
 		self.machine=Machine
 		self.partition=Partition
 		self.parameters=List
-		
-	def sort(self,cmd,arg):
-		if cmd=="edit":
-			self.parameters[self.pointer]=edit(arg,self.parameters[self.pointer])
-			self.send_osc()
-			#self.machine.save_set()
 				
 	def set_parameters(self,Mom,Parameters):
 		self.mom=Mom
 		self.parameters=Parameters
-		
+			
+	def sort(self,cmd,arg):
+		print("editot sort")
+		if cmd=="edit":
+			self.parameters[self.pointer]=edit(arg,self.parameters[self.pointer])
+			self.send_osc()
+			#self.machine.save_set()
+	
 	def set_list(self):
 		self.list=[]		
 		for parameter in self.parameters:

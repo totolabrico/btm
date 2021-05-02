@@ -106,28 +106,28 @@ class TrackMenu(Menu,Editor):
 		self.partition=Partition
 		self.navigator=Navigator
 		self.id=0
-		self.track=[]
-		Editor.__init__(self,Machine,Partition,Partition.tracks[self.id]) 
+		Editor.__init__(self,Machine,Partition,Partition.tracks[self.id]) # on init l'index 0 et c'est tout !?
 
 	def set_parameters(self):
 		self.id=self.navigator.menus["tracks"].pointer
-		self.track=self.partition.tracks[self.id]
-		self.title=str(self.id+1)+": "+self.track[1][1][0][1]
+		print("track menu set parameters",self.id)
+		self.parameters=self.partition.tracks[self.id]
+		self.title=str(self.id+1)+": "+self.parameters[1][1][0][1]
 		self.list=[]
-		for el in self.track:
+		for el in self.parameters:
 			self.list.append(el[0])
 			print(el[0])
 		print(self.list)
 		
 	def sort(self,cmd,arg):
-		Menu.sort(self,cmd,arg)
 		if cmd=="enter":
-			print("id",self.id)
-			print("element",self.list[self.pointer])
-			print(self.parameters[self.pointer][1])
-			nextmenu=self.navigator.menus[self.list[self.pointer]]
-			nextmenu.set_parameters(self.name,self.parameters[self.pointer][1])
+			self.set_nextmenu_parameters()
+		Menu.sort(self,cmd,arg)
 			
+	def set_nextmenu_parameters(self):
+		nextmenu=self.navigator.menus[self.list[self.pointer]]
+		nextmenu.set_parameters(self.name,self.parameters[self.pointer][1])
+		
 	def draw(self):
 		draw_title(self.title)
 		draw_list(self.list,self.tools)
@@ -143,12 +143,12 @@ class AudioMenu(Menu,Editor):
 		Editor.__init__(self,Machine,Partition,[]) 
 	
 	def set_parameters(self,Mom,Parameters):
+		print("audio menu set parameters")
 		Editor.set_parameters(self,Mom,Parameters)
 		
 	def sort(self,cmd,arg):
 		Menu.sort(self,cmd,arg)
 		Editor.sort(self,cmd,arg)
-		print(self.partition.tracks)
 
 	def draw(self):
 		Menu.draw(self)

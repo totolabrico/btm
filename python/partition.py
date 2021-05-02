@@ -1,6 +1,7 @@
 from osc import*
 from settings import*
 from cmd import*
+import copy
 
 class Partition():
 
@@ -14,24 +15,27 @@ class Partition():
 		self.tracks=self.init_tracks()
 
 	def init_master(self):
-		setting=audio_setting.copy()
+		setting=copy.deepcopy(audio_setting)
 		del setting[3]
 		return setting
 		
 	def init_tracks(self):
 		titles=["part","sample","loop","audio"]
-		list=[[],sample_setting.copy(),time_setting.copy(),audio_setting.copy()]
+		#list=[[],sample_setting,time_setting,audio_setting]
 		setting=[]
 		i=0
 		while i<self.nb_track:
 			setting.append([])
+			alist=[[],copy.deepcopy(sample_setting),copy.deepcopy(time_setting),copy.deepcopy(audio_setting)]
 			j=0
-			while j<len(list):
+			while j<len(alist):
 				setting[i].append([])
 				setting[i][j].append(titles[j])
-				setting[i][j].append(list[j])
+				setting[i][j].append(alist[j])
 				j+=1
 			i+=1
+		setting[0][3][1][0][1]=1
+		print(setting[1][3][1][0][1])
 		return setting
 
 	
