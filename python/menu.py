@@ -31,10 +31,6 @@ class Editor():
 		self.machine=Machine
 		self.partition=Partition
 		self.parameters=List
-				
-	def set_parameters(self,Mom,Parameters):
-		self.mom=Mom
-		self.parameters=Parameters
 			
 	def sort(self,cmd,arg):
 		print("editot sort")
@@ -52,4 +48,33 @@ class Editor():
 	def draw(self):
 		draw_list(self.set_list(),self.tools)
 		#print(self.list)
-	
+
+		
+class ChildMenu(Menu,Editor):
+
+	def __init__(self,Machine,Partition,Navigator):
+		Menu.__init__(self,Navigator) 
+		self.name=""
+		self.mom=""
+		self.list=[]
+		self.tools["grid"]=[2,3]
+		Editor.__init__(self,Machine,Partition,[]) 
+
+	def set_parameters(self,Name,Mom,Parameters):
+		self.name=Name
+		self.mom=Mom
+		self.parameters=Parameters
+		
+	def sort(self,cmd,arg):
+		Menu.sort(self,cmd,arg)
+		Editor.sort(self,cmd,arg)
+
+	def draw(self):
+		Menu.draw(self)
+		Editor.draw(self)
+		
+	def send_osc(self):
+		setting=self.parameters[self.pointer]
+		if self.mom=="track":
+			id_track=self.navigator.menus["tracks"].pointer
+			osc_send("track",setting[0],setting[1],id_track)

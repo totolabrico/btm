@@ -21,21 +21,18 @@ class Partition():
 		
 	def init_tracks(self):
 		titles=["part","sample","loop","audio"]
-		#list=[[],sample_setting,time_setting,audio_setting]
 		setting=[]
 		i=0
 		while i<self.nb_track:
+			list=[[],copy.deepcopy(sample_setting),copy.deepcopy(time_setting),copy.deepcopy(audio_setting)]
 			setting.append([])
-			alist=[[],copy.deepcopy(sample_setting),copy.deepcopy(time_setting),copy.deepcopy(audio_setting)]
 			j=0
-			while j<len(alist):
+			while j<len(list):
 				setting[i].append([])
 				setting[i][j].append(titles[j])
-				setting[i][j].append(alist[j])
+				setting[i][j].append(list[j])
 				j+=1
 			i+=1
-		setting[0][3][1][0][1]=1
-		print(setting[1][3][1][0][1])
 		return setting
 
 	

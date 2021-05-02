@@ -17,7 +17,8 @@ class Navigator():
 			"master":MasterMenu(self.machine,self.machine.partition,self),
 			"tracks":TracksMenu(self.machine,self.machine.partition,self),
 			"track":TrackMenu(self.machine,self.machine.partition,self),
-			"audio":AudioMenu(self.machine,self.machine.partition,self),
+			"child":ChildMenu(self.machine,self.machine.partition,self),
+			#"audio":AudioMenu(self.machine,self.machine.partition,self),
 			}
 			
 		self.menu=self.menus["main"]

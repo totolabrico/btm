@@ -105,14 +105,16 @@ class TrackMenu(Menu,Editor):
 		self.tools["grid"]=[2,3]
 		self.partition=Partition
 		self.navigator=Navigator
-		self.id=0
-		Editor.__init__(self,Machine,Partition,Partition.tracks[self.id]) # on init l'index 0 et c'est tout !?
+		Editor.__init__(self,Machine,Partition,[])
 
 	def set_parameters(self):
-		self.id=self.navigator.menus["tracks"].pointer
-		print("track menu set parameters",self.id)
-		self.parameters=self.partition.tracks[self.id]
-		self.title=str(self.id+1)+": "+self.parameters[1][1][0][1]
+		id=self.navigator.menus["tracks"].pointer
+		print("track menu set parameters",id)
+		self.parameters=self.partition.tracks[id]
+		self.title=str(id+1)+": "+self.parameters[1][1][0][1]
+		self.set_list()
+		
+	def set_list(self):
 		self.list=[]
 		for el in self.parameters:
 			self.list.append(el[0])
@@ -125,35 +127,11 @@ class TrackMenu(Menu,Editor):
 		Menu.sort(self,cmd,arg)
 			
 	def set_nextmenu_parameters(self):
-		nextmenu=self.navigator.menus[self.list[self.pointer]]
-		nextmenu.set_parameters(self.name,self.parameters[self.pointer][1])
+		self.navigator.set_menu("child")
+		childname=self.list[self.pointer]
+		self.navigator.menu.set_parameters(childname,self.name,self.parameters[self.pointer][1])
 		
 	def draw(self):
 		draw_title(self.title)
 		draw_list(self.list,self.tools)
-		
-class AudioMenu(Menu,Editor):
 
-	def __init__(self,Machine,Partition,Navigator):
-		Menu.__init__(self,Navigator) 
-		self.name="audio"
-		self.mom=""
-		self.list=[]
-		self.tools["grid"]=[2,3]
-		Editor.__init__(self,Machine,Partition,[]) 
-	
-	def set_parameters(self,Mom,Parameters):
-		print("audio menu set parameters")
-		Editor.set_parameters(self,Mom,Parameters)
-		
-	def sort(self,cmd,arg):
-		Menu.sort(self,cmd,arg)
-		Editor.sort(self,cmd,arg)
-
-	def draw(self):
-		Menu.draw(self)
-		Editor.draw(self)
-		
-	def send_osc(self):
-		setting=self.parameters[self.pointer]
-		#osc_send("master",setting[0],setting[1])
