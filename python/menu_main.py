@@ -6,7 +6,7 @@ class MainMenu(Menu):
 		Menu.__init__(self,Navigator)
 		self.name="main"
 		self.mom="main"
-		self.list=["play","record","load","save","import","reset","a","b","c","d","e",f"]
+		self.list=["play","record","load","save","import","reset","a","b","c","d","e","f"]
 		self.tools["grid"]=[2,3]
 
 	def sort(self,cmd,arg):
