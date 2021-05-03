@@ -85,12 +85,12 @@ def move(Cmd,Arg,Tools,Length):
 	# Correction de l'origine de y
 	if y==0:
 		o=0
-	if y==hmax-1:
-		o=y-h-1
-	if y-o==h:
-		o+=1
-	if y<o:
-		o-=1
+
+	else:
+		if y-o==h:
+			o+=1
+			if y<o:
+				o-=1
 
 	print("move",x,y,o)
 	Tools["pointer"]=[x,y]
