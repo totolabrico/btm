@@ -72,11 +72,9 @@ def move(Cmd,Arg,Tools,Length):
 			if Arg=="+":
 				x=0
 				y=0
-				o=0
 			else:
 				x=w-1-r
 				y=hmax-1
-				o=y-h-1
 
 		if Cmd=="y":
 			if Arg=="+":
@@ -85,11 +83,14 @@ def move(Cmd,Arg,Tools,Length):
 				y=hmax-2
 
 	# Correction de l'origine de y
-	else:
-		if y-o==h:
-			o+=1
-		if y<o:
-			o-=1
+	if y==0:
+		o=0
+	if y==hmax-1:
+		o=y-h-1
+	if y-o==h:
+		o+=1
+	if y<o:
+		o-=1
 
 
 	Tools["pointer"]=[x,y]
