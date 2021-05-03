@@ -38,7 +38,6 @@ class Editor():
 		print("editot sort")
 		if cmd=="edit":
 			parameter=self.parameters[self.pointer]
-			print(self.parameters,self.pointer)
 			if parameter[0]=="sample":
 				self.navigator.set_menu("sample")
 			else:
@@ -72,6 +71,7 @@ class Browser(): # != Editor un browser est un menu qui permet de se deplacer da
 		if cmd=="move":
 			if arg[0]=="y":
 				self.tools=move(arg[0],arg[1],self.tools,len(self.list))
+				self.set_pointer()
 			if arg[0]=="x":
 				self.set_path(arg[1])
 
