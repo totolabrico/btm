@@ -21,10 +21,10 @@ def edit(cmd,setting):
 		elif value<min:
 			value=min
 		value=round(value,2)
-			
+
 	elif type(value)==str:
 		pass
-		
+
 	setting[1]=value
 	return setting
 
@@ -39,20 +39,20 @@ def move(Cmd,Arg,Tools,Length):
 		hmax=int(hmax+1)
 	if hmax<h:
 		h=hmax
-	
+
 	# Ajout des valeurs x ou y au pointer
 	if Cmd=="x":
 		if Arg=="+":
 			x+=1
 		else:
 			x-=1
-						
+
 	if Cmd=="y":
 		if Arg=="+":
 			y+=1
 		else:
 			y-=1
-			
+
 	# Correction des valeurs x ou y du pointer si elles sortent de la grille
 	if x<0:
 		x=w-1
@@ -60,40 +60,43 @@ def move(Cmd,Arg,Tools,Length):
 	if x==w:
 		x=0
 		y+=1
-	
+
 	if y<0:
 		y=hmax-1
 	if y==hmax:
 		y=0
-		
-	# Correction des valeurs x ou y du pointer si on est dans le vide	
-	if r!=0 and y==hmax-1 and x>=r: 
+
+	# Correction des valeurs x ou y du pointer si on est dans le vide
+	if r!=0 and y==hmax-1 and x>=r:
 		if Cmd=="x":
 			if Arg=="+":
 				x=0
 				y=0
+				o=0
 			else:
 				x=w-1-r
 				y=hmax-1
-				
+				o=y-h-1
+
 		if Cmd=="y":
 			if Arg=="+":
 				y=0
 			else:
 				y=hmax-2
-				
+
 	# Correction de l'origine de y
-	if y-o==h:
-		o+=1
-	if y<o:
-		o-=1
+	else:
+		if y-o==h:
+			o+=1
+		if y<o:
+			o-=1
 
 
 	Tools["pointer"]=[x,y]
 	Tools["origin"]=o
 
 	return Tools
-			
+
 def get_key(Dico,Index):
 	for key,value in Dico.items():
 		#print(key,value)
