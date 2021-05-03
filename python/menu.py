@@ -38,7 +38,7 @@ class Editor():
 		print("editot sort")
 		if cmd=="edit":
 			parameter=self.parameters[self.pointer]
-			print(self.parameters)
+			print(parameter)
 			if parameter[0][0]=="sample":
 				self.navigator.set_menu("sample")
 			else:
