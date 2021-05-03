@@ -92,7 +92,7 @@ def move(Cmd,Arg,Tools,Length):
 	if y<o:
 		o-=1
 
-
+	print("move",x,y,o)
 	Tools["pointer"]=[x,y]
 	Tools["origin"]=o
 
