@@ -1,6 +1,5 @@
 import time
 import dill as pickle
-from browser import*
 from draw import*
 from osc import*
 from menu_main import*
@@ -18,7 +17,7 @@ class Navigator():
 			"tracks":TracksMenu(self.machine,self.machine.partition,self),
 			"track":TrackMenu(self.machine,self.machine.partition,self),
 			"child":ChildMenu(self.machine,self.machine.partition,self),
-			#"audio":AudioMenu(self.machine,self.machine.partition,self),
+			"sample":SampleMenu(self),
 			}
 			
 		self.menu=self.menus["main"]

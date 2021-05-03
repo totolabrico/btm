@@ -23,7 +23,7 @@ def edit(cmd,setting):
 		value=round(value,2)
 			
 	elif type(value)==str:
-		value=cmd			
+		pass
 		
 	setting[1]=value
 	return setting

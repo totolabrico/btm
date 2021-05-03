@@ -24,7 +24,7 @@ time_setting=[
 	]
 
 sample_setting=[
-    ["file","empty"],
+    ["sample","empty"],
 	["pitch",0,-10,10,0.02],
 	["tone",0,-10,10,0.02],
 	["s_begin",0,0,1,0.02],

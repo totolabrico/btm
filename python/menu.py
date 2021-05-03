@@ -2,6 +2,8 @@ from cmd import*
 from draw import*
 from osc import*
 from settings import*
+import os, sys
+
 
 class Menu():
 	
@@ -47,34 +49,44 @@ class Editor():
 
 	def draw(self):
 		draw_list(self.set_list(),self.tools)
-		#print(self.list)
 
+
+class Browser(): # != Editor un browser est un menu qui permet de se deplacer dans l'oridnateur
+
+	def __init__(self,Path):
+		self.path=Path
 		
-class ChildMenu(Menu,Editor):
-
-	def __init__(self,Machine,Partition,Navigator):
-		Menu.__init__(self,Navigator) 
-		self.name=""
-		self.mom=""
+	def set_list(self):
 		self.list=[]
-		self.tools["grid"]=[2,3]
-		Editor.__init__(self,Machine,Partition,[]) 
-
-	def set_parameters(self,Name,Mom,Parameters):
-		self.name=Name
-		self.mom=Mom
-		self.parameters=Parameters
-		
+		for element in os.listdir(self.path):
+			if element[:1]!=".":
+				self.list.append(element)
+		return self.list
+       
+        
 	def sort(self,cmd,arg):
-		Menu.sort(self,cmd,arg)
-		Editor.sort(self,cmd,arg)
+		if cmd=="move":
+			if arg[0]=="y":
+				self.tools=move(arg[0],arg[1],self.tools,len(self.list))
+			if arg[0]=="x":
+				self.set_path(arg[1])
+    
+	def set_path(self,cmd):
+		cut=self.path.split("/")
+		last_word=cut[len(cut)-1]
 
-	def draw(self):
-		Menu.draw(self)
-		Editor.draw(self)
-		
-	def send_osc(self):
-		setting=self.parameters[self.pointer]
-		if self.mom=="track":
-			id_track=self.navigator.menus["tracks"].pointer
-			osc_send("track",setting[0],setting[1],id_track)
+		if cmd=="+":
+			new_path=self.path+"/"+self.list[self.pointer]
+			if os.path.isdir(new_path)==True:
+				self.pointer=0
+				self.path=new_path
+				self.set_list()
+		if cmd=="-" and len(cut)>3:
+			self.path=self.path[:-(len(last_word)+1)]
+			self.set_list()
+			i=0
+			for element in self.list:
+				if element==last_word:
+					self.pointer=i
+					i+=1
+            

@@ -135,3 +135,52 @@ class TrackMenu(Menu,Editor):
 		draw_title(self.title)
 		draw_list(self.list,self.tools)
 
+class ChildMenu(Menu,Editor):
+
+	def __init__(self,Machine,Partition,Navigator):
+		Menu.__init__(self,Navigator) 
+		self.name=""
+		self.mom=""
+		self.list=[]
+		self.tools["grid"]=[2,3]
+		Editor.__init__(self,Machine,Partition,[]) 
+
+	def set_parameters(self,Name,Mom,Parameters):
+		self.name=Name
+		self.mom=Mom
+		self.parameters=Parameters
+		
+	def sort(self,cmd,arg):
+		Menu.sort(self,cmd,arg)
+		Editor.sort(self,cmd,arg)
+
+	def draw(self):
+		Menu.draw(self)
+		Editor.draw(self)
+		
+	def send_osc(self):
+		setting=self.parameters[self.pointer]
+		if self.mom=="track":
+			id_track=self.navigator.menus["tracks"].pointer
+			osc_send("track",setting[0],setting[1],id_track)
+
+class SampleMenu(Menu,Browser):
+	
+	def __init__(self,Navigator):
+		Menu.__init__(self,Navigator) 
+		Browser.__init__(self,"/home/pi/audiosamples") 
+		self.name="browser sample"
+		self.mom="child"
+		self.list=Browser.set_list(self)
+		self.tools["grid"]=[1,3]
+		
+	def sort(self,cmd,arg):
+		Browser.sort(self,cmd,arg)
+
+	def draw(self): 
+		Menu.draw(self)
+		draw_list(self.list,self.tools)
+		
+	def play_sound(self):
+		print("play the sound now")
+        

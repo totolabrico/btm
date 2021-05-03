@@ -20,7 +20,7 @@ class Partition():
 		return setting
 		
 	def init_tracks(self):
-		titles=["part","sample","loop","audio"]
+		titles=["part","file","loop","audio"]
 		setting=[]
 		i=0
 		while i<self.nb_track:
