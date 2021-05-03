@@ -39,7 +39,7 @@ class Editor():
 		if cmd=="edit":
 			parameter=self.parameters[self.pointer]
 			print(self.parameters)
-			if parameter[0]=="sample":
+			if parameter[0][0]=="sample":
 				self.navigator.set_menu("sample")
 			else:
 				parameter=edit(arg,parameter)
