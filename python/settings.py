@@ -1,6 +1,6 @@
 
 menu_tools={
-"pos":[],
+#"pos":[],
 "grid":[0,0],
 "origin":0,
 "pointer":[0,0],

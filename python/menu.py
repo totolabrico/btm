@@ -27,7 +27,6 @@ class Menu():
 	def draw(self):
 		draw_title(self.name)
 
-
 class Editor():
 	def __init__(self,Machine,Partition,List):
 		self.machine=Machine
@@ -35,7 +34,6 @@ class Editor():
 		self.parameters=List
 
 	def sort(self,cmd,arg):
-		print("editot sort")
 		if cmd=="edit":
 			parameter=self.parameters[self.pointer]
 			if parameter[0]=="sample":
@@ -54,8 +52,7 @@ class Editor():
 	def draw(self):
 		draw_list(self.set_list(),self.tools)
 
-
-class Browser(): # != Editor un browser est un menu qui permet de se deplacer dans l'oridnateur
+class Browser():
 
 	def __init__(self,Path):
 		self.path=Path
@@ -71,25 +68,33 @@ class Browser(): # != Editor un browser est un menu qui permet de se deplacer da
 		if cmd=="move":
 			if arg[0]=="y":
 				self.tools=move(arg[0],arg[1],self.tools,len(self.list))
-				self.set_pointer()
 			if arg[0]=="x":
 				self.set_path(arg[1])
+			self.set_pointer()
 
 	def set_path(self,cmd):
 		cut=self.path.split("/")
 		last_word=cut[len(cut)-1]
-
 		if cmd=="+":
 			new_path=self.path+"/"+self.list[self.pointer]
 			if os.path.isdir(new_path)==True:
-				self.pointer=0
 				self.path=new_path
 				self.set_list()
-		if cmd=="-" and len(cut)>3:
+				self.set_y(0)
+
+		if cmd=="-" and len(cut)>4:
 			self.path=self.path[:-(len(last_word)+1)]
 			self.set_list()
 			i=0
 			for element in self.list:
 				if element==last_word:
-					self.pointer=i
-					i+=1
+					print(element,last_word)
+					self.set_y(i)
+				i+=1
+	
+	def set_y(self,Y):
+		h=self.tools["grid"][1]
+		if h>len(self.list):
+			h=len(self.list)
+		self.tools["pointer"][1]=Y
+		self.tools["origin"]=Y

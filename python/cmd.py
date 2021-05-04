@@ -23,7 +23,11 @@ def edit(cmd,setting):
 		value=round(value,2)
 
 	elif type(value)==str:
-		pass
+		if arg=="+" or arg=="-":
+			pass
+		else:
+			print("yea : ",arg)
+			value=arg
 
 	setting[1]=value
 	return setting
@@ -39,7 +43,6 @@ def move(Cmd,Arg,Tools,Length):
 		hmax=int(hmax+1)
 	if hmax<h:
 		h=hmax
-
 	# Ajout des valeurs x ou y au pointer
 	if Cmd=="x":
 		if Arg=="+":
@@ -52,7 +55,7 @@ def move(Cmd,Arg,Tools,Length):
 			y+=1
 		else:
 			y-=1
-
+			
 	# Correction des valeurs x ou y du pointer si elles sortent de la grille
 	if x<0:
 		x=w-1
@@ -81,18 +84,19 @@ def move(Cmd,Arg,Tools,Length):
 				y=0
 			else:
 				y=hmax-2
-
+				o=y-(h-2) #origin
+				
 	# Correction de l'origine de y
 	if y==0:
 		o=0
-
+	elif y==hmax-1:
+		o=int(hmax-h)
 	else:
 		if y-o==h:
 			o+=1
-			if y<o:
-				o-=1
+		if y<o:
+			o-=1
 
-	print("move",x,y,o)
 	Tools["pointer"]=[x,y]
 	Tools["origin"]=o
 
@@ -115,3 +119,28 @@ def setting_to_string(setting):
         return"+"
     else:
         return setting
+
+def check_wav(txt):
+	if txt[len(txt)-4:]==".wav" or txt[len(txt)-4:]==".WAV":
+		return True
+	else:
+		return False	
+
+def get_name(name):
+	
+	if name!="empty":
+		name=name.split("/")
+		name=name[len(name)-1]
+		name=name.split(".")[0]
+	
+	return name
+
+
+def set_txt_size(Txt,Size):
+    if check_wav(Txt)==True:
+        Txt=Txt[:-4]
+    if len(Txt)>Size:
+        dif=len(Txt)-Size
+        Txt=Txt[dif:]
+    return Txt
+    

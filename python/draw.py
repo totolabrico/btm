@@ -58,7 +58,8 @@ def draw_list(List,Tools):
         if y<h:
             xdraw=X[1]+x*(width/w)
             ydraw=Y[2]+y*(height*2/3)/h
-            draw.text((xdraw,ydraw),List[i],font=font, fill=255)
+            txt=set_txt_size(List[i],18)
+            draw.text((xdraw,ydraw),txt,font=font, fill=255)
             draw_text_pointer(Tools,x,y,xdraw-X[1],ydraw)
             x+=1
             if x==w:
@@ -66,7 +67,7 @@ def draw_list(List,Tools):
                 y+=1
         i+=1
 
-
+    
 def draw_text_pointer(Tools,X,Y,Xdraw,Ydraw):
     if Tools["pointer"][0]==X and Tools["pointer"][1]-Tools["origin"]==Y:
         draw.text((Xdraw,Ydraw),">",font=font, fill=255)

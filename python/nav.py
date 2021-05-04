@@ -29,12 +29,11 @@ class Navigator():
 			try:
 				self.menu.set_parameters()
 			except:
-				print("no parameters to set")
+				pass
 		except:
-			print("no menu with that name")
+			pass
 		
 	def sort(self,cmd,arg): # tri les commandes provenants du clavier vers set_current_editor ou un editeur ou le browser
-		print("nav sort",cmd,arg)
 		self.menu.sort(cmd,arg)
 			
 	def close_browser():
