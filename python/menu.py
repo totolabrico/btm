@@ -14,7 +14,11 @@ class Menu():
 
 	def set_pointer(self):
 		self.pointer=int(self.tools["pointer"][0]+self.tools["pointer"][1]*self.tools["grid"][0])
-
+		
+	def reset_pointer(self):
+		self.tools["pointer"]=[0,0]
+		self.set_pointer()
+		
 	def sort(self,cmd,arg):
 		if cmd=="move":
 			self.tools=move(arg[0],arg[1],self.tools,len(self.list))
@@ -27,6 +31,27 @@ class Menu():
 	def draw(self):
 		draw_title(self.name)
 
+class Mom():
+	
+	def __init__(self):
+		pass
+		
+	def set_list(self):
+		self.list=[]
+		for el in self.parameters:
+			self.list.append(el[0])
+
+	def sort(self,cmd,arg):
+		if cmd=="enter" and self.list[self.pointer]!="notes":
+			self.navigator.set_menu("child")
+			self.set_nextmenu_parameters()
+		else:
+			Menu.sort(self,cmd,arg)
+
+	def set_nextmenu_parameters(self):
+		childname=self.list[self.pointer]
+		self.navigator.menu.set_parameters(childname,self.name,self.parameters[self.pointer][1])
+		
 class Editor():
 	def __init__(self,Machine,Partition,List):
 		self.machine=Machine
@@ -40,6 +65,10 @@ class Editor():
 				self.navigator.set_menu("sample")
 			else:
 				parameter=edit(arg,parameter)
+				if parameter[0]=="temps" or parameter[0]=="mesure":
+					l=self.parameters[0][1]*self.parameters[1][1]
+					self.navigator.menus["track"].set_notes_length(l)
+					self.navigator.menus["sequencer"].set_nb_tick()
 				self.send_osc()
 			#self.machine.save_set()
 

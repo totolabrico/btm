@@ -66,15 +66,12 @@ def draw_list(List,Tools):
                 x=0
                 y+=1
         i+=1
-
     
 def draw_text_pointer(Tools,X,Y,Xdraw,Ydraw):
     if Tools["pointer"][0]==X and Tools["pointer"][1]-Tools["origin"]==Y:
         draw.text((Xdraw,Ydraw),">",font=font, fill=255)
 
-        
 def draw_tracks(List,Tools):
-
     w=Tools["grid"][0]
     h=Tools["grid"][1]
     o=Tools["origin"]
@@ -86,9 +83,11 @@ def draw_tracks(List,Tools):
         if y<h:
             xdraw=X[0]+x*(width/w)
             ydraw=Y[2]+y*(height*2/3)/h
-            #draw.text((xdraw,ydraw),"o",font=font, fill=255)
-            draw.rectangle((xdraw,ydraw,xdraw+rect_track_size,ydraw+rect_track_size), outline=255, fill=0)
-            draw_track_pointer(Tools,x,y,xdraw,ydraw)
+            color=0
+            if List[i][1]==True:
+                color=255
+            draw.rectangle((xdraw,ydraw,xdraw+rect_track_size,ydraw+rect_track_size), outline=255, fill=color)
+            draw_grid_pointer(Tools,x,y,xdraw,ydraw,rect_track_size)
 
             x+=1
             if x==w:
@@ -96,8 +95,34 @@ def draw_tracks(List,Tools):
                 y+=1
         i+=1
 
-def draw_track_pointer(Tools,X,Y,Xdraw,Ydraw):
+def draw_notes(List,Tools):
+    w=Tools["grid"][0]
+    h=Tools["grid"][1]
+    t=Tools["temps"]
+    o=Tools["origin"]
+    x=0
+    y=0
+    
+    i=o*w
+    while i<len(List):
+        if y<h:
+            xdraw=X[1]/2+x*(rect_note_size+padding)+int((i%w)/t)*padding
+            ydraw=Y[2]+y*(height*2/3)/h
+            color=0
+            if List[i][1]!=0:
+                color=255
+            draw.rectangle((xdraw,ydraw,xdraw+rect_note_size,ydraw+rect_note_size), outline=255, fill=color)
+            draw_grid_pointer(Tools,x,y,xdraw,ydraw,rect_note_size)
+            x+=1
+            if x==w:
+                x=0
+                y+=1
+        i+=1
+
+
+
+def draw_grid_pointer(Tools,X,Y,Xdraw,Ydraw,Size):
     if Tools["pointer"][0]==X and Tools["pointer"][1]-Tools["origin"]==Y:
-        y=Ydraw+rect_track_size+2
-        draw.rectangle((Xdraw,y,Xdraw+rect_track_size,y+2), outline=255, fill=0)
+        y=Ydraw+Size+2
+        draw.rectangle((Xdraw,y,Xdraw+Size,y+2), outline=255, fill=0)
 

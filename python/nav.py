@@ -18,6 +18,8 @@ class Navigator():
 			"track":TrackMenu(self.machine,self.machine.partition,self),
 			"child":ChildMenu(self.machine,self.machine.partition,self),
 			"sample":SampleMenu(self),
+			"notes":NotesMenu(self.machine,self.machine.partition,self),
+			"note":NoteMenu(self.machine,self.machine.partition,self),
 			}
 			
 		self.menu=self.menus["main"]
@@ -29,6 +31,7 @@ class Navigator():
 			try:
 				self.menu.set_parameters()
 			except:
+				print("no parameters to set for this menu")
 				pass
 		except:
 			pass

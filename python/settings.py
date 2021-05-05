@@ -17,7 +17,7 @@ sequencer_setting=[
 time_setting=[
 	# 0:name / 1:value / 2:min / 3:max / 4:inc
 	["temps",4,1,8,1],
-	["mesure",8,1,64,1],
+	["mesure",4,1,64,1],
 	["begin",0,0,64,1],
 	["end",8*4,1,64,1],
 	["loop",True]
