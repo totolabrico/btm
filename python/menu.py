@@ -70,12 +70,12 @@ class Editor():
 					self.navigator.menus["track"].set_notes_length(l)
 					self.navigator.menus["sequencer"].set_nb_tick()
 				self.send_osc()
-			#self.machine.save_set()
+				#self.partition.save_set()
 
 	def set_list(self):
 		self.list=[]
 		for parameter in self.parameters:
-			self.list.append(parameter[0]+":"+setting_to_string(parameter[1]))
+			self.list.append(parameter[0][0:5]+":"+setting_to_string(parameter[1]))
 		return self.list
 
 	def draw(self):

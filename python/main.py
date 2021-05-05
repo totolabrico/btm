@@ -12,17 +12,7 @@ class Machine:
 		self.clavier=Clavier(self)
 		self.oled = threading.Thread(target=self.navigator.draw(), args=())
 		self.oled.start()
-				
-	def save_set(self):
-		path="/home/pi/btm/saves/set"
-		with open(path,'wb') as fichier:
-			mon_pickler=pickle.Pickler(fichier)
-			mon_pickler.dump(self.partition)
 
-	def load_set(self,Path):
-		with open(Path,'rb') as fichier:
-			mon_depickler=pickle.Unpickler(fichier)
-			self.partition=mon_depickler.load()
 btm=Machine()
 print("btm")
 

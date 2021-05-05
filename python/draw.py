@@ -119,8 +119,6 @@ def draw_notes(List,Tools):
                 y+=1
         i+=1
 
-
-
 def draw_grid_pointer(Tools,X,Y,Xdraw,Ydraw,Size):
     if Tools["pointer"][0]==X and Tools["pointer"][1]-Tools["origin"]==Y:
         y=Ydraw+Size+2

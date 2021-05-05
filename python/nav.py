@@ -1,5 +1,4 @@
 import time
-import dill as pickle
 from draw import*
 from osc import*
 from menu_main import*

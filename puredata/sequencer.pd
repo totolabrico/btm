@@ -1,4 +1,4 @@
-#N canvas 304 325 356 494 10;
+#N canvas 304 355 356 494 10;
 #X obj 79 264 metro;
 #X obj 79 88 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1 1
 ;
@@ -20,7 +20,9 @@
 #X floatatom 164 318 5 0 0 0 - - -;
 #X obj 79 333 moses;
 #X msg 106 363 0;
-#X floatatom 43 404 5 0 0 0 - - -;
+#X floatatom 43 392 5 0 0 0 - - -;
+#X obj 43 416 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
 #X connect 0 0 14 0;
 #X connect 1 0 0 0;
 #X connect 1 0 4 0;
@@ -43,4 +45,5 @@
 #X connect 17 0 15 0;
 #X connect 17 1 18 0;
 #X connect 18 0 14 1;
-#X connect 19 0 12 0;
+#X connect 19 0 20 0;
+#X connect 20 0 12 0;

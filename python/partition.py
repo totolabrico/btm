@@ -2,27 +2,30 @@ from osc import*
 from settings import*
 from cmd import*
 import copy
+import dill as pickle
 
 class Partition():
 
 	def __init__(self,Machine):
 		self.machine=Machine
+		self.path="/home/pi/btm/saves/"
 		self.name="set"
 		self.nb_track=30
 		self.nb_note=16
 		self.sequencer=self.init_sequencer()
 		self.master=self.init_master()
 		self.tracks=self.init_tracks()
+		self.init_osc()
+		#self.load_set(self.path+self.name)
+
 
 	def init_sequencer(self):
 		setting=sequencer_setting.copy()
-		self.osc("master",setting)
 		return setting
 		
 	def init_master(self):
 		setting=copy.deepcopy(audio_setting)
 		del setting[3]
-		self.osc("master",setting)
 		return setting
 		
 	def init_tracks(self):
@@ -32,22 +35,24 @@ class Partition():
 		i=0
 		while i<self.nb_track:
 			setting.append(self.init_element(titles,list))
-			self.osc_track(setting[i],i)
 			i+=1
 		return setting
 		
+		
 	def init_notes(self):
+		setting=[]
+		i=0
+		while i<self.nb_note:
+			setting.append(self.init_note())
+			i+=1
+		return setting
+		
+	def init_note(self):
 		titles=["audio","file"]
 		list=[copy.deepcopy(audio_setting),copy.deepcopy(sample_setting)]
 		del list[1][0]
 		list[0][0][1]=0
-		
-		setting=[]
-		i=0
-		while i<self.nb_note:
-			setting.append(self.init_element(titles,list))
-			i+=1
-		return setting
+		return self.init_element(titles,list)
 
 	def init_element(self,Titles,List):
 		setting=[]
@@ -59,12 +64,20 @@ class Partition():
 			i+=1
 		return setting
 	
-	def osc_track(self,List,Id):
-		for element in List:
-			if element[0]=="notes":
-				self.osc_note(element[1],Id)
-			else:
-				self.osc("track",element[1],Id)
+	def init_osc(self):
+		self.osc("master",self.sequencer)
+		self.osc("master",self.master)
+		self.osc_track()
+
+	def osc_track(self):
+		Id=0
+		for track in self.tracks:
+			for element in track:
+				if element[0]=="notes":
+					self.osc_note(element[1],Id)
+				else:
+					self.osc("track",element[1],Id)
+			Id+=1
 				
 	def osc_note(self,List,Idtrack):
 		i=0
@@ -74,7 +87,22 @@ class Partition():
 			i+=1
 
 	def osc(self,Addr,List,Idtrack=0,Idnote=0):
-		#print("part send osc",Name,List)
+		# print("part send osc",Name,List)
 		for element in List:
 			osc_send(Addr,element[0],element[1],Idtrack,Idnote)
-		
+			
+	def save_set(self):
+		print("save set")
+		with open(self.path+self.name,'wb') as fichier:
+			mon_pickler=pickle.Pickler(fichier)
+			mon_pickler.dump([self.sequencer,self.master,self.tracks])
+
+	def load_set(self,Path):
+		with open(Path,'rb') as fichier:
+			mon_depickler=pickle.Unpickler(fichier)
+			save=mon_depickler.load()
+			self.sequencer=save[0].copy()
+			self.master=save[1]
+			self.tracks=save[2]
+		self.init_osc()
+

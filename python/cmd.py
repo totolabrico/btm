@@ -16,6 +16,9 @@ def edit(cmd,setting):
 			value-=inc
 		elif cmd=="+":
 			value+=inc
+		else:
+			value=cmd
+			
 		if value>max:
 			value=max
 		elif value<min:
@@ -134,7 +137,6 @@ def get_name(name):
 		name=name.split(".")[0]
 	
 	return name
-
 
 def set_txt_size(Txt,Size):
     if check_wav(Txt)==True:

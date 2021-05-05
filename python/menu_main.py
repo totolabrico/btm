@@ -182,6 +182,8 @@ class TrackMenu(Menu,Editor,Mom):
 				self.parameters[2][1][2][1]=0
 			if self.parameters[2][1][3][1]>Length: #end
 				self.parameters[2][1][3][1]=Length
+		osc_send("track",self.parameters[2][1][2][0],self.parameters[2][1][2][1],self.navigator.menus[self.mom].pointer)
+		osc_send("track",self.parameters[2][1][3][0],self.parameters[2][1][3][1],self.navigator.menus[self.mom].pointer)
 
 	def draw(self):
 		draw_title(self.title)
