@@ -215,9 +215,13 @@ class ChildMenu(Menu,Editor):
 
 	def send_osc(self):
 		setting=self.parameters[self.pointer]
+		id_track=self.navigator.menus["tracks"].pointer
+
 		if self.mom=="track":
-			id_track=self.navigator.menus["tracks"].pointer
 			osc_send("track",setting[0],setting[1],id_track)
+		if self.mom=="note":
+			id_note=self.navigator.menus["notes"].pointer
+			osc_send("note",setting[0],setting[1],id_track,id_note)
 
 class SampleMenu(Menu,Browser):
 
