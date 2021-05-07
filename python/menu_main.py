@@ -290,10 +290,16 @@ class NotesMenu(Menu,Editor):
 	def sort(self,cmd,arg):
 		if cmd=="enter":
 			self.navigator.set_menu("note")
+		
+		elif cmd=="back":
+			self.navigator.set_menu(self.mom)
+			self.reset_pointer()
+		
 		else:
 			Menu.sort(self,cmd,arg)
 			Editor.sort(self,cmd,arg)
 			self.set_title()
+
 			
 	def set_parameters(self):
 		track=self.partition.tracks[self.navigator.menus["tracks"].pointer]
@@ -308,7 +314,7 @@ class NotesMenu(Menu,Editor):
 		self.tools["grid"]=[temps*coef,3]
 		self.tools["temps"]=temps
 		self.set_title()
-		self.reset_pointer()
+		#self.reset_pointer()
 		
 	def set_title(self):
 		self.title="note :"+str(self.pointer+1)+" | vol: "+str(self.parameters[self.pointer][1])
