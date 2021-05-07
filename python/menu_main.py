@@ -54,13 +54,19 @@ class SequencerMenu(Menu,Editor):
 	def set_nb_tick(self):
 		tick=1
 		for element in self.partition.tracks:
-			l=element[2][1][0][1]*element[2][1][1][1]
+			begin=element[2][1][2][1]
+			end=element[2][1][3][1]
+			nbnote=element[2][1][0][1]*element[2][1][1][1]
+			l=get_loop_length(begin,end,nbnote)
+				
 			if tick%l==0:
 				pass
 			elif l%tick==0:
 				tick=l
 			else:
 				tick=tick*l
+			
+				
 		print("nbtick",tick)
 		osc_send("master","nb_tick",tick)
 		self.nb_tick=tick
@@ -137,7 +143,7 @@ class TrackMenu(Menu,Editor,Mom):
 		self.title=""
 		self.tools["grid"]=[2,3]
 		Editor.__init__(self,Machine,Partition,[])
-		
+			
 	def set_parameters(self):
 		id=self.navigator.menus["tracks"].pointer
 		#print("track menu set parameters on track n°",id)
@@ -176,15 +182,27 @@ class TrackMenu(Menu,Editor,Mom):
 
 	def set_begin_end(self,Length,Cmd):
 		if Cmd=="+":
-			self.parameters[2][1][3][1]=Length
+			self.parameters[2][1][3]=edit(Length,self.parameters[2][1][3])#end
 		if Cmd=="-":
 			if self.parameters[2][1][2][1]>Length: #begin
-				self.parameters[2][1][2][1]=0
+				self.parameters[2][1][2]=edit(0,self.parameters[2][1][2])
 			if self.parameters[2][1][3][1]>Length: #end
-				self.parameters[2][1][3][1]=Length
-		osc_send("track",self.parameters[2][1][2][0],self.parameters[2][1][2][1],self.navigator.menus[self.mom].pointer)
-		osc_send("track",self.parameters[2][1][3][0],self.parameters[2][1][3][1],self.navigator.menus[self.mom].pointer)
+				self.parameters[2][1][3]=edit(Length,self.parameters[2][1][3])
+		self.send_osc("begin",self.parameters[2][1][2][1])
+		#self.send_osc("end",self.parameters[2][1][3][1]) on s'en fou du end dans pd!
+		self.set_loop_length()
+				
+	def set_loop_length(self):
+		begin=self.parameters[2][1][2][1]
+		end=self.parameters[2][1][3][1]
+		nbnote=self.parameters[2][1][0][1]*self.parameters[2][1][1][1]
+		loop_length=get_loop_length(begin,end,nbnote)
+		self.navigator.menus["sequencer"].set_nb_tick()
+		self.send_osc("loop_length",loop_length)
 
+	def send_osc(self,Setting,Value):
+		osc_send("track",Setting,Value,self.navigator.menus["tracks"].pointer)
+		
 	def draw(self):
 		draw_title(self.title)
 		draw_list(self.list,self.tools)

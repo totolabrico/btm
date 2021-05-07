@@ -146,3 +146,10 @@ def set_txt_size(Txt,Size):
         Txt=Txt[dif:]
     return Txt
     
+def get_loop_length(Begin,End,Nbnote):
+	if Begin==End:
+		return 1
+	if Begin<End:
+		return End-Begin
+	else:
+		return Nbnote-(Begin-End)

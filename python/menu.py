@@ -68,7 +68,9 @@ class Editor():
 				if parameter[0]=="temps" or parameter[0]=="mesure":
 					l=self.parameters[0][1]*self.parameters[1][1]
 					self.navigator.menus["track"].set_notes_length(l)
-					self.navigator.menus["sequencer"].set_nb_tick()
+				elif parameter[0]=="begin" or parameter[0]=="end":
+					self.navigator.menus["track"].set_loop_length()
+					
 				self.send_osc()
 				#self.partition.save_set()
 

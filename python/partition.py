@@ -77,6 +77,7 @@ class Partition():
 					self.osc_note(element[1],Id)
 				else:
 					self.osc("track",element[1],Id)
+			osc_send("track","loop_length",self.nb_note,Id) # envoi de la longueur initial d'une paritition (bricolage)
 			Id+=1
 				
 	def osc_note(self,List,Idtrack):
