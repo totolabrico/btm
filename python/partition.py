@@ -8,11 +8,9 @@ class Partition():
 
 	def __init__(self,Machine):
 		self.machine=Machine
-		self.path="/home/pi/btm/saves/"
-		self.name="set"
 		self.nb_track=30
 		self.nb_note=16
-		self.sequencer=self.init_sequencer()
+		#self.sequencer=self.init_sequencer()
 		self.master=self.init_master()
 		self.tracks=self.init_tracks()
 		self.init_osc()
@@ -24,8 +22,11 @@ class Partition():
 		return setting
 		
 	def init_master(self):
-		setting=copy.deepcopy(audio_setting)
-		del setting[3]
+		setting=sequencer_setting.copy()
+		audio=copy.deepcopy(audio_setting)
+		del audio[3]
+		for element in audio:
+			setting.append(element)
 		return setting
 		
 	def init_tracks(self):
@@ -65,7 +66,7 @@ class Partition():
 		return setting
 	
 	def init_osc(self):
-		self.osc("master",self.sequencer)
+		#self.osc("master",self.sequencer)
 		self.osc("master",self.master)
 		self.osc_track()
 
@@ -77,7 +78,7 @@ class Partition():
 					self.osc_note(element[1],Id)
 				else:
 					self.osc("track",element[1],Id)
-			osc_send("track","loop_length",self.nb_note,Id) # envoi de la longueur initial d'une paritition (bricolage)
+			osc_send("track","loop_length",self.nb_note,Id) # envoi de la longueur initial d'une partition (bricolage)
 			Id+=1
 				
 	def osc_note(self,List,Idtrack):
@@ -92,18 +93,19 @@ class Partition():
 		for element in List:
 			osc_send(Addr,element[0],element[1],Idtrack,Idnote)
 			
-	def save_set(self):
+	def save_set(self,Path):
 		print("save set")
-		with open(self.path+self.name,'wb') as fichier:
+		with open(Path,'wb') as fichier:
 			mon_pickler=pickle.Pickler(fichier)
-			mon_pickler.dump([self.sequencer,self.master,self.tracks])
+			mon_pickler.dump([self.master,self.tracks])
 
 	def load_set(self,Path):
 		with open(Path,'rb') as fichier:
 			mon_depickler=pickle.Unpickler(fichier)
 			save=mon_depickler.load()
-			self.sequencer=save[0].copy()
-			self.master=save[1]
-			self.tracks=save[2]
+			#self.sequencer=save[0].copy()
+			self.master=save[0]
+			self.tracks=save[1]
 		self.init_osc()
+		print("loaded",Path)
 

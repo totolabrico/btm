@@ -45,6 +45,10 @@ def draw_title(title):
     draw.rectangle((0,0,width,setting_height), outline=255, fill=255)
     draw.text((X[1],0),title,font=font, fill=0)
 
+def draw_footer(word):
+   # draw.rectangle((0,height-setting_height,width,setting_height), outline=255, fill=255)
+    draw.text((X[1],height-setting_height),word,font=font, fill=0)
+
 def draw_list(List,Tools):
 
     w=Tools["grid"][0]

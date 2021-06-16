@@ -9,9 +9,11 @@ class Navigator():
 		self.machine=Machine
 		
 		self.menus={
-			"main":MainMenu(self),
+			"main":MainMenu(self,Machine),
 			"play":PlayMenu(self),
-			"sequencer":SequencerMenu(self.machine,self.machine.partition,self),
+			"save":SaveMenu(self,self.machine.partition),
+			"load":LoadMenu(self,self.machine.partition),
+			#"sequencer":SequencerMenu(self.machine,self.machine.partition,self),
 			"master":MasterMenu(self.machine,self.machine.partition,self),
 			"tracks":TracksMenu(self.machine,self.machine.partition,self),
 			"track":TrackMenu(self.machine,self.machine.partition,self),

@@ -2,6 +2,7 @@ from cmd import*
 from draw import*
 from osc import*
 from settings import*
+from partition import Partition
 import os, sys
 
 
@@ -23,11 +24,11 @@ class Menu():
 		if cmd=="move":
 			self.tools=move(arg[0],arg[1],self.tools,len(self.list))
 			self.set_pointer()
-		elif cmd=="enter":
-			self.navigator.set_menu(self.list[self.pointer])
 		elif cmd=="back":
 			self.navigator.set_menu(self.mom)
-
+		elif cmd=="enter":
+			self.navigator.set_menu(self.list[self.pointer])
+			
 	def draw(self):
 		draw_title(self.name)
 
@@ -61,18 +62,15 @@ class Editor():
 	def sort(self,cmd,arg):
 		if cmd=="edit":
 			parameter=self.parameters[self.pointer]
-			if parameter[0]=="sample":
-				self.navigator.set_menu("sample")
-			else:
-				parameter=edit(arg,parameter)
-				if parameter[0]=="temps" or parameter[0]=="mesure":
-					l=self.parameters[0][1]*self.parameters[1][1]
-					self.navigator.menus["track"].set_notes_length(l)
-				elif parameter[0]=="begin" or parameter[0]=="end":
-					self.navigator.menus["track"].set_loop_length()
+			parameter=edit(arg,parameter)
+			if parameter[0]=="temps" or parameter[0]=="mesure":
+				l=self.parameters[0][1]*self.parameters[1][1]
+				self.navigator.menus["track"].set_notes_length(l)
+			elif parameter[0]=="begin" or parameter[0]=="end":
+				self.navigator.menus["track"].set_loop_length()
 					
-				self.send_osc()
-				#self.partition.save_set()
+			self.send_osc()
+			#self.partition.save_set()
 
 	def set_list(self):
 		self.list=[]
@@ -129,3 +127,17 @@ class Browser():
 			h=len(self.list)
 		self.tools["pointer"][1]=Y
 		self.tools["origin"]=Y
+
+class KeyMenu():
+	savename="default"
+	def __init__(self):
+		pass
+	def sort(self,cmd,arg):
+		if cmd=="edit":
+			if arg[0]=="+":
+				self.savename+=self.list[self.pointer]
+			if arg[0]=="-":
+				self.savename=self.savename[:-1]
+	
+	def draw(self):
+		draw_footer(self.savename)

@@ -2,28 +2,77 @@ from menu import*
 
 class MainMenu(Menu):
 
-	def __init__(self,Navigator):
+	def __init__(self,Navigator,Machine):
 		Menu.__init__(self,Navigator)
 		self.name="main"
 		self.mom="main"
-		self.list=["play","record","load","save","import","reset"]
+		self.list=["play","record","load","save","reset"]#,"import"]
 		self.tools["grid"]=[2,3]
-
+		self.machine=Machine
+		
 	def sort(self,cmd,arg):
 		Menu.sort(self,cmd,arg)
+		if cmd=="enter":
+			if self.list[self.pointer]=="reset":
+				self.machine.partition=Partition(self.machine)
 
 	def draw(self):
 		Menu.draw(self)
 		draw_list(self.list,self.tools)
+		
+class SaveMenu(Menu,KeyMenu):
 
+	def __init__(self,Navigator,Partition):
+		Menu.__init__(self,Navigator)
+		KeyMenu.__init__(self)
+		self.partition=Partition
+		self.name="save"
+		self.mom="main"
+		self.list=["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","_","0","1","2","3","4","5","6","7","8","9"]
+		self.tools["grid"]=[8,3]
+		self.path="/home/pi/btm/saves/"
+
+	def sort(self,cmd,arg):
+		Menu.sort(self,cmd,arg)
+		KeyMenu.sort(self,cmd,arg)
+		if cmd=="enter":
+			self.partition.save_set(self.path+self.savename)
+			self.navigator.set_menu(self.mom)
+
+	def draw(self):
+		draw_title(self.name+": "+self.savename)
+		KeyMenu.draw(self)
+		draw_list(self.list,self.tools)
+
+class LoadMenu(Menu):
+
+	def __init__(self,Navigator,Partition):
+		Menu.__init__(self,Navigator)
+		Browser.__init__(self,"/home/pi/btm/saves/")
+		self.partition=Partition
+		self.name="load"
+		self.mom="main"
+		self.list=Browser.set_list(self)
+		self.tools["grid"]=[1,3]
+
+	def sort(self,cmd,arg):
+		Menu.sort(self,cmd,arg)
+		if cmd=="enter":
+			self.partition.load_set(self.path+self.list[self.pointer])
+			self.navigator.set_menu(self.mom)
+
+	def draw(self):
+		Menu.draw(self)
+		draw_list(self.list,self.tools)
+		
 class PlayMenu(Menu):
 
 	def __init__(self,Navigator):
 		Menu.__init__(self,Navigator)
 		self.name="play"
 		self.mom="main"
-		self.list=["sequencer","master","tracks"]
-		self.tools["grid"]=[1,3]
+		self.list=["master","tracks"]
+		self.tools["grid"]=[2,3]
 
 	def sort(self,cmd,arg):
 		Menu.sort(self,cmd,arg)
@@ -224,6 +273,9 @@ class ChildMenu(Menu,Editor):
 		self.reset_pointer()
 
 	def sort(self,cmd,arg):
+		if cmd=="enter" and self.parameters[self.pointer][0]=="sample":
+			self.navigator.set_menu("sample")
+			
 		Menu.sort(self,cmd,arg)
 		Editor.sort(self,cmd,arg)
 
@@ -246,7 +298,7 @@ class SampleMenu(Menu,Browser):
 	def __init__(self,Navigator):
 		Menu.__init__(self,Navigator)
 		Browser.__init__(self,"/home/pi/audiosamples")
-		self.name="browser sample"
+		self.name="sample"
 		self.mom="child"
 		self.list=Browser.set_list(self)
 		self.tools["grid"]=[1,3]
@@ -256,11 +308,12 @@ class SampleMenu(Menu,Browser):
 		is_wav=check_wav(self.list[self.pointer])
 		samplepath=self.path+"/"+self.list[self.pointer]
 		if cmd=="back":
-			self.navigator.set_menu("child")
+			self.navigator.set_menu(self.mom)
 		elif cmd=="enter" and is_wav:
 			self.play_sound(samplepath)
 		elif cmd=="edit" and arg=="+" and is_wav:
 			self.set_sample(samplepath)
+			self.navigator.set_menu("track")
 		else:
 			Browser.sort(self,cmd,arg)
 			
@@ -274,7 +327,6 @@ class SampleMenu(Menu,Browser):
 		
 	def set_sample(self,Path):
 		self.navigator.menus["track"].set_sample(Path)
-		self.navigator.set_menu(self.mom)
 				
 class NotesMenu(Menu,Editor):
 
