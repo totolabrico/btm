@@ -27,7 +27,8 @@ chargement d'un son trop long : utiliser le flag max_size de soundfiler
 #X obj 57 326 f;
 #X obj 473 267 outlet;
 #X obj 121 105 select empty;
-#X msg 25 145 : mysample_\$1 resize 0;
+#X msg 24 172 \; mysample_\$1 resize 0;
+#X obj 24 121 \$1;
 #X connect 0 0 1 0;
 #X connect 0 0 22 0;
 #X connect 1 0 8 0;
@@ -48,6 +49,7 @@ chargement d'un son trop long : utiliser le flag max_size de soundfiler
 #X connect 16 0 18 0;
 #X connect 16 0 21 0;
 #X connect 17 0 21 0;
-#X connect 23 0 24 0;
+#X connect 23 0 25 0;
 #X connect 23 1 14 0;
 #X connect 23 1 4 0;
+#X connect 25 0 24 0;

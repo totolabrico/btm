@@ -44,7 +44,7 @@ class Navigator():
 		self.pointer="editor"
 
 	def draw(self): # appel le draw de l'editeur ou du browser
-		while True:
+		while self.machine.reset==False:
 			draw_begin()
 			self.menu.draw()
 			draw_end()

@@ -14,7 +14,10 @@ class MainMenu(Menu):
 		Menu.sort(self,cmd,arg)
 		if cmd=="enter":
 			if self.list[self.pointer]=="reset":
-				self.machine.partition=Partition(self.machine)
+				print("exit")
+				self.machine.new_open()
+				self.machine.close()
+
 
 	def draw(self):
 		Menu.draw(self)
@@ -81,25 +84,17 @@ class PlayMenu(Menu):
 		Menu.draw(self)
 		draw_list(self.list,self.tools)
 
-class SequencerMenu(Menu,Editor):
+class MasterMenu(Menu,Editor):
 
 	def __init__(self,Machine,Partition,Navigator):
 		Menu.__init__(self,Navigator)
-		self.name="sequencer"
+		self.name="master"
 		self.mom="play"
 		self.list=[]
 		self.tools["grid"]=[2,3]
-		Editor.__init__(self,Machine,Partition,Partition.sequencer)
+		Editor.__init__(self,Machine,Partition,Partition.master)
 		self.nb_tick=self.set_nb_tick()
 
-	def sort(self,cmd,arg):
-		Menu.sort(self,cmd,arg)
-		Editor.sort(self,cmd,arg)
-
-	def draw(self):
-		Menu.draw(self)
-		Editor.draw(self)
-	
 	def set_nb_tick(self):
 		tick=1
 		for element in self.partition.tracks:
@@ -114,27 +109,11 @@ class SequencerMenu(Menu,Editor):
 				tick=l
 			else:
 				tick=tick*l
-			
-				
-		print("nbtick",tick)
+		#print("nbtick",tick)
 		osc_send("master","nb_tick",tick)
 		self.nb_tick=tick
 		return tick
 		
-	def send_osc(self):
-		setting=self.parameters[self.pointer]
-		osc_send("master",setting[0],setting[1])
-
-class MasterMenu(Menu,Editor):
-
-	def __init__(self,Machine,Partition,Navigator):
-		Menu.__init__(self,Navigator)
-		self.name="master"
-		self.mom="play"
-		self.list=[]
-		self.tools["grid"]=[2,3]
-		Editor.__init__(self,Machine,Partition,Partition.master)
-
 	def sort(self,cmd,arg):
 		Menu.sort(self,cmd,arg)
 		Editor.sort(self,cmd,arg)
@@ -246,7 +225,7 @@ class TrackMenu(Menu,Editor,Mom):
 		end=self.parameters[2][1][3][1]
 		nbnote=self.parameters[2][1][0][1]*self.parameters[2][1][1][1]
 		loop_length=get_loop_length(begin,end,nbnote)
-		self.navigator.menus["sequencer"].set_nb_tick()
+		self.navigator.menus["master"].set_nb_tick()
 		self.send_osc("loop_length",loop_length)
 
 	def send_osc(self,Setting,Value):

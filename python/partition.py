@@ -10,17 +10,10 @@ class Partition():
 		self.machine=Machine
 		self.nb_track=30
 		self.nb_note=16
-		#self.sequencer=self.init_sequencer()
 		self.master=self.init_master()
 		self.tracks=self.init_tracks()
 		self.init_osc()
-		#self.load_set(self.path+self.name)
-
-
-	def init_sequencer(self):
-		setting=sequencer_setting.copy()
-		return setting
-		
+		#self.load_set("/home/pi/btm/saves/last")
 	def init_master(self):
 		setting=sequencer_setting.copy()
 		audio=copy.deepcopy(audio_setting)
@@ -38,8 +31,7 @@ class Partition():
 			setting.append(self.init_element(titles,list))
 			i+=1
 		return setting
-		
-		
+			
 	def init_notes(self):
 		setting=[]
 		i=0
@@ -66,7 +58,6 @@ class Partition():
 		return setting
 	
 	def init_osc(self):
-		#self.osc("master",self.sequencer)
 		self.osc("master",self.master)
 		self.osc_track()
 
@@ -81,13 +72,30 @@ class Partition():
 			osc_send("track","loop_length",self.nb_note,Id) # envoi de la longueur initial d'une partition (bricolage)
 			Id+=1
 				
-	def osc_note(self,List,Idtrack):
-		i=0
-		for element in List:
-			for parameter in element:
-				self.osc("note",parameter[1],Idtrack,i)
-			i+=1
+	def osc_note(self,List,Idtrack): #fonction appelée une fois par track
+		n=0
+		keys=[]
+		values=[]
+		for note in List:
+			s=0
+			for div in note: # div : file et audio
+				for subdiv in div: # setting : div key et values
+					if type(subdiv)!=str:
+						for setting in subdiv: # chacun des settings, tout propre
+							if n==0: # pour la premiere note
+								keys.append(setting[0]) 
+								values.append([])
+							values[s].append(setting[1])
+							s+=1
+							#print(Idtrack,n,setting[0],setting[1])
+			n+=1
 
+		i=0
+		#print(len(keys))
+		while i<len(keys):
+			osc_send("note",keys[i],values[i],Idtrack)
+			i+=1
+			
 	def osc(self,Addr,List,Idtrack=0,Idnote=0):
 		# print("part send osc",Name,List)
 		for element in List:
@@ -103,9 +111,9 @@ class Partition():
 		with open(Path,'rb') as fichier:
 			mon_depickler=pickle.Unpickler(fichier)
 			save=mon_depickler.load()
-			#self.sequencer=save[0].copy()
-			self.master=save[0]
-			self.tracks=save[1]
+			#print(save[0])
+			self.master=[save[0]]
+			self.tracks=save[1].copy()
 		self.init_osc()
 		print("loaded",Path)
 
