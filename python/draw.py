@@ -104,6 +104,7 @@ def draw_notes(List,Tools):
     h=Tools["grid"][1]
     t=Tools["temps"]
     o=Tools["origin"]
+    be=Tools["beg_end"]
     x=0
     y=0
     
@@ -115,6 +116,7 @@ def draw_notes(List,Tools):
             color=0
             if List[i][1]!=0:
                 color=255
+            draw_notes_begin_end(i,be[0],be[1],xdraw,ydraw)
             draw.rectangle((xdraw,ydraw,xdraw+rect_note_size,ydraw+rect_note_size), outline=255, fill=color)
             draw_grid_pointer(Tools,x,y,xdraw,ydraw,rect_note_size)
             x+=1
@@ -128,3 +130,10 @@ def draw_grid_pointer(Tools,X,Y,Xdraw,Ydraw,Size):
         y=Ydraw+Size+2
         draw.rectangle((Xdraw,y,Xdraw+Size,y+2), outline=255, fill=0)
 
+def draw_notes_begin_end(Id,Begin,End,X,Y):
+    if Id==Begin-1:
+        draw.rectangle((X,Y,X-2,Y-2), outline=255, fill=0)
+    if Id==End-1:
+        Xdraw=X+rect_note_size
+        Ydraw=Y+rect_note_size
+        draw.rectangle((Xdraw,Ydraw,Xdraw+2,Ydraw+2), outline=255, fill=0)

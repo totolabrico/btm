@@ -58,21 +58,12 @@ class Editor():
 		self.machine=Machine
 		self.partition=Partition
 		self.parameters=List
-
+		
 	def sort(self,cmd,arg):
 		if cmd=="edit":
 			parameter=self.parameters[self.pointer]
 			parameter=edit(arg,parameter)
-			# les conditions ci dessous devraient etre dans le menu child
-			'''
-			if parameter[0]=="temps" or parameter[0]=="mesure":
-				l=self.parameters[0][1]*self.parameters[1][1]
-				self.navigator.menus["track"].set_notes_length(l)
-			elif parameter[0]=="begin" or parameter[0]=="end":
-				self.navigator.menus["track"].set_loop_length()
-			'''
 			self.send_osc()
-			#self.partition.save_set()
 
 	def set_list(self):
 		self.list=[]

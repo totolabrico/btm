@@ -23,15 +23,27 @@ class Partition():
 		return setting
 		
 	def init_tracks(self):
-		titles=["notes","file","loop","audio"]
-		list=[self.init_notes(),copy.deepcopy(sample_setting),copy.deepcopy(time_setting),copy.deepcopy(audio_setting)]
 		setting=[]
 		i=0
 		while i<self.nb_track:
-			setting.append(self.init_element(titles,list))
+			setting.append(self.init_track())
 			i+=1
 		return setting
+		
+	def init_track(self):
+		titles=["notes","file","loop","audio"]
+		list=[self.init_notes(),copy.deepcopy(sample_setting),copy.deepcopy(time_setting),copy.deepcopy(audio_setting)]
+		return self.init_element(titles,list)
 			
+	def erase_track(self,Id):
+		self.tracks[Id]=self.init_track()
+		self.osc_track(Id)
+		
+	def erase_note(self,Idtrack,Id):
+		print(self.tracks[Idtrack][0][1][Id])
+		self.tracks[Idtrack][0][1][Id]=self.init_note()
+		self.osc_note(self.tracks[Idtrack][0][1],Idtrack)
+				
 	def init_notes(self):
 		setting=[]
 		i=0
@@ -59,18 +71,18 @@ class Partition():
 	
 	def init_osc(self):
 		self.osc("master",self.master)
-		self.osc_track()
-
-	def osc_track(self):
 		Id=0
-		for track in self.tracks:
-			for element in track:
-				if element[0]=="notes":
-					self.osc_note(element[1],Id)
-				else:
-					self.osc("track",element[1],Id)
-			osc_send("track","loop_length",self.nb_note,Id) # envoi de la longueur initial d'une partition (bricolage)
+		while Id<len(self.tracks):	
+			self.osc_track(Id)
 			Id+=1
+
+	def osc_track(self,Id):	
+		osc_send("track","loop_length",self.nb_note,Id) # envoi de la longueur initial d'une partition (bricolage)
+		for element in self.tracks[Id]:
+			if element[0]=="notes":
+				self.osc_note(element[1],Id)
+			else:
+				self.osc("track",element[1],Id)
 				
 	def osc_note(self,List,Idtrack): #fonction appelée une fois par track
 		n=0

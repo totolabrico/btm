@@ -31,13 +31,15 @@ def edit(cmd,setting):
 			value=min
 		value=round(value,2)
 
+	'''
 	elif type(value)==str:
-		if arg=="+" or arg=="-":
+		
+		if cmd=="+" or cmd=="-":
 			pass
 		else:
 			print("yea : ",arg)
 			value=arg
-
+	'''
 	setting[1]=value
 	return setting
 

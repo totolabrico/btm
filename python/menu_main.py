@@ -18,7 +18,6 @@ class MainMenu(Menu):
 				self.machine.new_open()
 				self.machine.close()
 
-
 	def draw(self):
 		Menu.draw(self)
 		draw_list(self.list,self.tools)
@@ -101,7 +100,7 @@ class MasterMenu(Menu,Editor):
 			begin=element[2][1][2][1]
 			end=element[2][1][3][1]
 			nbnote=element[2][1][0][1]*element[2][1][1][1]
-			l=get_loop_length(begin,end,nbnote)
+			l=get_loop_length(begin-1,end,nbnote)
 				
 			if tick%l==0:
 				pass
@@ -109,9 +108,9 @@ class MasterMenu(Menu,Editor):
 				tick=l
 			else:
 				tick=tick*l
-		#print("nbtick",tick)
+		print("nbtick",tick)
 		osc_send("master","nb_tick",tick)
-		self.nb_tick=tick
+		#self.nb_tick=tick
 		return tick
 		
 	def sort(self,cmd,arg):
@@ -143,6 +142,8 @@ class TracksMenu(Menu,Editor):
 	def sort(self,cmd,arg):
 		Menu.sort(self,cmd,arg)
 		Editor.sort(self,cmd,arg)
+		if cmd=="erase":
+			self.partition.erase_track(self.pointer)
 		if cmd=="enter":
 			self.navigator.set_menu("track")
 		else:
@@ -224,7 +225,11 @@ class TrackMenu(Menu,Editor,Mom):
 		begin=self.parameters[2][1][2][1]
 		end=self.parameters[2][1][3][1]
 		nbnote=self.parameters[2][1][0][1]*self.parameters[2][1][1][1]
-		loop_length=get_loop_length(begin,end,nbnote)
+		if begin>nbnote:
+			self.parameters[2][1][2][1]=nbnote
+		if end>nbnote:
+			self.parameters[2][1][3][1]=nbnote
+		loop_length=get_loop_length(begin-1,end,nbnote)
 		self.navigator.menus["master"].set_nb_tick()
 		self.send_osc("loop_length",loop_length)
 
@@ -327,13 +332,15 @@ class NotesMenu(Menu,Editor):
 
 
 	def sort(self,cmd,arg):
+		if cmd=="erase":
+			self.partition.erase_note(self.idtrack,self.pointer)
+			self.set_parameters()
 		if cmd=="enter":
 			self.navigator.set_menu("note")
 		
 		elif cmd=="back":
 			self.navigator.set_menu(self.mom)
 			self.reset_pointer()
-		
 		else:
 			Menu.sort(self,cmd,arg)
 			Editor.sort(self,cmd,arg)
@@ -341,17 +348,19 @@ class NotesMenu(Menu,Editor):
 
 			
 	def set_parameters(self):
-		track=self.partition.tracks[self.navigator.menus["tracks"].pointer]
+		self.idtrack=self.navigator.menus["tracks"].pointer
+		track=self.partition.tracks[self.idtrack]
 		self.list=track[0][1]
 		self.parameters=[]
 		for element in self.list:
 			self.parameters.append(element[0][1][0])
-		temps=track[2][1][0][1]
+		temps=track[2][1][1][1]
 		coef=4
 		while temps*coef>16:
 			coef-=1
 		self.tools["grid"]=[temps*coef,3]
 		self.tools["temps"]=temps
+		self.tools["beg_end"]=[track[2][1][2][1],track[2][1][3][1]]
 		self.set_title()
 		#self.reset_pointer()
 		

@@ -1,4 +1,4 @@
-#N canvas 304 445 356 494 10;
+#N canvas 304 475 356 494 10;
 #X obj 79 264 metro;
 #X obj 79 88 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1 1
 ;
@@ -14,7 +14,7 @@
 #X obj 206 125 r master_bpm;
 #X obj 79 53 r master_play;
 #X obj 43 437 s master_metro;
-#X obj 164 281 r master_nb_tick;
+#X obj 164 291 r master_nb_tick;
 #X obj 79 291 0;
 #X obj 79 363 + 1;
 #X obj 79 333 moses;

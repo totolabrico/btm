@@ -28,7 +28,7 @@
 #X obj 145 178 *;
 #X obj 105 70 r track_\$1_mesure;
 #X obj 109 391 r master_metro;
-#X obj 159 472 r track_\$1_begin;
+#X obj 159 457 r track_\$1_begin;
 #X obj 109 682 send track_\$1_pas;
 #X obj 469 61 r track_\$1_pas;
 #X obj 145 101 r track_\$1_temps;
@@ -44,6 +44,8 @@
 #X obj 175 550 r track_\$1_nbnote;
 #X obj 136 611 -;
 #X obj 281 364 r track_\$1_end;
+#X obj 159 485 - 1;
+#X floatatom 218 380 5 0 0 0 - - -;
 #X connect 0 0 3 0;
 #X connect 2 0 0 0;
 #X connect 3 0 6 0;
@@ -75,12 +77,13 @@
 #X connect 24 0 20 0;
 #X connect 25 0 23 0;
 #X connect 26 0 31 0;
-#X connect 27 0 36 0;
+#X connect 27 0 43 0;
 #X connect 29 0 10 0;
 #X connect 30 0 22 0;
 #X connect 31 0 32 0;
 #X connect 32 0 35 0;
 #X connect 34 0 31 1;
+#X connect 34 0 44 0;
 #X connect 35 0 37 0;
 #X connect 36 0 35 1;
 #X connect 37 0 38 0;
@@ -90,3 +93,4 @@
 #X connect 39 0 41 1;
 #X connect 40 0 39 0;
 #X connect 41 0 38 0;
+#X connect 43 0 36 0;
