@@ -7,6 +7,8 @@ def edit(cmd,setting):
 			value=False
 		elif cmd=="+":
 			value=True
+		elif cmd=="++":
+			value=not value
 
 	elif type(value)==int or type(value)==float:
 		min=setting[2]
@@ -14,8 +16,12 @@ def edit(cmd,setting):
 		inc=setting[4]
 		if cmd=="-":
 			value-=inc
+		elif cmd=="--":
+			value-=inc*10
 		elif cmd=="+":
 			value+=inc
+		elif cmd=="++":
+			value+=inc*10
 		else:
 			value=cmd
 			

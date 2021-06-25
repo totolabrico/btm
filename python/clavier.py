@@ -19,7 +19,11 @@ class Clavier:
             self.select_state=True
         else:
             if self.switch_state==True:
-                cmd=arg
+                if cmd=="enter":
+                    cmd=arg
+                if cmd=="edit":
+                    arg+=arg
+                    print(arg)
             self.machine.navigator.sort(cmd,arg)
 
     def on_release(self,Key):
@@ -102,10 +106,10 @@ editor_keys={
     "B2":["move",["y","-"]],
     
     "B1":["enter","back"],
-    "A0":["remove",""],
+    "A0":["","remove"],
 
-    "C2":["edit","+"],
-    "C0":["edit","-"],
+    "C2":["edit","+","+"],
+    "C0":["edit","-","-"],
     
 
     }

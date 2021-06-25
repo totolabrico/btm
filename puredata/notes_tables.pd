@@ -42,6 +42,8 @@
 #X obj 404 383 tabread note_\$1_lpf;
 #X floatatom 404 413 5 0 0 0 - - -;
 #X floatatom 404 354 5 0 0 0 - - -;
+#X obj 46 425 r track_\$1_nbnote;
+#X obj 46 448 resize_track \$1;
 #X connect 0 0 1 0;
 #X connect 12 0 0 0;
 #X connect 13 0 22 0;
@@ -64,3 +66,4 @@
 #X connect 38 0 39 0;
 #X connect 40 0 41 0;
 #X connect 42 0 40 0;
+#X connect 43 0 44 0;

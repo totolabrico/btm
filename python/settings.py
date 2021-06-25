@@ -25,20 +25,20 @@ time_setting=[
 
 sample_setting=[
     ["sample","empty"],
-	["pitch",0,-10,10,0.02],
-	["tone",0,-10,10,0.02],
-	["s_begin",0,0,1,0.02],
-	["s_end",1,0,1,0.02]
+	["pitch",0,-100,100,0.05],
+	["tone",0,-100,100,0.05],
+	["s_begin",0,0,1,0.05],
+	["s_end",1,0,1,0.05]
 	]
 	
 audio_setting=[
 	# 0:name / 1:value / 2:min / 3:max / 4:inc
-	["vol",0.5,0,2,0.1],
+	["vol",0.5,0,1,0.1],
 	["pan",0,-1,1,0.1],
 	["mute",False],
 	["solo",False],
-	["lpf",20000,0,20000,100],#low pass filter
-	["hpf",0,0,20000,100],#high pass filter
+	["lpf",20000,0,20000,10],#low pass filter
+	["hpf",0,0,20000,10],#high pass filter
 
 	]
 

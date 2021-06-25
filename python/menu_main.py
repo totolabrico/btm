@@ -252,11 +252,19 @@ class ChildMenu(Menu,Editor):
 		self.reset_pointer()
 
 	def sort(self,cmd,arg):
-		if cmd=="enter" and self.parameters[self.pointer][0]=="sample":
+		parameter=self.parameters[self.pointer]
+		if cmd=="enter" and parameter[0]=="sample":
 			self.navigator.set_menu("sample")
 			
 		Menu.sort(self,cmd,arg)
 		Editor.sort(self,cmd,arg)
+		
+		if parameter[0]=="temps" or parameter[0]=="mesure":
+			l=self.parameters[0][1]*self.parameters[1][1]
+			self.navigator.menus["track"].set_notes_length(l)
+		elif parameter[0]=="begin" or parameter[0]=="end":
+			self.navigator.menus["track"].set_loop_length()
+					
 
 	def draw(self):
 		Menu.draw(self)

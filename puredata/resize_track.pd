@@ -1,0 +1,22 @@
+#N canvas 276 391 296 403 10;
+#X obj 69 73 \$1;
+#X obj 49 22 inlet;
+#X obj 48 166 pack;
+#X obj 34 128 f;
+#X obj 69 52 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 34 89 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X msg 48 198 \; notes_\$2_vol resize \$1 \; notes_\$2_mute resize
+\$1 \; notes_\$2_solo resize \$1 \; notes_\$2_pan resize \$1 \; notes_\$2_pitch
+resize \$1 \; notes_\$2_tone resize \$1 \; notes_\$2_s_begin resize
+\$1 \; notes_\$2_s_end resize \$1 \; notes_\$2_lpf resize \$1 \; notes_\$2_hpf
+resize \$1 \;;
+#X connect 0 0 2 1;
+#X connect 0 0 5 0;
+#X connect 1 0 3 1;
+#X connect 1 0 4 0;
+#X connect 2 0 6 0;
+#X connect 3 0 2 0;
+#X connect 4 0 0 0;
+#X connect 5 0 3 0;
