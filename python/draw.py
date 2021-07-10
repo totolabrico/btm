@@ -47,8 +47,8 @@ def draw_end():
     disp.display()
 
 def draw_title(title):
-    if (len(title)>16):
-        title=title[-16:]
+    if (len(title)>20):
+        title=title[-20:]
     draw.rectangle((0,0,width,setting_height), outline=color[1], fill=color[1])
     draw.text((X[1],0),title,font=font, fill=color[0])
 

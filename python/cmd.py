@@ -1,5 +1,7 @@
 from pydub import AudioSegment
 from pydub.playback import play
+import datetime
+from osc import*
 
 def edit(cmd,setting):
 	print ("edit: ",cmd,setting)
@@ -169,3 +171,14 @@ def play_sound(Path):
 	song = AudioSegment.from_wav(Path)
 	strongSong = song + 10 
 	play(strongSong)
+
+def start_record(Name):
+	date=datetime.datetime.now()
+	str_date="_"+date.strftime("%H")+"_"+date.strftime("%M")
+	path="/home/pi/audiosamples/Records/"
+	osc_send("record",1,["symbol",path+Name+str_date+".wav"])
+	
+def stop_record():
+	osc_send("record",0,"")
+
+	

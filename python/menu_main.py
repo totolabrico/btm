@@ -11,14 +11,23 @@ class MainMenu(Menu):
 		self.list=["master","record","load","save","reset"]#,"import"]
 		self.tools["grid"]=[2,3]
 		self.machine=Machine
+		self.recording=False
 		
 	def sort(self,cmd,arg):
 		Menu.sort(self,cmd,arg)
 		if cmd=="enter":
-			if self.list[self.pointer]=="reset":
+			el=self.list[self.pointer]
+			if el=="reset":
 				print("exit")
 				self.machine.new_open()
 				self.machine.close()
+			if el=="record":
+				if self.recording==False:
+					start_record(self.navigator.menus["save"].savename)
+					self.recording=True
+				elif self.recording==True:
+					stop_record()
+					self.recording=False
 
 	def draw(self):
 		Menu.draw(self)

@@ -1,4 +1,4 @@
-#N canvas 395 458 413 566 10;
+#N canvas 395 428 413 596 10;
 #X obj 62 446 dac~, f 10;
 #X obj 62 222 *~;
 #X obj 120 222 *~;
@@ -23,6 +23,7 @@
 #X obj 119 115 hip~;
 #X obj 63 169 lop~;
 #X obj 120 169 lop~;
+#X obj 238 378 recorder;
 #X connect 1 0 6 0;
 #X connect 2 0 7 0;
 #X connect 3 0 20 0;
@@ -32,7 +33,9 @@
 #X connect 6 0 8 0;
 #X connect 7 0 9 0;
 #X connect 8 0 0 0;
+#X connect 8 0 24 0;
 #X connect 9 0 0 1;
+#X connect 9 0 24 1;
 #X connect 10 0 9 1;
 #X connect 10 0 8 1;
 #X connect 11 0 1 1;
