@@ -97,6 +97,13 @@ class Browser():
 			if arg[0]=="x":
 				self.set_path(arg[1])
 			self.set_pointer()
+		if cmd=="erase":
+			if self.path=="/home/pi/audiosamples/Records":
+				try:
+					os.system("rm "+self.path+"/"+self.list[self.pointer])
+					self.set_list()
+				except:
+					pass
 
 	def set_path(self,cmd):
 		cut=self.path.split("/")

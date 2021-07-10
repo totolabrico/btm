@@ -1,3 +1,0 @@
-#N canvas 550 232 650 646 10;
-#X obj 179 344 readsf~;
-#X msg 220 248 open /home/pi/audiosamples/;

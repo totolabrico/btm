@@ -266,9 +266,12 @@ class SampleMenu(Menu,Browser):
 		self.tools["grid"]=[1,3]
 
 	def sort(self,cmd,arg):
-		
-		is_wav=check_wav(self.list[self.pointer])
-		samplepath=self.path+"/"+self.list[self.pointer]
+		is_wav=False
+		try:
+			is_wav=check_wav(self.list[self.pointer])
+			samplepath=self.path+"/"+self.list[self.pointer]
+		except:
+			pass
 		if cmd=="back":
 			self.navigator.set_menu("tracks")
 		elif cmd=="enter" and is_wav:

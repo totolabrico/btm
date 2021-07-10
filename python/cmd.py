@@ -2,6 +2,12 @@ from pydub import AudioSegment
 from pydub.playback import play
 import datetime
 from osc import*
+import RPi.GPIO as GPIO
+
+led_pin=27
+
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(led_pin, GPIO.OUT)
 
 def edit(cmd,setting):
 	print ("edit: ",cmd,setting)
@@ -177,8 +183,11 @@ def start_record(Name):
 	str_date="_"+date.strftime("%H")+"_"+date.strftime("%M")
 	path="/home/pi/audiosamples/Records/"
 	osc_send("record",1,["symbol",path+Name+str_date+".wav"])
+	GPIO.output(led_pin, GPIO.HIGH)
+
 	
 def stop_record():
+	GPIO.output(led_pin, GPIO.LOW)
 	osc_send("record",0,"")
 
 	
