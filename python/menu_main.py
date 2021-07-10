@@ -1,4 +1,6 @@
 from menu import*
+import copy
+import threading
 
 class MainMenu(Menu):
 
@@ -6,7 +8,7 @@ class MainMenu(Menu):
 		Menu.__init__(self,Navigator)
 		self.name="main"
 		self.mom="main"
-		self.list=["play","record","load","save","reset"]#,"import"]
+		self.list=["master","record","load","save","reset"]#,"import"]
 		self.tools["grid"]=[2,3]
 		self.machine=Machine
 		
@@ -57,17 +59,29 @@ class LoadMenu(Menu):
 		self.list=Browser.set_list(self)
 		self.tools["grid"]=[1,3]
 
+	def set_parameters(self):
+		self.list=Browser.set_list(self)
+
 	def sort(self,cmd,arg):
 		Menu.sort(self,cmd,arg)
 		if cmd=="enter":
-			self.partition.load_set(self.path+self.list[self.pointer])
-			self.navigator.set_menu(self.mom)
-
+			try:
+				self.partition.load_set(self.path+self.list[self.pointer])
+				self.navigator.set_menu(self.mom)
+			except:
+				pass
+		if cmd=="erase":
+			try:
+				os.system("rm "+self.path+self.list[self.pointer])
+				self.set_parameters()
+			except:
+				pass
+			
 	def draw(self):
 		Menu.draw(self)
 		draw_list(self.list,self.tools)
 		
-class PlayMenu(Menu):
+class PlayMenu(Menu): # inutilisé
 
 	def __init__(self,Navigator):
 		Menu.__init__(self,Navigator)
@@ -88,34 +102,16 @@ class MasterMenu(Menu,Editor):
 	def __init__(self,Machine,Partition,Navigator):
 		Menu.__init__(self,Navigator)
 		self.name="master"
-		self.mom="play"
+		self.mom="main"
 		self.list=[]
 		self.tools["grid"]=[2,3]
 		Editor.__init__(self,Machine,Partition,Partition.master)
-		self.nb_tick=self.set_nb_tick()
-
-	def set_nb_tick(self):
-		tick=1
-		for element in self.partition.tracks:
-			begin=element[2][1][2][1]
-			end=element[2][1][3][1]
-			nbnote=element[2][1][0][1]*element[2][1][1][1]
-			l=get_loop_length(begin-1,end,nbnote)
-				
-			if tick%l==0:
-				pass
-			elif l%tick==0:
-				tick=l
-			else:
-				tick=tick*l
-		print("nbtick",tick)
-		osc_send("master","nb_tick",tick)
-		#self.nb_tick=tick
-		return tick
 		
 	def sort(self,cmd,arg):
 		Menu.sort(self,cmd,arg)
 		Editor.sort(self,cmd,arg)
+		if cmd=="enter":
+			self.navigator.set_menu("tracks")
 
 	def draw(self):
 		Menu.draw(self)
@@ -130,26 +126,35 @@ class TracksMenu(Menu,Editor):
 	def __init__(self,Machine,Partition,Navigator):
 		Menu.__init__(self,Navigator)
 		self.name="tracks"
-		self.mom="play"
+		self.mom="master"
 		self.list=Partition.tracks
 		self.tools["grid"]=[10,3]
 		self.title=""
-		list=[]
-		for element in self.list:
-			list.append(element[3][1][2])
-		Editor.__init__(self,Machine,Partition,list)
+		Editor.__init__(self,Machine,Partition,self.get_parameters(Partition.tracks))
 
 	def sort(self,cmd,arg):
 		Menu.sort(self,cmd,arg)
 		Editor.sort(self,cmd,arg)
 		if cmd=="erase":
 			self.partition.erase_track(self.pointer)
+		if cmd=="copy":
+			self.partition.copy_track(self.pointer)
+		if cmd=="paste":
+			self.partition.paste_track(self.pointer)
 		if cmd=="enter":
 			self.navigator.set_menu("track")
 		else:
 			self.set_parameters()
-			
+	
+	def get_parameters(self,Tracks):
+		parameters=[]
+		for element in Tracks:
+			parameters.append(element[3][1][2])
+		return parameters
+					
 	def set_parameters(self):
+		self.list=self.partition.tracks
+		self.parameters=self.get_parameters(self.list)
 		self.title=get_name(self.list[self.pointer][1][1][0][1])
 		self.title=set_txt_size(self.title,10)
 		
@@ -159,7 +164,7 @@ class TracksMenu(Menu,Editor):
 		
 	def draw(self):
 		draw_title("track "+str(self.pointer+1)+": "+self.title)
-		draw_tracks(self.parameters,self.tools)
+		draw_tracks(self.list,self.tools)
 
 class TrackMenu(Menu,Editor,Mom):
 
@@ -169,75 +174,27 @@ class TrackMenu(Menu,Editor,Mom):
 		self.name="track"
 		self.mom="tracks"
 		self.list=[]
+		self.id=0
 		self.title=""
 		self.tools["grid"]=[2,3]
 		Editor.__init__(self,Machine,Partition,[])
 			
 	def set_parameters(self):
-		id=self.navigator.menus["tracks"].pointer
-		#print("track menu set parameters on track n°",id)
-		self.parameters=self.partition.tracks[id]
-		self.title=get_name(self.parameters[1][1][0][1])
-		self.title=str(id+1)+": "+set_txt_size(self.title,15)
+		self.id=self.navigator.menus["tracks"].pointer
+		self.parameters=self.partition.tracks[self.id]
+		self.title=get_name(self.parameters[1][1][0][1])		
 		Mom.set_list(self)
+		if self.title=="empty":
+			self.pointer=1
+			self.sort("enter","")
 		
 	def sort(self,cmd,arg):
 		Mom.sort(self,cmd,arg)
-
-	def set_sample(self,Path):
-		self.parameters[1][1][0][1]=Path
-		self.navigator.menus["child"].send_osc()
+		if cmd=="back":
+			self.reset_pointer()
 			
-	def set_notes_length(self,Length):
-		dif=Length-len(self.parameters[0][1])
-		if dif<0:
-			self.del_notes(abs(dif))
-			self.set_begin_end(Length,"-")
-		elif dif>0:
-			self.add_notes(dif)
-			self.set_begin_end(Length,"+")
-
-	def del_notes(self,Dif):
-		i=0
-		while i<Dif:
-			del self.parameters[0][1][-1]
-			i+=1
-			
-	def add_notes(self,Dif):
-		i=0
-		while i<Dif:
-			self.parameters[0][1].append(self.partition.init_note())
-			i+=1
-
-	def set_begin_end(self,Length,Cmd):
-		if Cmd=="+":
-			self.parameters[2][1][3]=edit(Length,self.parameters[2][1][3])#end
-		if Cmd=="-":
-			if self.parameters[2][1][2][1]>Length: #begin
-				self.parameters[2][1][2]=edit(0,self.parameters[2][1][2])
-			if self.parameters[2][1][3][1]>Length: #end
-				self.parameters[2][1][3]=edit(Length,self.parameters[2][1][3])
-		self.send_osc("begin",self.parameters[2][1][2][1])
-		#self.send_osc("end",self.parameters[2][1][3][1]) on s'en fou du end dans pd!
-		self.set_loop_length()
-				
-	def set_loop_length(self):
-		begin=self.parameters[2][1][2][1]
-		end=self.parameters[2][1][3][1]
-		nbnote=self.parameters[2][1][0][1]*self.parameters[2][1][1][1]
-		if begin>nbnote:
-			self.parameters[2][1][2][1]=nbnote
-		if end>nbnote:
-			self.parameters[2][1][3][1]=nbnote
-		loop_length=get_loop_length(begin-1,end,nbnote)
-		self.navigator.menus["master"].set_nb_tick()
-		self.send_osc("loop_length",loop_length)
-
-	def send_osc(self,Setting,Value):
-		osc_send("track",Setting,Value,self.navigator.menus["tracks"].pointer)
-		
 	def draw(self):
-		draw_title(self.title)
+		draw_title(str(self.id+1)+": "+set_txt_size(self.title,15))
 		draw_list(self.list,self.tools)
 
 class ChildMenu(Menu,Editor):
@@ -255,6 +212,8 @@ class ChildMenu(Menu,Editor):
 		self.mom=Mom
 		self.parameters=Parameters
 		self.reset_pointer()
+		if self.parameters[0][1]=="empty":
+			self.sort("enter","")
 
 	def sort(self,cmd,arg):
 		parameter=self.parameters[self.pointer]
@@ -264,11 +223,12 @@ class ChildMenu(Menu,Editor):
 		Menu.sort(self,cmd,arg)
 		Editor.sort(self,cmd,arg)
 		
+		trackid=self.navigator.menus["tracks"].pointer
 		if parameter[0]=="temps" or parameter[0]=="mesure":
 			l=self.parameters[0][1]*self.parameters[1][1]
-			self.navigator.menus["track"].set_notes_length(l)
+			self.partition.set_notes_length(trackid,l)
 		elif parameter[0]=="begin" or parameter[0]=="end":
-			self.navigator.menus["track"].set_loop_length()
+			self.partition.set_loop_length(trackid)
 					
 
 	def draw(self):
@@ -287,7 +247,8 @@ class ChildMenu(Menu,Editor):
 
 class SampleMenu(Menu,Browser):
 
-	def __init__(self,Navigator):
+	def __init__(self,Navigator,Partition):
+		self.partition=Partition
 		Menu.__init__(self,Navigator)
 		Browser.__init__(self,"/home/pi/audiosamples")
 		self.name="sample"
@@ -300,22 +261,23 @@ class SampleMenu(Menu,Browser):
 		is_wav=check_wav(self.list[self.pointer])
 		samplepath=self.path+"/"+self.list[self.pointer]
 		if cmd=="back":
-			self.navigator.set_menu(self.mom)
+			self.navigator.set_menu("tracks")
 		elif cmd=="enter" and is_wav:
 			self.play_sound(samplepath)
 		elif cmd=="edit" and arg=="+" and is_wav:
-			self.set_sample(samplepath)
-			self.navigator.set_menu("track")
+			self.partition.set_sample(self.navigator.menus["tracks"].pointer,samplepath)
+			self.navigator.set_menu("notes")
 		else:
 			Browser.sort(self,cmd,arg)
 			
 	def draw(self):
-		Menu.draw(self)
+		draw_title(self.path[14:])
 		draw_list(self.list,self.tools)
 
 	def play_sound(self,Path):
-		print("play the sound now")
-		os.system("omxplayer "+Path+" --adev local &")
+		print("play the sound now",Path)
+		player = threading.Thread(target=play_sound, args =(Path,),daemon=True)
+		player.start()
 		
 	def set_sample(self,Path):
 		self.navigator.menus["track"].set_sample(Path)
@@ -335,6 +297,13 @@ class NotesMenu(Menu,Editor):
 		if cmd=="erase":
 			self.partition.erase_note(self.idtrack,self.pointer)
 			self.set_parameters()
+			
+		if cmd=="copy":
+			self.partition.copy_note(self.navigator.menus["tracks"].pointer,self.pointer)
+		if cmd=="paste":
+			self.partition.paste_note(self.navigator.menus["tracks"].pointer,self.pointer)
+			self.set_parameters()
+
 		if cmd=="enter":
 			self.navigator.set_menu("note")
 		
@@ -345,7 +314,6 @@ class NotesMenu(Menu,Editor):
 			Menu.sort(self,cmd,arg)
 			Editor.sort(self,cmd,arg)
 			self.set_title()
-
 			
 	def set_parameters(self):
 		self.idtrack=self.navigator.menus["tracks"].pointer

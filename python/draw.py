@@ -32,22 +32,29 @@ padding=2
 setting_height=height/6
 symbol_size=4
 
+def reverse_color():
+    stock=int(color[0])
+    color[0]=color[1]
+    color[1]=stock
+
 def draw_begin():
     global draw,image,width,height
     draw = ImageDraw.Draw(image)
-    draw.rectangle((0,0,width,height), outline=0, fill=0)
+    draw.rectangle((0,0,width,height), outline=color[0], fill=color[0])
 
 def draw_end():
     disp.image(image)
     disp.display()
 
 def draw_title(title):
-    draw.rectangle((0,0,width,setting_height), outline=255, fill=255)
-    draw.text((X[1],0),title,font=font, fill=0)
+    if (len(title)>16):
+        title=title[-16:]
+    draw.rectangle((0,0,width,setting_height), outline=color[1], fill=color[1])
+    draw.text((X[1],0),title,font=font, fill=color[0])
 
 def draw_footer(word):
    # draw.rectangle((0,height-setting_height,width,setting_height), outline=255, fill=255)
-    draw.text((X[1],height-setting_height),word,font=font, fill=0)
+    draw.text((X[1],height-setting_height),word,font=font, fill=color[0])
 
 def draw_list(List,Tools):
 
@@ -63,7 +70,7 @@ def draw_list(List,Tools):
             xdraw=X[1]+x*(width/w)
             ydraw=Y[2]+y*(height*2/3)/h
             txt=set_txt_size(List[i],18)
-            draw.text((xdraw,ydraw),txt,font=font, fill=255)
+            draw.text((xdraw,ydraw),txt,font=font, fill=color[1])
             draw_text_pointer(Tools,x,y,xdraw-X[1],ydraw)
             x+=1
             if x==w:
@@ -73,9 +80,9 @@ def draw_list(List,Tools):
     
 def draw_text_pointer(Tools,X,Y,Xdraw,Ydraw):
     if Tools["pointer"][0]==X and Tools["pointer"][1]-Tools["origin"]==Y:
-        draw.text((Xdraw,Ydraw),">",font=font, fill=255)
+        draw.text((Xdraw,Ydraw),">",font=font, fill=color[1])
 
-def draw_tracks(List,Tools):
+def draw_tracks(Tracks,Tools):
     w=Tools["grid"][0]
     h=Tools["grid"][1]
     o=Tools["origin"]
@@ -83,14 +90,20 @@ def draw_tracks(List,Tools):
     y=0
     
     i=o*w
-    while i<len(List):
+    while i<len(Tracks):
         if y<h:
             xdraw=X[0]+x*(width/w)
             ydraw=Y[2]+y*(height*2/3)/h
             color=0
-            if List[i][1]==True:
+            if Tracks[i][1][1][0][1]!="empty":
                 color=255
+            #print(Tracks[i][3][1][2])
             draw.rectangle((xdraw,ydraw,xdraw+rect_track_size,ydraw+rect_track_size), outline=255, fill=color)
+            if Tracks[i][3][1][3][1]==True:
+                draw.text((xdraw+1,ydraw-3),"s",font=font, fill=0)
+            elif Tracks[i][3][1][2][1]==True:
+                draw.text((xdraw+1,ydraw-3),"m",font=font, fill=0)
+
             draw_grid_pointer(Tools,x,y,xdraw,ydraw,rect_track_size)
 
             x+=1
@@ -128,12 +141,12 @@ def draw_notes(List,Tools):
 def draw_grid_pointer(Tools,X,Y,Xdraw,Ydraw,Size):
     if Tools["pointer"][0]==X and Tools["pointer"][1]-Tools["origin"]==Y:
         y=Ydraw+Size+2
-        draw.rectangle((Xdraw,y,Xdraw+Size,y+2), outline=255, fill=0)
+        draw.rectangle((Xdraw,y,Xdraw+Size,y+2), outline=color[1], fill=color[0])
 
 def draw_notes_begin_end(Id,Begin,End,X,Y):
     if Id==Begin-1:
-        draw.rectangle((X,Y,X-2,Y-2), outline=255, fill=0)
+        draw.rectangle((X,Y,X-2,Y-2), outline=color[1], fill=color[0])
     if Id==End-1:
         Xdraw=X+rect_note_size
         Ydraw=Y+rect_note_size
-        draw.rectangle((Xdraw,Ydraw,Xdraw+2,Ydraw+2), outline=255, fill=0)
+        draw.rectangle((Xdraw,Ydraw,Xdraw+2,Ydraw+2), outline=color[1], fill=color[0])

@@ -33,7 +33,7 @@ sample_setting=[
 	
 audio_setting=[
 	# 0:name / 1:value / 2:min / 3:max / 4:inc
-	["vol",0.5,0,1,0.1],
+	["vol",0.8,0,1,0.1],
 	["pan",0,-1,1,0.1],
 	["mute",False],
 	["solo",False],

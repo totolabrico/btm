@@ -1,3 +1,6 @@
+from pydub import AudioSegment
+from pydub.playback import play
+
 def edit(cmd,setting):
 	print ("edit: ",cmd,setting)
 	value=setting[1]
@@ -161,3 +164,8 @@ def get_loop_length(Begin,End,Nbnote):
 		return End-Begin
 	else:
 		return Nbnote-(Begin-End)
+		
+def play_sound(Path):
+	song = AudioSegment.from_wav(Path)
+	strongSong = song + 10 
+	play(strongSong)

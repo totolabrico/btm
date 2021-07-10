@@ -19,7 +19,7 @@ class Clavier:
             self.select_state=True
         else:
             if self.switch_state==True:
-                if cmd=="enter" or cmd=="":
+                if cmd=="enter" or cmd=="" or cmd=="copy":
                     cmd=arg
                 if cmd=="edit":
                     arg+=arg
@@ -99,6 +99,7 @@ editor_keys={
 
     "A2":["switch",""],
     "D2":["select",""],
+    "D1":["copy","paste"],
 
     "A1":["move",["x","-"]],
     "C1":["move",["x","+"]],

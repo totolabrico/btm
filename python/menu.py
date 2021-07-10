@@ -27,7 +27,10 @@ class Menu():
 		elif cmd=="back":
 			self.navigator.set_menu(self.mom)
 		elif cmd=="enter":
-			self.navigator.set_menu(self.list[self.pointer])
+			try:
+				self.navigator.set_menu(self.list[self.pointer])
+			except:
+				pass
 			
 	def draw(self):
 		draw_title(self.name)
@@ -46,6 +49,7 @@ class Mom():
 		if cmd=="enter" and self.list[self.pointer]!="notes":
 			self.navigator.set_menu("child")
 			self.set_nextmenu_parameters()
+			self.reset_pointer()
 		else:
 			Menu.sort(self,cmd,arg)
 
@@ -54,10 +58,10 @@ class Mom():
 		self.navigator.menu.set_parameters(childname,self.name,self.parameters[self.pointer][1])
 		
 class Editor():
-	def __init__(self,Machine,Partition,List):
+	def __init__(self,Machine,Partition,Parameters):
 		self.machine=Machine
 		self.partition=Partition
-		self.parameters=List
+		self.parameters=Parameters
 		
 	def sort(self,cmd,arg):
 		if cmd=="edit":

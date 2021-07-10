@@ -10,7 +10,7 @@ class Navigator():
 		
 		self.menus={
 			"main":MainMenu(self,Machine),
-			"play":PlayMenu(self),
+			#"play":PlayMenu(self),
 			"save":SaveMenu(self,self.machine.partition),
 			"load":LoadMenu(self,self.machine.partition),
 			#"sequencer":SequencerMenu(self.machine,self.machine.partition,self),
@@ -18,7 +18,7 @@ class Navigator():
 			"tracks":TracksMenu(self.machine,self.machine.partition,self),
 			"track":TrackMenu(self.machine,self.machine.partition,self),
 			"child":ChildMenu(self.machine,self.machine.partition,self),
-			"sample":SampleMenu(self),
+			"sample":SampleMenu(self,self.machine.partition),
 			"notes":NotesMenu(self.machine,self.machine.partition,self),
 			"note":NoteMenu(self.machine,self.machine.partition,self),
 			}
@@ -32,7 +32,7 @@ class Navigator():
 			try:
 				self.menu.set_parameters()
 			except:
-				print("no parameters to set for this menu")
+				#print("no parameters to set for this menu")
 				pass
 		except:
 			pass
