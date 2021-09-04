@@ -5,7 +5,6 @@ from settings import*
 from partition import Partition
 import os, sys
 
-
 class Menu():
 
 	def __init__(self,Navigator):

@@ -7,6 +7,7 @@ import RPi.GPIO as GPIO
 led_pin=27
 
 GPIO.setmode(GPIO.BCM)
+GPIO.setwarnings(False)
 GPIO.setup(led_pin, GPIO.OUT)
 
 def edit(cmd,setting):
@@ -175,8 +176,8 @@ def get_loop_length(Begin,End,Nbnote):
 		
 def play_sound(Path):
 	song = AudioSegment.from_wav(Path)
-	strongSong = song + 10 
-	play(strongSong)
+	#strongSong = song + 10 
+	play(song)
 
 def start_record(Name):
 	date=datetime.datetime.now()

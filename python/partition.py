@@ -3,7 +3,7 @@ from settings import*
 from cmd import*
 import copy
 import dill as pickle
-
+import time
 class Partition():
 
 	def __init__(self,Machine):
@@ -115,11 +115,14 @@ class Partition():
 	
 	def init_osc(self):
 		self.osc("master",self.master)
+		osc_send("master","play",False)
 		#print(self.master)
 		Id=0
 		while Id<len(self.tracks):	
 			self.osc_track(Id)
+			time.sleep(0.1)
 			Id+=1
+		osc_send("master","play",True)
 
 	def osc_track(self,Id):	
 		for element in self.tracks[Id]:
@@ -228,6 +231,7 @@ class Partition():
 			save=mon_depickler.load()
 			#print(save[0][0])
 			self.master=save[0].copy()
+			#self.master.Editor.set_list()
 			self.tracks=save[1].copy()
 		self.init_osc()
 		print("loaded",Path)

@@ -48,7 +48,7 @@ class SaveMenu(Menu,KeyMenu):
 	def sort(self,cmd,arg):
 		Menu.sort(self,cmd,arg)
 		KeyMenu.sort(self,cmd,arg)
-		if cmd=="enter":
+		if cmd=="enter" and self.savename!="":
 			self.partition.save_set(self.path+self.savename)
 			self.navigator.set_menu(self.mom)
 
@@ -76,6 +76,7 @@ class LoadMenu(Menu):
 		if cmd=="enter":
 			try:
 				self.partition.load_set(self.path+self.list[self.pointer])
+				self.navigator.menus["save"].savename=self.list[self.pointer]
 				self.navigator.set_menu(self.mom)
 			except:
 				pass
@@ -121,7 +122,11 @@ class MasterMenu(Menu,Editor):
 		Editor.sort(self,cmd,arg)
 		if cmd=="enter":
 			self.navigator.set_menu("tracks")
-
+					
+	def set_parameters(self):
+		self.list=self.partition.master
+		self.parameters=self.list	
+			
 	def draw(self):
 		Menu.draw(self)
 		Editor.draw(self)
