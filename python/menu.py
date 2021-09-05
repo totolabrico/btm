@@ -4,6 +4,7 @@ from osc import*
 from settings import*
 from partition import Partition
 import os, sys
+import copy
 
 class Menu():
 
@@ -64,6 +65,15 @@ class Editor():
 		self.parameters=Parameters
 		
 	def sort(self,cmd,arg):
+		if cmd=="previous":
+			self.partition.load_backup()
+			try:
+				self.set_parameters()
+			except:
+				pass
+			return
+		elif cmd=="erase" or cmd=="paste":
+			self.partition.save_backup()
 		if cmd=="edit":
 			try:
 				ids=self.selection

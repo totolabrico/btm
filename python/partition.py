@@ -17,6 +17,7 @@ class Partition():
 		self.nb_tick=self.set_nb_tick()
 		self.track_copy=[]
 		self.note_copy=[]
+		self.backup=None
 
 	def init_master(self):
 		setting=sequencer_setting.copy()
@@ -121,8 +122,9 @@ class Partition():
 		return setting
 	
 	def init_osc(self):
-		self.osc("master",self.master)
 		osc_send("master","play",False)
+		time.sleep(0.1)
+		self.osc("master",self.master)
 		#print(self.master)
 		Id=0
 		while Id<len(self.tracks):	
@@ -242,4 +244,11 @@ class Partition():
 			self.tracks=save[1].copy()
 		self.init_osc()
 		print("loaded",Path)
+		
+	def save_backup(self):
+		self.backup=copy.deepcopy(self.tracks)
+	def load_backup(self):
+		if self.backup!=None:
+			self.tracks=copy.deepcopy(self.backup)
+			self.init_osc()
 

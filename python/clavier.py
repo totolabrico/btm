@@ -102,6 +102,7 @@ editor_keys={
     "A2":["switch",""],
     "D2":["select",""],
     "D1":["copy","paste"],
+    "D0":["previous","next"],
 
     "A1":["move",["x","-"]],
     "C1":["move",["x","+"]],

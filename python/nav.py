@@ -7,7 +7,7 @@ class Navigator():
 
 	def __init__(self,Machine):
 		self.machine=Machine
-		
+		self.backup_menu=None
 		self.menus={
 			"main":MainMenu(self,Machine),
 			#"play":PlayMenu(self),
