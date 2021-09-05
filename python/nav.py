@@ -39,6 +39,7 @@ class Navigator():
 		
 	def sort(self,cmd,arg): # tri les commandes provenants du clavier vers set_current_editor ou un editeur ou le browser
 		self.menu.sort(cmd,arg)
+		#print("nav sort : ",cmd,arg)
 			
 	def close_browser():
 		self.pointer="editor"

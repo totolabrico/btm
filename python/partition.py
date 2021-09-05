@@ -57,35 +57,42 @@ class Partition():
 		titles=["notes","file","loop","audio"]
 		list=[self.init_notes(),copy.deepcopy(sample_setting),copy.deepcopy(time_setting),copy.deepcopy(audio_setting)]
 		return self.init_element(titles,list)
-		
-	def erase_track(self,Id):
-		self.tracks[Id]=self.init_track()
-		self.osc_track(Id)
-		
-	def copy_track(self,Id):
+				
+	def copy_track(self,Ids):
 		print("copy track")
-		self.track_copy=self.tracks[Id]
+		self.track_copy=[]
+		for id in Ids:
+			self.track_copy.append([id,self.tracks[id]])
 		
-	def paste_track(self,Id):
+	def paste_track(self,Pointer):
 		print("paste track")
 		if len(self.track_copy)>0:
-			self.tracks[Id]=copy.deepcopy(self.track_copy)
-			self.osc_track(Id)
+			first=find_first(self.track_copy)
+			for element in self.track_copy:
+				newId=element[0]-first+Pointer
+				self.tracks[newId]=copy.deepcopy(element[1])
+				self.osc_track(newId)
 	
-	def copy_note(self,Idtrack,Id):
-		self.note_copy=copy.deepcopy(self.tracks[Idtrack][0][1][Id])
-		print("copy note:",Idtrack,Id)
-		#print("copy note",self.note_copy)
-
-	def paste_note(self,Idtrack,Id):
-		print("paste note",Idtrack,Id,self.note_copy)
+	def erase_track(self,Ids):
+		for id in Ids:
+			self.tracks[id]=self.init_track()
+			self.osc_track(id)
+	
+	def copy_note(self,Idtrack,Ids):
+		self.note_copy=[]
+		for id in Ids:
+			self.note_copy.append([id,copy.deepcopy(self.tracks[Idtrack][0][1][id])])
+	def paste_note(self,Idtrack,Pointer):
 		if len(self.note_copy)>0:
-			self.tracks[Idtrack][0][1][Id]=copy.deepcopy(self.note_copy)
+			first=find_first(self.note_copy)
+			for element in self.note_copy:
+				newId=element[0]-first+Pointer
+				self.tracks[Idtrack][0][1][newId]=copy.deepcopy(element[1])
 			self.osc_note(self.tracks[Idtrack][0][1],Idtrack)
 		
-	def erase_note(self,Idtrack,Id):
-		print(self.tracks[Idtrack][0][1][Id])
-		self.tracks[Idtrack][0][1][Id]=self.init_note()
+	def erase_note(self,Idtrack,Ids):
+		for id in Ids:
+			self.tracks[Idtrack][0][1][id]=self.init_note()
 		self.osc_note(self.tracks[Idtrack][0][1],Idtrack)
 				
 	def init_notes(self):

@@ -135,7 +135,7 @@ class MasterMenu(Menu,Editor):
 		setting=self.parameters[self.pointer]
 		osc_send("master",setting[0],setting[1])
 
-class TracksMenu(Menu,Editor):
+class TracksMenu(Menu,Editor,Selector):
 
 	def __init__(self,Machine,Partition,Navigator):
 		Menu.__init__(self,Navigator)
@@ -145,14 +145,20 @@ class TracksMenu(Menu,Editor):
 		self.tools["grid"]=[10,3]
 		self.title=""
 		Editor.__init__(self,Machine,Partition,self.get_parameters(Partition.tracks))
+		Selector.__init__(self)
 
 	def sort(self,cmd,arg):
 		Menu.sort(self,cmd,arg)
 		Editor.sort(self,cmd,arg)
+		Selector.sort(self,cmd,arg)
+		if self.selection==[]:
+			ids=[self.pointer]
+		else:
+			ids=self.selection
 		if cmd=="erase":
-			self.partition.erase_track(self.pointer)
+			self.partition.erase_track(ids)
 		if cmd=="copy":
-			self.partition.copy_track(self.pointer)
+			self.partition.copy_track(ids)
 		if cmd=="paste":
 			self.partition.paste_track(self.pointer)
 		if cmd=="enter":
@@ -172,13 +178,13 @@ class TracksMenu(Menu,Editor):
 		self.title=get_name(self.list[self.pointer][1][1][0][1])
 		self.title=set_txt_size(self.title,10)
 		
-	def send_osc(self):
-		setting=self.parameters[self.pointer]
-		osc_send("track",setting[0],setting[1],self.pointer)
+	def send_osc(self,id):
+		setting=self.parameters[id]
+		osc_send("track",setting[0],setting[1],id)
 		
 	def draw(self):
 		draw_title("track "+str(self.pointer+1)+": "+self.title)
-		draw_tracks(self.list,self.tools)
+		draw_tracks(self.list,self.tools,self.selection)
 
 class TrackMenu(Menu,Editor,Mom):
 
@@ -299,7 +305,7 @@ class SampleMenu(Menu,Browser):
 	def set_sample(self,Path):
 		self.navigator.menus["track"].set_sample(Path)
 				
-class NotesMenu(Menu,Editor):
+class NotesMenu(Menu,Editor,Selector):
 
 	def __init__(self,Machine,Partition,Navigator):
 		Menu.__init__(self,Navigator)
@@ -308,15 +314,18 @@ class NotesMenu(Menu,Editor):
 		self.list=[]
 		self.title=""
 		Editor.__init__(self,Machine,Partition,[])
-
-
+		Selector.__init__(self)
+		
 	def sort(self,cmd,arg):
+		if self.selection==[]:
+			ids=[self.pointer]
+		else:
+			ids=self.selection
 		if cmd=="erase":
-			self.partition.erase_note(self.idtrack,self.pointer)
+			self.partition.erase_note(self.idtrack,ids)
 			self.set_parameters()
-			
 		if cmd=="copy":
-			self.partition.copy_note(self.navigator.menus["tracks"].pointer,self.pointer)
+			self.partition.copy_note(self.navigator.menus["tracks"].pointer,ids)
 		if cmd=="paste":
 			self.partition.paste_note(self.navigator.menus["tracks"].pointer,self.pointer)
 			self.set_parameters()
@@ -327,9 +336,11 @@ class NotesMenu(Menu,Editor):
 		elif cmd=="back":
 			self.navigator.set_menu(self.mom)
 			self.reset_pointer()
+			self.selection=[]
 		else:
 			Menu.sort(self,cmd,arg)
 			Editor.sort(self,cmd,arg)
+			Selector.sort(self,cmd,arg)
 			self.set_title()
 			
 	def set_parameters(self):
@@ -352,13 +363,13 @@ class NotesMenu(Menu,Editor):
 	def set_title(self):
 		self.title="note :"+str(self.pointer+1)+" | vol: "+str(self.parameters[self.pointer][1])
 		
-	def send_osc(self):
-		setting=self.parameters[self.pointer]
-		osc_send("note",setting[0],setting[1],self.navigator.menus["tracks"].pointer,self.pointer)
+	def send_osc(self,id):
+		setting=self.parameters[id]
+		osc_send("note",setting[0],setting[1],self.navigator.menus["tracks"].pointer,id)
 		
 	def draw(self):
 		draw_title(self.title)
-		draw_notes(self.parameters,self.tools)
+		draw_notes(self.parameters,self.tools,self.selection)
 		
 class NoteMenu(Menu,Editor,Mom):
 

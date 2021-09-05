@@ -17,6 +17,7 @@ class Menu():
 		
 	def reset_pointer(self):
 		self.tools["pointer"]=[0,0]
+		self.tools["origin"]=0
 		self.set_pointer()
 		
 	def sort(self,cmd,arg):
@@ -64,9 +65,23 @@ class Editor():
 		
 	def sort(self,cmd,arg):
 		if cmd=="edit":
-			parameter=self.parameters[self.pointer]
-			parameter=edit(arg,parameter)
+			try:
+				ids=self.selection
+				if ids==[]:
+					ids=[self.pointer]
+			except:
+				ids=[self.pointer]
+			for id in ids:
+				self.edit(id,arg)
+			
+	def edit(self,id,cmd):
+		parameter=self.parameters[id]
+		parameter=edit(cmd,parameter)
+		try:
+			self.send_osc(id)
+		except:
 			self.send_osc()
+		print("selector edit",id,parameter)
 
 	def set_list(self):
 		self.list=[]
@@ -144,3 +159,47 @@ class KeyMenu():
 	
 	def draw(self):
 		draw_footer(self.savename)
+
+class Selector():
+	
+	def __init__(self):
+		self.push_pointer=0
+		self.is_push=False
+		self.selection=[]
+	def sort(self,cmd,arg):
+		#print("selector sort",cmd,arg)
+		if cmd=="select":
+			if arg=="push":
+				if self.is_push==False:
+					self.push_pointer=self.pointer
+					self.is_push=True
+			if arg=="release":
+				self.add_to_selection(self.push_pointer,self.pointer)
+				self.is_push=False
+			if arg=="erase":
+				self.selection=[]
+				print("selection is clear")
+				
+	def add_to_selection(self,posa,posb):
+		if posa==posb:
+			self.check_selection(posb)
+		else:
+			if posb<posa:
+				prov=posa
+				posa=posb
+				posb=prov
+			i=posa
+			while i<=posb:
+				self.check_selection(i)
+				i+=1
+		print("selection : ",self.selection)
+	
+	def check_selection(self,Pos):
+		exist=False
+		for element in self.selection:
+			if element==Pos:
+				self.selection.remove(Pos)
+				exist=True
+		if exist==False:
+			self.selection.append(Pos)
+	

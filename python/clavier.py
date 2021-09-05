@@ -6,7 +6,6 @@ class Clavier:
     def __init__(self,Machine):
         self.machine=Machine
         self.switch_state=False
-        self.select_state=False
         self.listener = keyboard.Listener(on_press=self.on_press,on_release=self.on_release)
         self.listener.start()
 
@@ -15,8 +14,6 @@ class Clavier:
         cmd,arg=get_cmd_arg(key)
         if cmd=="switch":
             self.switch_state=True
-        elif cmd== "select":
-            self.select_state=True
         else:
             if self.switch_state==True:
                 if cmd=="enter" or cmd=="" or cmd=="copy":
@@ -24,6 +21,11 @@ class Clavier:
                 if cmd=="edit":
                     arg+=arg
                     print(arg)
+                if cmd=="select":
+                    arg="erase"
+            else:        
+                if cmd =="select":
+                    arg="push"
             self.machine.navigator.sort(cmd,arg)
 
     def on_release(self,Key):
@@ -31,8 +33,8 @@ class Clavier:
         cmd,arg=get_cmd_arg(key)
         if cmd=="switch":
             self.switch_state=False
-        elif cmd== "select":
-            self.select_state=False
+        elif cmd== "select" and self.switch_state==False:
+             self.machine.navigator.sort(cmd,"release")
 
 
 def get_cmd_arg(Key):

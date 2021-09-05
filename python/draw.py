@@ -82,7 +82,7 @@ def draw_text_pointer(Tools,X,Y,Xdraw,Ydraw):
     if Tools["pointer"][0]==X and Tools["pointer"][1]-Tools["origin"]==Y:
         draw.text((Xdraw,Ydraw),">",font=font, fill=color[1])
 
-def draw_tracks(Tracks,Tools):
+def draw_tracks(Tracks,Tools,Selection):
     w=Tools["grid"][0]
     h=Tools["grid"][1]
     o=Tools["origin"]
@@ -98,6 +98,8 @@ def draw_tracks(Tracks,Tools):
             if Tracks[i][1][1][0][1]!="empty":
                 color=255
             #print(Tracks[i][3][1][2])
+            if i in Selection:
+                draw.rectangle((xdraw,ydraw-2,xdraw+rect_track_size,ydraw-1), outline=255, fill=0)
             draw.rectangle((xdraw,ydraw,xdraw+rect_track_size,ydraw+rect_track_size), outline=255, fill=color)
             if Tracks[i][3][1][3][1]==True:
                 draw.text((xdraw+1,ydraw-3),"s",font=font, fill=0)
@@ -112,7 +114,7 @@ def draw_tracks(Tracks,Tools):
                 y+=1
         i+=1
 
-def draw_notes(List,Tools):
+def draw_notes(List,Tools,Selection):
     w=Tools["grid"][0]
     h=Tools["grid"][1]
     t=Tools["temps"]
@@ -130,6 +132,8 @@ def draw_notes(List,Tools):
             if List[i][1]!=0:
                 color=255
             draw_notes_begin_end(i,be[0],be[1],xdraw,ydraw)
+            if i in Selection:
+                draw.rectangle((xdraw,ydraw-2,xdraw+rect_note_size,ydraw-1), outline=255, fill=0)
             draw.rectangle((xdraw,ydraw,xdraw+rect_note_size,ydraw+rect_note_size), outline=255, fill=color)
             draw_grid_pointer(Tools,x,y,xdraw,ydraw,rect_note_size)
             x+=1

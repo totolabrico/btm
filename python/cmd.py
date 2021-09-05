@@ -11,7 +11,7 @@ GPIO.setwarnings(False)
 GPIO.setup(led_pin, GPIO.OUT)
 
 def edit(cmd,setting):
-	print ("edit: ",cmd,setting)
+	#print ("edit: ",cmd,setting)
 	value=setting[1]
 
 	if type(value)==bool:
@@ -192,3 +192,9 @@ def stop_record():
 	osc_send("record",0,"")
 
 	
+def find_first(List):
+	first=List[0][0]
+	for element in List:
+		if element[0]<first:
+			first=element[0]
+	return first
