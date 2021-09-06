@@ -150,6 +150,11 @@ class TracksMenu(Menu,Editor,Selector):
 	def sort(self,cmd,arg):
 
 		Menu.sort(self,cmd,arg)
+		if cmd=="edit":
+			if arg=="+":
+				arg="-"
+			elif arg=="-":
+				arg="+"
 		Editor.sort(self,cmd,arg)
 		Selector.sort(self,cmd,arg)
 		if self.selection==[]:

@@ -34,7 +34,7 @@ class Clavier:
         if cmd=="switch":
             self.switch_state=False
         elif cmd== "select" and self.switch_state==False:
-             self.machine.navigator.sort(cmd,"release")
+            self.machine.navigator.sort(cmd,"release")
 
 
 def get_cmd_arg(Key):

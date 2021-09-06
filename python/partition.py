@@ -70,7 +70,8 @@ class Partition():
 		if len(self.track_copy)>0:
 			first=find_first(self.track_copy)
 			for element in self.track_copy:
-				newId=element[0]-first+Pointer
+				#newId=element[0]-first+Pointer
+				newId=get_paste_id(element[0],first,self.nb_track,Pointer)
 				self.tracks[newId]=copy.deepcopy(element[1])
 				self.osc_track(newId)
 	
@@ -87,7 +88,8 @@ class Partition():
 		if len(self.note_copy)>0:
 			first=find_first(self.note_copy)
 			for element in self.note_copy:
-				newId=element[0]-first+Pointer
+				#newId=element[0]-first+Pointer
+				newId=get_paste_id(element[0],first,len(self.tracks[Idtrack][0][1]),Pointer)
 				self.tracks[Idtrack][0][1][newId]=copy.deepcopy(element[1])
 			self.osc_note(self.tracks[Idtrack][0][1],Idtrack)
 		

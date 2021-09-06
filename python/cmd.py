@@ -198,3 +198,9 @@ def find_first(List):
 		if element[0]<first:
 			first=element[0]
 	return first
+
+def get_paste_id(Pos,First,Length,Pointer):
+	id=Pos-First+Pointer
+	if id>=Length:
+		id-=Length
+	return id
